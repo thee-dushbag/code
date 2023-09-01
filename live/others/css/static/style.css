@@ -1,0 +1,84 @@
+* {
+  font-family: "CaskaydiaCove Nerd Font Mono", monospace;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+body, html {
+  height: 100vh;
+  width: 100vw;
+}
+
+h1 {
+  text-align: center;
+  text-decoration: underline;
+  font-size: 30pt;
+}
+
+#app {
+  width: 60%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  padding: 20px;
+  background-color: aliceblue;
+  overflow: auto;
+}
+
+#app #book-details {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background-color: rgb(168, 66, 83);
+  box-sizing: border-box;
+}
+
+#book-list li {
+  display: inline-block;
+  border: 2px solid rgb(128, 43, 57);
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  background-color: rgba(172, 68, 86, 0.3);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+#book-form {
+  display: block;
+  position: fixed;
+  left: 0;
+  background-color: white;
+  bottom: 0;
+  padding: 10px;
+}
+
+#book-form .field {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 3px;
+}
+
+#book-form .field label {
+  text-align: right;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#submit-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 20pt;
+  border-radius: 50%;
+  color: white;
+  height: 1cm;
+  width: 1cm;
+  border-style: none;
+  cursor: pointer;
+  background-color: rgb(192, 40, 66);
+}

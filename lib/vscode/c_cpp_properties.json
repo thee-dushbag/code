@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": ["${workspaceFolder}/**", "~/Content/code/lib/include"],
+      "defines": ["AUTHOR=Simon Nganga"],
+      "compilerPath": "/usr/bin/clang-15",
+      "configurationProvider": "ms-vscode.makefile-tools"
+    }
+  ],
+  "version": 4
+}

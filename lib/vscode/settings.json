@@ -1,0 +1,154 @@
+{
+  "python.analysis.extraPaths": ["./lib"],
+  "files.associations": {
+    "*.html": "html",
+    "ostream": "cpp",
+    "iosfwd": "cpp",
+    "thread": "cpp",
+    "sstream": "cpp",
+    "*.ipp": "cpp",
+    "type_traits": "cpp",
+    "functional": "cpp",
+    "coroutine": "cpp",
+    "new": "cpp",
+    "pthread.h": "c",
+    "stdio.h": "c",
+    "stdarg.h": "c",
+    "condition_variable": "cpp",
+    "array": "cpp",
+    "*.tcc": "cpp",
+    "memory": "cpp",
+    "future": "cpp",
+    "istream": "cpp",
+    "tuple": "cpp",
+    "utility": "cpp",
+    "search.h": "c",
+    "sched.h": "c",
+    "string": "cpp",
+    "typeinfo": "cpp",
+    "optional": "cpp",
+    "bitset": "cpp",
+    "exception": "cpp",
+    "limits": "cpp",
+    "stdexcept": "cpp",
+    "variant": "cpp",
+    "ranges": "cpp",
+    "concepts": "cpp",
+    "span": "cpp",
+    "cstddef": "cpp",
+    "compare": "cpp",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "csetjmp": "cpp",
+    "cstdarg": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cstring": "cpp",
+    "ctime": "cpp",
+    "cwchar": "cpp",
+    "cwctype": "cpp",
+    "atomic": "cpp",
+    "bit": "cpp",
+    "chrono": "cpp",
+    "codecvt": "cpp",
+    "complex": "cpp",
+    "cstdint": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "algorithm": "cpp",
+    "iterator": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "random": "cpp",
+    "ratio": "cpp",
+    "string_view": "cpp",
+    "system_error": "cpp",
+    "fstream": "cpp",
+    "initializer_list": "cpp",
+    "iomanip": "cpp",
+    "iostream": "cpp",
+    "mutex": "cpp",
+    "numbers": "cpp",
+    "semaphore": "cpp",
+    "stop_token": "cpp",
+    "streambuf": "cpp",
+    "cfenv": "cpp",
+    "cinttypes": "cpp",
+    "typeindex": "cpp",
+    "expected": "cpp",
+    "any": "cpp",
+    "license": "cpp",
+    "format": "cpp",
+    "charconv": "cpp",
+    "unordered_set": "cpp"
+  },
+
+  "emmet.includeLanguages": {
+    "mako": "html",
+    "jinja-html": "html",
+    "jinja": "html",
+    "pyscript": "html"
+  },
+  "C_Cpp.errorSquiggles": "disabled",
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": false,
+  "python.defaultInterpreterPath": "~/Content/bin/py-env/bin/python3",
+  "editor.fontFamily": "'CaskaydiaCove Nerd Font Mono', 'ComicShannsMono Nerd Font Mono', serif",
+  "editor.fontLigatures": true,
+  "editor.fontWeight": "400",
+  "editor.folding": true,
+  "editor.fontSize": 15,
+  "editor.fontVariations": true,
+  "C_Cpp.default.cStandard": "c23",
+  "C_Cpp.default.cppStandard": "c++23",
+  "python.languageServer": "Pylance",
+  "python.formatting.provider": "black",
+  "editor.defaultFormatter": "vscode.html-language-features",
+  "[mako]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[graphql]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

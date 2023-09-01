@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %}
+<h1>Hello {{username}}? Welcome!</h1>
+<form action="/submitfile/{{username}}" method="post">
+  <label for="f">Add file</label>
+  <input
+    type="file"
+    name="userfile"
+    id="f"
+    enctype="multipart/form-data"
+    accept-charset="utf-8"
+  /><br />
+  <input type="submit" value="Submit" /><br />
+</form>
+<div id="files">
+  <h2>Submitted files</h2>
+  <ol>
+    {% for file in files %}
+    <li>{{file}}</li>
+    {% endfor %}
+  </ol>
+</div>
+<a href="/logout/{{username}}">Logout</a>
+{% endblock content %}

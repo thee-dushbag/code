@@ -1,0 +1,19 @@
+# name of output directory
+output_dir: OutputDir
+# string with substitutes: $season and $episode
+file_template: Show.Sn$season.Ep$episode
+# suffix to ignore
+# use as a placeholder for missing
+# episodes/shows.
+ignore_suffix: .dummy
+# string with substitutes: $season
+# will be the name of the directory
+# where its episodes will be placed
+season_dir_template: Season_$season
+episodes_per_season: [] # list of integers
+# list of episodes/shows to be mapped
+# must be equal to the sum of numbers in episodes_per_season
+filelist:
+  - Episode/show 1
+  - Episode/show 2
+  - Episode/show 3

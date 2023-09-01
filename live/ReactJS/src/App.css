@@ -1,0 +1,98 @@
+@font-face {
+  font-family: "DancingScripts";
+  src: url("http://192.168.0.100:9944/fonts/DancingScript-Regular.ttf");
+}
+@font-face {
+  font-family: "ComicShanns";
+  src: url("http://192.168.0.100:9944/fonts/ComicShannsMonoNerdFontMono-Regular.otf");
+}
+.font-comicshanns {
+  font-family: "ComicShannsMono Nerd Font Mono", serif;
+}
+
+* {
+  font-family: ComicShanns;
+}
+
+pre {
+  font-family: ComicShanns;
+}
+
+.spinner {
+  animation: spinnerAnime;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+@keyframes spinnerAnime {
+  from {rotate: 0deg;}
+  to {rotate: 360deg;}
+}
+
+.error {
+  background-color: #efacac;
+  padding: 1em;
+  color: darkred;
+  border: 4px darkred double;
+}
+
+.msg-box {
+  width: 6cm;
+  height: 8cm;
+}
+
+.hello-world {
+  border: 1px solid black;
+  padding: 0.5cm;
+  margin: 0.5cm;
+  border-radius: 20px;
+}
+
+.child {
+  font-family: monospace;
+}
+
+li::marker {
+    content: '> ';
+}
+.font-caskaydiacove {
+  font-family: 'CaskaydiaCove Nerd Font Mono', serif;
+}
+
+.facebook-blue {
+  color: rgb(81, 81, 233);
+}
+
+
+.menu {
+  height: 100vh;
+  background-color: rgb(10, 10, 59);
+  color: white;
+  padding: 0.5cm;
+  width: 25%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  font-size: 30pt;
+}
+
+.app-body {
+  background-color: rgb(184, 188, 192);
+  width: 75%;
+  color: black;
+  padding: 0.5cm;
+}
+
+.callout {
+  border-style: double;
+  padding: 1cm;
+  font-size: 30pt;
+  border-width: 5px;
+  margin-bottom: 1cm;
+}
+
+.app {
+  display: flex;
+}

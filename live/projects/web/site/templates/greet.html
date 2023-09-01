@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %} Greet Page {% endblock title %} {%
+block content %}
+<div class="container">
+  <h3>
+    <center>Hello {{name}}, how was your day?</center>
+  </h3>
+  <h1>Your are here: {{ url('greet', name=name) }}</h1>
+  <a class="btn btn-outline-primary" href="{{ url('index') }}">Home</a>
+</div>
+{% endblock content %}

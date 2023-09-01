@@ -1,0 +1,13 @@
+@font-face {
+  font-family: ComicShannsMono;
+  src: url('/fonts/ComicShannsMonoNerdFont-Regular.otf');
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+#body {
+  font-family: ComicShannsMono, serif;
+}

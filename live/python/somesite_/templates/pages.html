@@ -1,0 +1,26 @@
+{% import "utils.html" as utils %}
+
+{% macro home_page(data) %}
+    <h1><center>This is the home page.</center></h1>
+{% endmacro %}
+
+{% macro welcome_page(data) %}
+    <h1><center>Welcome {{data.name}}, how was your day?</center></h1>
+    {{ utils.input_form(url("login"), 'post', [
+        utils.bbfield(type="text", name="username", label_name="UserName", required=True),
+        utils.bbfield(type="password", name="password", label_name="Password", required=True)
+    ], "Login", form_classes="border p-2 row-gap-2") }}
+{% endmacro %}
+
+{% macro file_upload(data) %}
+    {{ utils.input_form(url("file_upload"), 'post', [
+        utils.bbfield(type="text", name="username", label_name="UserName", required=True),
+        utils.bbfield(type="file", name="file", label_name="File", required=True, enctype="multipart/form-data")
+    ], "Submit File", form_classes="border p-2 row-gap-2") }}
+{% endmacro %}
+
+{% set pages = {
+    'home': home_page,
+    'welcome': welcome_page,
+    'upload': file_upload
+} %}

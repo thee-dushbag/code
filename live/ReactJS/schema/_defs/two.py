@@ -1,0 +1,48 @@
+import strawberry as straw, typing as ty, asyncio as aio, time as ti
+from .globals import Gender
+from .one import Name
+from string import Template
+
+
+@straw.type
+class Profile:
+    job: str
+    company: str
+    ssn: str
+    residence: str
+    blood_group: str
+    website: ty.List[str]
+    username: str
+    name: Name
+    sex: Gender
+    address: str
+    mail: str
+    current_location: str
+    birthdate: str
+
+    @straw.field
+    async def shout(self, message: str, delay: ty.Optional[float] = None) -> str:
+        delay = 1 if delay is None else delay
+        await aio.sleep(delay)
+        return message.upper() + f"!!! You are {self.name.fullname}"
+
+
+@straw.type
+class Greeting:
+    name: ty.Annotated[str, "Name to Greet."]
+    # template: ty.Optional[str] = None
+    template: ty.Annotated[
+        ty.Optional[str],
+        "Template of the form 'Hello $name' where $name will be replaced with the name passed.",
+    ] = None
+
+    @straw.field
+    async def greeting(self) -> str:
+        template = (
+            "Hello $name, how was your day?" if self.template is None else self.template
+        )
+        return Template(template).substitute(name=self.name)
+
+    @straw.field
+    async def time(self) -> str:
+        return ti.asctime(ti.localtime(ti.time()))

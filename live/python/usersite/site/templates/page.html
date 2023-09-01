@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% import "pages.html" as pages %}
+
+{% block content %}
+    {{ pages.pages[page](data) }}
+{% endblock content %}

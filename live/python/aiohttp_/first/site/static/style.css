@@ -1,0 +1,40 @@
+* {
+    font-family: monospace;
+}
+
+.person {
+    background-color: black;
+    display: flex;
+    color: wheat;
+    padding: 0.2cm 0.5cm;
+    flex-direction: column;
+    row-gap: 1px;
+    border: 1px solid white;
+    width: max-content;
+}
+
+.people {
+    background-color: red;
+    padding: 0.1cm;
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.3cm;
+    row-gap: 0.15cm;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.person .property {
+    padding: 2px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.person .property .key {
+    width: 1.5cm;
+}
+.person .property .key,
+.person .property .value {
+    display: inline-block;
+}
