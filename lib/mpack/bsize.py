@@ -32,6 +32,8 @@ def bytes_pb(by: float) -> float: return by / PETA_BYTES
 
 # Base Class For representing size...
 # TODO: It's cliche to name it 'Bytes'. Give better name...
+# TODO: Use properties instead of instance variables to replace Bytes.align
+# FATAL: Using properties means to stop using dataclass...(-_-)
 @dt.dataclass(slots=True)
 class Bytes:
     bytes: float = dt.field(default=0)
