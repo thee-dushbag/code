@@ -1,0 +1,68 @@
+{% macro ifield(label, type, name, id, rqd) %}
+    <div class="d-block m-2">
+        <label class="" for="{{id}}">{{label}}</label><br>
+        <input type="{{type}}" class="w-100" id="{{id}}" name="{{name}}" {{ "required" if rqd else ""}}>
+    </div>
+{% endmacro %}
+
+
+{% macro sse(msgs) %}
+    {% for msg in msgs %}
+        <div class="alert">{{msg.string}}</div>
+    {% endfor %}
+{% endmacro %}
+
+
+{% macro isfield(submit, loc, tag) %}
+    <div class="d-flex flex-row justify-content-between m-2">
+        {{Button(loc, tag if tag == '_' else 'Home')}}
+        <input type="submit" class="w-25 btn btn-primary" value="{{submit}}">
+    </div>
+{%endmacro%}
+
+
+{% macro form(title, action, method, ifields, submit, loc, tag) %}
+    <div class="d-block border p-2 w-50">
+        <form action="{{action}}" method="{{method}}">
+            <h2><center>{{title}}</center></h2>
+            {% for ifield_ in ifields %}
+                {{ ifield_ }}
+            {% endfor %}
+            {{isfield(submit, loc, tag)}}
+        </form>
+    </div>
+{% endmacro %}
+
+
+{% macro login_form(events) %}
+    {{ form("Login Form", url('login_post'), "post", [
+        ifield("Username", "text", "name", "name", True),
+        ifield("Password", "password", "password", "password", True)
+    ], "Login", url('index')) }}
+    {{sse(events)}}
+{% endmacro %}
+
+
+{% macro signup_form(events) %}
+    {{ form("SignUp Form", url('signup_post'), "post", [
+        ifield("Username", "text", "name", "name", True),
+        ifield("Email", "email", "email", "email", True),
+        ifield("Password", "password", "password", "password", True)
+    ], "SignUp", url('index')) }}
+    {{sse(events)}}
+{% endmacro %}
+
+
+{% macro cpword_form(events, uid) %}
+    {{ form("Change Passoword Form", url('cpword_post', uid=uid), "post", [
+        ifield("Old Password", "password", "old_password", "old_password", True),
+        ifield("New Password", "password", "new_password", "new_password", True)
+    ], "Change", '#', '_') }}
+    {{sse(events)}}
+{% endmacro %}
+
+
+{% macro Button(href, label) %}
+    <a class="btn btn-outline-danger d-inline-block w-25" href="{{href}}">{{label}}</a>
+{% endmacro %}
+

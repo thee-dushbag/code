@@ -1,0 +1,100 @@
+h1 {
+  text-align: center;
+}
+
+body,
+html {
+  width: 100%;
+  height: 100%;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(36, 34, 34);
+  color: wheat;
+  font-family: "CaskaydiaCove Nerd Font Mono";
+}
+
+.btn {
+  padding: 10px 30px;
+  background-color: rgb(65, 65, 211);
+  color: white;
+  font-family: inherit;
+  scale: 1;
+  transition: all;
+  transition-duration: 0.1s;
+  width: fit-content;
+  user-select: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  cursor: pointer;
+  scale: 1.02;
+}
+
+.btn:active {
+  scale: 0.98;
+  background-color: rgb(47, 47, 187);
+}
+
+.celem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+hr {
+  width: 100%;
+  color: white;
+  margin: 0;
+}
+
+#main {
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box {
+  font-size: 20pt;
+  user-select: none;
+  font-family: monospace;
+  width: 100%;
+  height: 3cm;
+  background-color: teal;
+}
+
+#progress {
+  position: fixed;
+  background-color: transparent;
+  width: 100%;
+}
+
+#content {
+  width: 80%;
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.card {
+  height: 10cm;
+  width: 100%;
+  color: wheat;
+  font-size: 20pt;
+  user-select: none;
+  border-radius: 1cm;
+  background-color: rgb(190, 72, 4);
+}

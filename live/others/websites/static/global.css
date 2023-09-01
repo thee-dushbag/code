@@ -1,0 +1,18 @@
+@font-face {
+  font-family: ComicShannsMono;
+  src: url('/public/ComicShannsMonoNerdFont-Regular.otf');
+}
+
+@font-face {
+  font-family: ArchitectsDaughter;
+  src: url('/public/ArchitectsDaughter-Regular.ttf');
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+#body {
+  font-family: ComicShannsMono;
+}

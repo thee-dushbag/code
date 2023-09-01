@@ -1,0 +1,51 @@
+{% macro say_hi(name) -%}
+Hello {{name | escape}}, how was your day?
+{% endmacro %}
+<html lang="en">
+    <head>
+        <title>Render Names</title>
+    </head>
+    <body>
+        {%+ for name in names -%}
+        {{ say_hi(name) }}
+        {%- endfor%}
+{# # for name in names:
+        {{ say_hi(name) }}
+# endfor #}
+    </body>
+</html>
+
+{% raw %}
+{% for item in seq %}
+    Result: {{ do_something(item) }}!
+{% endfor %}
+{% endraw %}
+
+{% filter upper %}
+This text is now upper
+{% endfilter %}
+
+{% macro userdata(name, age) %}
+<h1>{{name|title}} is {{age}} years old.</h1>
+{% if caller is defined %}
+<div>{{caller()}}</div>
+{%else%}
+<div>Not Called</div>
+{%endif%}
+{% endmacro %}
+
+{{ userdata("Simon Nganga", 21) }}
+{%call userdata("Simon Nganga", 21)%}
+Simon Nganga is thriving to be a software engineer
+{%endcall%}
+
+{%macro data(title)%}
+<h1>{{title}}</h1>
+<div>{{caller()|default("Yoh MAMA")}}</div>
+{%endmacro%}
+
+{{ data("Test Title") }}
+
+{%call data("Caller Defined")%}
+This is some random Shit
+{%endcall%}

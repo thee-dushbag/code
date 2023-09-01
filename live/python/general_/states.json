@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "name": "Yvette_Mcdonald",
+      "password": "bncwopgqljwnehthuvgxcvdwz",
+      "email": "yvettemcdonald@thunderbird.com",
+      "status": {
+        "message": "Signup Ok",
+        "operation_type": "ADD_USER",
+        "state": "SUCCESS",
+        "string": "[ADD_USER][SUCCESS]: Signup Ok"
+      }
+    },
+    {
+      "name": "Daniel_Curtis",
+      "password": "qqjttxahakfitpbbkuwdshbdn",
+      "email": "danielcurtis@outlook.mil",
+      "status": {
+        "message": "Signup Ok",
+        "operation_type": "ADD_USER",
+        "state": "SUCCESS",
+        "string": "[ADD_USER][SUCCESS]: Signup Ok"
+      }
+    },
+    {
+      "name": "Brittany_Thompson",
+      "password": "bqvwrhyltddrtjnmazymgmgur",
+      "email": "brittanythompson@outlook.com",
+      "status": {
+        "message": "Signup Ok",
+        "operation_type": "ADD_USER",
+        "state": "SUCCESS",
+        "string": "[ADD_USER][SUCCESS]: Signup Ok"
+      }
+    },
+    {
+      "name": "Anthony_Bowers",
+      "password": "vegvbadrezahrzepwrdtlmrot",
+      "email": "anthonybowers@outlook.com",
+      "status": {
+        "message": "Signup Ok",
+        "operation_type": "ADD_USER",
+        "state": "SUCCESS",
+        "string": "[ADD_USER][SUCCESS]: Signup Ok"
+      }
+    },
+    {
+      "name": "Darrell_Miller",
+      "password": "eatjfqfnivxiiqnrrhtmsnirn",
+      "email": "darrellmiller@outlook.xyz",
+      "status": {
+        "message": "Signup Ok",
+        "operation_type": "ADD_USER",
+        "state": "SUCCESS",
+        "string": "[ADD_USER][SUCCESS]: Signup Ok"
+      }
+    },
+    {
+      "name": "Simon",
+      "password": "1234",
+      "email": "simongash@gmail.com",
+      "status": {
+        "message": "Signup Ok",
+        "operation_type": "ADD_USER",
+        "state": "SUCCESS",
+        "string": "[ADD_USER][SUCCESS]: Signup Ok"
+      }
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  // Place your code workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "sync_python": {
+    "prefix": "spy",
+    "scope": "python",
+    "body": [
+      "from typing import Sequence",
+      "",
+      "",
+      "def main(argv: Sequence[str]) -> None:",
+      "    ...$0",
+      "",
+      "",
+      "if __name__ == '__main__':",
+      "    from sys import argv",
+      "    main(argv[1:])"
+    ],
+    "description": "Initialize asynchronous python module"
+  },
+  "async_python": {
+    "prefix": "apy",
+    "scope": "python",
+    "body": [
+      "from typing import Sequence",
+      "import asyncio as aio",
+      "",
+      "",
+      "async def main(argv: Sequence[str]) -> None:",
+      "    ...$0",
+      "",
+      "",
+      "if __name__ == '__main__':",
+      "    from sys import argv",
+      "    aio.run(main(argv[1:]))"
+    ],
+    "description": "Initialize synchronous python module"
+  },
+  "rich_print_python": {
+    "prefix": "rprt",
+    "scope": "python",
+    "description": "Switch builtin print for rich.console.Console().print which is prettier",
+    "body": [
+      "from rich.console import Console",
+      "console = Console()",
+      "print = console.print"
+    ]
+  },
+  "mpack_rich_print_python": {
+    "prefix": "mrprt",
+    "scope": "python",
+    "description": "Switch builtin print for rich.console.Console().print which is prettier",
+    "body": "from mpack import print"
+  },
+  "init_c": {
+    "prefix": "init",
+    "scope": "c",
+    "description": "Initialize c file",
+    "body": ["#include <stdio.h>", "", "int main(int argc, char **argv) {}"]
+  },
+  "init_ch": {
+    "prefix": "init_header",
+    "scope": "c, cpp",
+    "description": "Initialize c header file",
+    "body": [
+      "#ifndef __HEADER_UNIQUE_MACRO",
+      "#define __HEADER_UNIQUE_MACRO",
+      "$0",
+      "#endif //__HEADER_UNIQUE_MACRO"
+    ]
+  },
+  "init_cpp": {
+    "prefix": "init",
+    "scope": "cpp",
+    "description": "Initialize cpp file",
+    "body": ["#include <iostream>", "", "auto main(int argc, char **argv) -> int {}"]
+  },
+  "make_handler": {
+    "prefix": "ahandler",
+    "scope": "python",
+    "description": "Aiohttp Handler Boler plate",
+    "body": [
+      "async def $0(req: web.Request):",
+      "    ..."
+    ]
+  },
+  "aiohttp_init": {
+    "prefix": "ainit",
+    "scope": "python",
+    "description": "Initialize Aiohttp Application",
+    "body": [
+      "from aiohttp import web",
+      "from pathlib import Path",
+      "",
+      "WORKING_DIR = Path.cwd()",
+      "",
+      "async def application() -> web.Application:",
+      "    app = web.Application()",
+      "    return app"
+    ]
+  },
+  "type_ignore": {
+    "prefix": "ig",
+    "scope": "python",
+    "description": "Ignore Type Check",
+    "body": "# type: ignore"
+  }
+}

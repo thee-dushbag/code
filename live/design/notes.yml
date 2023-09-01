@@ -1,0 +1,21 @@
+solid-design-principles:
+- explanation: Objects Should be focused on one task on which they do best.
+  principle: Single Responsibility Principle.
+- explanation: Classes should be open for extension but closed for modification.
+  principle: Open/Closed Principle.
+- explanation: When extending a class, remenber that you should be able to pass objects
+    of the subclass without breaking the client code.
+  principle: Liskov Substitution Principle.
+- explanation: Clients Should not be forced to depend on methods they do not use.
+  principle: Interface Segregation Principle.
+- explanation: High Level classes shouldn't depend on low level classes. Both should
+    depend on abstractions. Abstractions shouldn't depend on details. Details should
+    depend on abstractions.
+  principle: Dependency Inversion Principle.
+
+catalog-of-design-patterns:
+  creational:
+    - factory method.
+    - abstract factory.
+  structural:
+  behavioural:

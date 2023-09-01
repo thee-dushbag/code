@@ -1,0 +1,18 @@
+interface Named {
+  name: String!
+}
+
+type Person implements Named {
+  age: Int!
+  email: String!
+}
+
+type Company implements Named {
+  email: String!
+}
+
+union EmployeeOrCompany = Person | Company
+
+type Query {
+  search(term: String!): [EmployeeOrCompany!]
+}

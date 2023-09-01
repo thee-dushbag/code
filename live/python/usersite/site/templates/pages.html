@@ -1,0 +1,41 @@
+{% import "utils.html" as utils %}
+
+
+{% macro login_page(data) %}
+    {{ utils.login_form() }}
+{% endmacro %}
+
+
+{% macro signup_page(data) %}
+    {{ utils.signup_form() }}
+{% endmacro %}
+
+
+{% macro user_page(data) %}
+<div class="d-flex flex-column align-items-center w-100 row-gap-3">
+    <h2 id="welcome"><center>Welcome {{data.name}}!</center></h2>
+    <div class="w-50 d-flex justify-content-around">
+        {{ utils.Button(url('delete', uid=data.uid), 'Delete') }}
+        {{ utils.Button(url('logout', uid=data.uid), 'Logout') }}
+    </div>
+    {{utils.cpword_form({}, data.uid)}}
+</div>
+{% endmacro %}
+
+{% macro home_page(data) %}
+    <div class="w-100 d-flex flex-column align-items-center">
+        <h2><center>Welcome to The UserSite!</center></h2>
+        <div class="w-50 d-flex justify-content-around">
+            {{ utils.Button(url('login'), "Login") }}
+            {{ utils.Button(url('signup'), "Signup") }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% set pages = {
+    'login': login_page,
+    'signup': signup_page,
+    'user': user_page,
+    'home': home_page,
+} %}

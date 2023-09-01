@@ -1,0 +1,16 @@
+package_name: hi
+
+description: Commonly used hi and say_hi functions.
+
+requirements:
+  - click
+  - rich
+
+packages:
+  - hi
+
+keywords:
+  - say_hi
+  - hi
+  - hello
+  - hi python

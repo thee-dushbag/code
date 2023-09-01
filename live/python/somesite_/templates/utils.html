@@ -1,0 +1,29 @@
+{% macro input_field(type, name, id, classes, value, required, enctype) %}
+    <input type="{{type}}" name="{{name}}" id="{{id}}" classes="{{classes}}" accept-charset="utf-8" value="{{value}}" {{ "required" if required else "" }} enctype="{{enctype}}">
+{% endmacro %}
+
+{% macro input_label(id, label_name, classes) %}
+    <label for="{{id}}" class="{{classes}}">{{label_name}}</label>
+{% endmacro %}
+
+{% macro block_field(type, name, label_name, required, input_classes, block_classes, block_id, label_classes, value, enctype) %}
+    <div classes="{{block_classes}}" id="{{block_id}}">
+        {{input_label(name, label_name, label_classes)}}
+        {{input_field(type, name, name, input_classes, value, required, enctype)}}
+    </div>
+{% endmacro %}
+
+{% macro input_form(action, method, fields, submit_value, submit_classes, form_classes) %}
+    <form action="{{action}}" method="{{method}}" class="{{form_classes}}">
+        {% for field in fields %} {{field}} {% endfor %}
+        {{input_field("submit", "submit", submit_value ~ "_submit", submit_classes, submit_value, False)}}
+    </form>
+{% endmacro %}
+
+{% macro bbfield(type, name, label_name, required, value, enctype) %}
+    {{ block_field(type, name, label_name, required,
+    "p-3",
+    "m-3",
+    name ~ "_input_block_row",
+    "", value, enctype) }}
+{% endmacro %}

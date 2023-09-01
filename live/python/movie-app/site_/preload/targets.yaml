@@ -1,0 +1,5 @@
+targets:
+  - input: ./static/script.js
+    output: ../static/script.js
+  - input: ./static/style.css
+    output: ../static/style.css

@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "run": "node main"
+  },
+  "dependencies": {
+    "ajax": "^0.0.4",
+    "apollo": "^2.34.0",
+    "axios": "^1.4.0",
+    "bootstrap": "^5.3.0",
+    "bootstrap-icons": "^1.10.5",
+    "express": "^4.18.2",
+    "faker": "^6.6.6",
+    "fontawesome": "^5.6.3",
+    "jquery": "^3.7.0",
+    "jspack": "file:../../lib/jspack",
+    "mustache": "^4.2.0",
+    "socketio": "^1.0.0",
+    "tailwindcss": "^3.3.3"
+  },
+  "type": "module"
+}

@@ -1,0 +1,11 @@
+{
+  "output_dir": "name of output directory eg './OutputDir'",
+  "file_template": "string with substitutes: $season and $episode: eg 'Show.Sn$season.Ep$episode'",
+  "season_dir_template": "string with substitutes: $season: eq 'season_$season'",
+  "ignore_suffix":"suffix to ignore, used for no-existing files that act as placeholder for missing episode: eq .dummy",
+  "episodes_per_season": ["list of integers in here..."],
+  "filelist": [
+    "list of episodes/shows to be mapped",
+    "must be equal to the sum of numbers in episodes_per_season"
+  ]
+}

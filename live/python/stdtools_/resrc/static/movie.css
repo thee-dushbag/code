@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    font-family: monospace;
+}
+
+html, body {
+    width: 100vw;
+    background-color: lime;
+    height: 100vh;
+}
+
+#movie_list {
+    background-color: black;
+    color: wheat;
+    padding: 0.3cm;
+    column-gap: 0.2cm;
+    row-gap: 0.2cm;
+    box-sizing: border-box;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.movie_link {
+    padding: 0.2cm 0.3cm;
+    cursor: pointer;
+    user-select: none;
+}
+
+#screen {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+#movie_screen {
+    max-height: 50vh;
+    min-width: 100vw;
+}
+
+#screen video {
+    display: block;
+    width: 100%;
+    max-height: 100%;
+    background-color: transparent;
+}
+
+#screen #movie_name {
+    color: wheat;
+}
+
+#movie_page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: black;
+}
+
+[playing_now] {
+    background-color: wheat;
+    color: black;
+    border: 2px solid wheat;
+}
+
+[not_playing] {
+    background-color: transparent;
+    border: 0.05cm solid white;
+}

@@ -1,0 +1,56 @@
+* {
+    color: black;
+    font-family: monospace;
+    user-select: none;
+}
+body {
+    background-color: salmon;
+    color: blue;
+}
+#line_project {
+    border: 1px solid black;
+    margin: 0.5cm;
+    padding: 0.2cm;
+}
+
+.line {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid purple;
+    margin: 0.2cm;
+    padding: 0.3cm;
+}
+
+#input_line {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    justify-content:space-evenly;
+}
+[type="text"] {
+    width: 80%;
+}
+
+button, .btns {
+    background-color: purple;
+    color: white;
+    padding: 0.2cm 0.7cm;
+    border-radius: 0.5cm;
+    border-style: hidden;
+}
+
+button:active, .btns {
+    background-color: wheat;
+    color: black;
+}
+
+#btns {
+    padding: 0.3cm;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}

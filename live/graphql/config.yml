@@ -1,0 +1,1 @@
+dns: sqlite:///azdev.sqlite3

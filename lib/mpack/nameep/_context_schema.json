@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ignore_suffix": { "type": "string", "pattern": "\\.\\w+" },
+    "file_template": {
+      "type": "string",
+      "pattern": ".*(?P<season>\\$season).*(?P<episode>\\$episode).*"
+    },
+    "episodes_per_season": {
+      "type": ["array", "number"],
+      "items": { "type": "number" }
+    },
+    "output_dir": { "type": "string", "pattern": "[^ \n]+" },
+    "season_dir_template": {
+      "type": "string",
+      "pattern": ".*(?P<season>\\$season).*",
+      "default": "Season_$season"
+    },
+    "filelist": { "type": ["array", "string"], "items": { "type": "string" } }
+  },
+  "required": [
+    "ignore_suffix",
+    "episodes_per_season",
+    "output_dir",
+    "filelist",
+    "file_template"
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "products": [
+    {
+      "name": "T.V",
+      "description": "55 inch LED Television",
+      "unit_cost": 32000,
+      "quantity": 13
+    },
+    {
+      "name": "Washig machine",
+      "description": "White high powered washer",
+      "unit_cost": 50000,
+      "quantity": 8
+    },
+    {
+      "name": "Dish washer",
+      "description": "Thin low power dish washer with default steel wool scrubbers",
+      "unit_cost": 10000,
+      "quantity": 13
+    },
+    {
+      "name": "Thermos",
+      "description": "Green plastic brand new 1.5 liter thermos",
+      "unit_cost": 650,
+      "quantity": 47
+    },
+    {
+      "name": "Coffee mugs",
+      "description": "Heavy black, blue green colored coffee mugs",
+      "unit_cost": 450,
+      "quantity": 30
+    },
+    {
+      "name": "Table",
+      "description": "Brownish refurblished wooden table.",
+      "unit_cost": 3000,
+      "quantity": 19
+    },
+    {
+      "name": "Gas cooker",
+      "description": "Pro gas 8.4 kg 512 atm pressure brancd new.",
+      "unit_cost": 2000,
+      "quantity": 21
+    },
+    {
+      "name": "Bed",
+      "description": "3 by 5 brown wooden bed.",
+      "unit_cost": 4500,
+      "quantity": 12
+    },
+    {
+      "name": "Matress",
+      "description": "3 by 5 purple silk clothed matress. HIG Density",
+      "unit_cost": 6500,
+      "quantity": 14
+    },
+    {
+      "name": "Carpet",
+      "description": "3m by 4m cotton black wooly carpet.",
+      "unit_cost": 5500,
+      "quantity": 17
+    },
+    {
+      "name": "Laptop",
+      "description": "H.P 840g super laptop with high graphics",
+      "unit_cost": 36500,
+      "quantity": 14
+    },
+    {
+      "name": "Speaker",
+      "description": "Vitro channel 1.2 bluetooth enabled speakers",
+      "unit_cost": 4500,
+      "quantity": 19
+    }
+  ],
+  "users": [
+    {
+      "name": "simon",
+      "password": "simon5052nganga",
+      "email": "simongash@gmail.com",
+      "phone": "+254712234321"
+    },
+    {
+      "name": "faith",
+      "password": "faith5052njeri",
+      "email": "faithnjesh@gmail.com",
+      "phone": "+254778435267"
+    },
+    {
+      "name": "lydia",
+      "password": "lydia5052njeri",
+      "email": "lydianjesh@gmail.com",
+      "phone": "+254756275897"
+    },
+    {
+      "name": "darius",
+      "password": "darius5052kimani",
+      "email": "dariuskimash@gmail.com",
+      "phone": "+254721756435"
+    },
+    {
+      "name": "obed",
+      "password": "obed5052chulo",
+      "email": "obedchush@gmail.com",
+      "phone": "+254732354678"
+    },
+    {
+      "name": "matandi",
+      "password": "matandi5052david",
+      "email": "matandidavish@gmail.com",
+      "phone": "+254782678292"
+    },
+    {
+      "name": "joshua",
+      "password": "joshua5052kingori",
+      "email": "joshuakingosh@gmail.com",
+      "phone": "+254730986789"
+    },
+    {
+      "name": "samuel",
+      "password": "samuel5052macharia",
+      "email": "samuelmachash@gmail.com",
+      "phone": "+254790897438"
+    },
+    {
+      "name": "harrison",
+      "password": "harrison5052kariuki",
+      "email": "harrisonkarish@gmail.com",
+      "phone": "+2547784t6378"
+    },
+    {
+      "name": "anthony",
+      "password": "anthony5052kumerya",
+      "email": "anthonykumer@gmail.com",
+      "phone": "+254789762537"
+    }
+  ]
+}
