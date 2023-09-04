@@ -1,33 +1,68 @@
-import typing as ty, dataclasses as dt
+import typing as ty, dataclasses as dt, enum as _e
+from warnings import warn as _warn
 from copy import copy
 
+# Exports...
+__all__ = (
+    # Size class
+    "Bytes",
+    # Constants
+    "Size",
+    # Converters
+    "b_bytes",
+    "kb_bytes",
+    "mb_bytes",
+    "gb_bytes",
+    "tb_bytes",
+    "pb_bytes",
+    "bytes_b",
+    "bytes_kb",
+    "bytes_mb",
+    "bytes_gb",
+    "bytes_tb",
+    "bytes_pb",
+)
+
+class Size(_e.IntEnum):
+    '''Class represents the size constants: bytes, bits, ...'''
+    # kept 8 because of consistensy, this is an int enum after all...(*_*)
+    BITS = 1 << 3  # 8 (8bits = 1byte)
+    BYTES = 1 << 0  # 1 (base constant)
+    KILO_BYTES = BYTES << 10  # 1024
+    MEGA_BYTES = BYTES << 20  # 1024 * 1024
+    GIGA_BYTES = BYTES << 30  # 1024 * 1024 * 1024
+    TERRA_BYTES = BYTES << 40  # 1024 * 1024 * 1024 * 1024
+    PETA_BYTES = BYTES << 50  # 1024 * 1024 * 1024 * 1024 * 1024
+
+
 # Constants
-# TODO: Place these constants in an enum...(*_*)
-BYTES = 1
-BITS = BYTES * 8
-KILO_BYTES = 1024 * BYTES
-MEGA_BYTES = 1024 * KILO_BYTES
-GIGA_BYTES = 1024 * MEGA_BYTES
-TERRA_BYTES = 1024 * GIGA_BYTES
-PETA_BYTES = 1024 * TERRA_BYTES
+# TODO: Place these constants in an enum...(*_*)   **DONE**
+# BYTES = 1
+# BITS = BYTES * 8
+# KILO_BYTES = 1024 * BYTES
+# MEGA_BYTES = 1024 * KILO_BYTES
+# GIGA_BYTES = 1024 * MEGA_BYTES
+# TERRA_BYTES = 1024 * GIGA_BYTES
+# PETA_BYTES = 1024 * TERRA_BYTES
 
 
 # Converters
 ## From * to bytes...
-def b_bytes(b: int) -> float: return b / BITS
-def kb_bytes(kb: float) -> float: return kb * KILO_BYTES
-def mb_bytes(mb: float) -> float: return mb * MEGA_BYTES
-def gb_bytes(gb: float) -> float: return gb * GIGA_BYTES
-def tb_bytes(tb: float) -> float: return tb * TERRA_BYTES
-def pb_bytes(pb: float) -> float: return pb * PETA_BYTES
+def b_bytes(b: int) -> float: return b / Size.BITS
+def kb_bytes(kb: float) -> float: return kb * Size.KILO_BYTES
+def mb_bytes(mb: float) -> float: return mb * Size.MEGA_BYTES
+def gb_bytes(gb: float) -> float: return gb * Size.GIGA_BYTES
+def tb_bytes(tb: float) -> float: return tb * Size.TERRA_BYTES
+def pb_bytes(pb: float) -> float: return pb * Size.PETA_BYTES
+
 
 ## From bytes to *...
-def bytes_b(by: int) -> float: return by * BITS
-def bytes_kb(by: float) -> float: return by / KILO_BYTES
-def bytes_mb(by: float) -> float: return by / MEGA_BYTES
-def bytes_gb(by: float) -> float: return by / GIGA_BYTES
-def bytes_tb(by: float) -> float: return by / TERRA_BYTES
-def bytes_pb(by: float) -> float: return by / PETA_BYTES
+def bytes_b(by: int) -> float: return by * Size.BITS
+def bytes_kb(by: float) -> float: return by / Size.KILO_BYTES
+def bytes_mb(by: float) -> float: return by / Size.MEGA_BYTES
+def bytes_gb(by: float) -> float: return by / Size.GIGA_BYTES
+def bytes_tb(by: float) -> float: return by / Size.TERRA_BYTES
+def bytes_pb(by: float) -> float: return by / Size.PETA_BYTES
 
 
 # Base Class For representing size...
@@ -36,6 +71,7 @@ def bytes_pb(by: float) -> float: return by / PETA_BYTES
 # FATAL: Using properties means to stop using dataclass...(-_-)
 @dt.dataclass(slots=True)
 class Bytes:
+    """Class Represents size"""
     bytes: float = dt.field(default=0)
     bits: int = dt.field(default=0, kw_only=True)
     kilo_bytes: float = dt.field(default=0, kw_only=True)
@@ -69,13 +105,13 @@ class Bytes:
         )
 
     def _assign(self, size: float):
-        self.peta_bytes, size = divmod(size, PETA_BYTES)
-        self.terra_bytes, size = divmod(size, TERRA_BYTES)
-        self.giga_bytes, size = divmod(size, GIGA_BYTES)
-        self.mega_bytes, size = divmod(size, MEGA_BYTES)
-        self.kilo_bytes, size = divmod(size, KILO_BYTES)
-        self.bytes, size = divmod(size, BYTES)
-        self.bits = int(size * BITS)
+        self.peta_bytes, size = divmod(size, Size.PETA_BYTES)
+        self.terra_bytes, size = divmod(size, Size.TERRA_BYTES)
+        self.giga_bytes, size = divmod(size, Size.GIGA_BYTES)
+        self.mega_bytes, size = divmod(size, Size.MEGA_BYTES)
+        self.kilo_bytes, size = divmod(size, Size.KILO_BYTES)
+        self.bytes, size = divmod(size, Size.BYTES)
+        self.bits = int(size * Size.BITS)
 
     def __float__(self) -> float:
         return self._to_bytes()
@@ -105,6 +141,9 @@ def _converter(format_spec: str):
 
 
 # Helper formatter for the Size(aka Bytes) class...
+# This is a very poor, weak and naive implementation
+# of a formatter of its kind.
+# TODO: Research better ways to implement this.
 class _Formatter:
     _bx = _converter("bytes_{abbr}")
     _xb = _converter("{abbr}_bytes")
@@ -147,12 +186,8 @@ class _Formatter:
         format_spec = cls._abs_format(b, format_spec)
         return cls._format(b, format_spec)
 
-
-# Exports...
-__all__ = (
-# Size class
-    "Bytes",
-# Constants
+# For backward compatibility with legacy code...
+_SIZES = [
     "BYTES",
     "BITS",
     "KILO_BYTES",
@@ -160,17 +195,15 @@ __all__ = (
     "GIGA_BYTES",
     "TERRA_BYTES",
     "PETA_BYTES",
-# Converters
-    "b_bytes",
-    "kb_bytes",
-    "mb_bytes",
-    "gb_bytes",
-    "tb_bytes",
-    "pb_bytes",
-    "bytes_b",
-    "bytes_kb",
-    "bytes_mb",
-    "bytes_gb",
-    "bytes_tb",
-    "bytes_pb",
-)
+]
+
+# issue warning on old usage in favor for latest syntax and design...
+def __getattr__(name: str, default: ty.Any = None):
+    if name in _SIZES:
+        _warn(
+            f"Use Enum class 'Size' to access the size constants including: {name!r} as 'Size.{name}'",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        return getattr(Size, name, default)
+    raise AttributeError(f"Attribute {name!r} not found in Module {__name__!r}")
