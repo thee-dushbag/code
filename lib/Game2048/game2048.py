@@ -3,8 +3,8 @@ import random, copy
 from .util import AdjacentOperate
 
 class Game2048:
-    def __init__(self, dim: int = 5) -> None:
-        self.new_game(dim)
+    def __init__(self, dim: int = 5, hscore: int = 2048) -> None:
+        self.new_game(hscore=hscore, dim=dim)
 
     def new_game(self, hscore: int = 2048, dim: int = 5) -> None:
         self.dim: int = dim
