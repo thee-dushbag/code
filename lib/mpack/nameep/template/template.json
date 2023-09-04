@@ -6,6 +6,8 @@
   "episodes_per_season": ["list of integers in here..."],
   "filelist": [
     "list of episodes/shows to be mapped",
-    "must be equal to the sum of numbers in episodes_per_season"
+    "must be equal to the sum of numbers in episodes_per_season",
+    "it can also be a path to a file having its lines path to individual episodes. eg",
+    "\"filelist\": \"path/to/file\""
   ]
 }

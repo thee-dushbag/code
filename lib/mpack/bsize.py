@@ -23,6 +23,7 @@ __all__ = (
     "bytes_pb",
 )
 
+# Constants
 class Size(_e.IntEnum):
     '''Class represents the size constants: bytes, bits, ...'''
     # kept 8 because of consistensy, this is an int enum after all...(*_*)
@@ -35,7 +36,7 @@ class Size(_e.IntEnum):
     PETA_BYTES = BYTES << 50  # 1024 * 1024 * 1024 * 1024 * 1024
 
 
-# Constants
+# Legacy Constants: Keep for the memories...
 # TODO: Place these constants in an enum...(*_*)   **DONE**
 # BYTES = 1
 # BITS = BYTES * 8

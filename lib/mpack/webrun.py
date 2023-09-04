@@ -74,7 +74,10 @@ class TargetParam(click.ParamType):
 @click.argument("target", type=TargetParam())
 def main(bind: BindArg, target: TargetArg):
     try:
-        # install_uvloop()
+        install_uvloop()
         web.run_app(target.target(), host=bind.host, port=bind.port)
     except KeyboardInterrupt:
         ...
+
+if __name__ == '__main__':
+    main()
