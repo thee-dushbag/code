@@ -62,7 +62,8 @@ class TargetParam(click.ParamType):
             )
         if ":" not in value:
             module, factory = value, "application"
-        module, factory, *_ = value.split(":")
+        module, _, factory, *_ = value.partition(":")
+        if not factory: factory = 'application'
         module, _, package = module.partition(".")
         module = import_module(module, package=package or None)
         factory = getattr(module, factory)
@@ -75,6 +76,7 @@ class TargetParam(click.ParamType):
 def main(bind: BindArg, target: TargetArg):
     try:
         install_uvloop()
+        if bind is None: bind = BindArg('localhost', 8080)
         web.run_app(target.target(), host=bind.host, port=bind.port)
     except KeyboardInterrupt:
         ...
