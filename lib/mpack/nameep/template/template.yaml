@@ -9,10 +9,14 @@ ignore_suffix: .dummy
 # string with substitutes: $season
 # will be the name of the directory
 # where its episodes will be placed
+# Note: Optional[has similar default]
 season_dir_template: Season_$season
 episodes_per_season: [] # list of integers
 # list of episodes/shows to be mapped
 # must be equal to the sum of numbers in episodes_per_season
+# can also be a string to a file having each line represent
+# a path to an episode. eg
+# filelist: path/to/file
 filelist:
   - Episode/show 1
   - Episode/show 2

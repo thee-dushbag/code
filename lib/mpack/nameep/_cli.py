@@ -13,7 +13,7 @@ class SnEpParam(click.ParamType):
     def convert(self, value: str, param, ctx) -> list[int] | int:
         eps = [v.strip() for v in value.split(",") if v]
         if len(eps) == 0:
-            self.fail("You passed not episodes what's so ever.", param, ctx)
+            self.fail("You passed no episodes what's so ever.", param, ctx)
         if not all(e.isnumeric() for e in eps):
             self.fail(
                 "Expected the episodes to be a comma separated string of integers: '1,2,3,4,4'",

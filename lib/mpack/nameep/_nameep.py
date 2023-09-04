@@ -24,7 +24,7 @@ class Context:
     def _prepare(self):
         if isinstance(self.filelist, str):
             path = Path(self.filelist)
-            assert path.exists(), "Filelist file was not found..."
+            assert path.exists(), f"Filelist '{path!s}' file was not found..."
             self.filelist = [line for line in path.read_text().splitlines() if line]
         if isinstance(self.file_template, str):
             self.file_template = Template(self.file_template)
