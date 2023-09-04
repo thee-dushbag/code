@@ -78,7 +78,7 @@ M.scopes = function()
     print("Hello " .. name .. '?')
   end
   -- ignore:type(nil)
-  print(name) --> nil
+  -- print(name) --> nil
   if true then
     -- visible to code after this if block
     age = 20
