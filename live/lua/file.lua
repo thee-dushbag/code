@@ -1,4 +1,4 @@
-function factorial(n)
+local function factorial(n)
   if n == 0 then
     return 1
   else
@@ -6,7 +6,7 @@ function factorial(n)
   end
 end
 
-mod = require("mod")
+local mod = require("mod")
 -- mod.hi("Simon Nganga")
 -- print(factorial(4))
 
@@ -14,8 +14,8 @@ mod = require("mod")
 -- use tostring to convert a number to a string
 -- to get the length of a number, prefix it with #
 
-function testnumb()
-  number = mod.getnumber()
+local function testnumb()
+  local number = mod.getnumber()
   if number then
     print("Hoooray! You entered as number: "..number)
   else
@@ -23,7 +23,7 @@ function testnumb()
   end
 end
 
-function luaerror()
+local function luaerror()
   error("This is an error...")
 end
 
@@ -48,4 +48,5 @@ end
 -- m = require('test')
 -- print(type(m))
 -- m.hello()
-mod.named()
+-- mod.named()
+-- mod.doend()
