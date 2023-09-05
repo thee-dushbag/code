@@ -1,11 +1,11 @@
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Optional, Sequence
-from xml.etree import ElementTree as ET
 from moviepy.editor import VideoFileClip, AudioFileClip
+from xml.etree import ElementTree as ET
+from typing import Optional, Sequence
+from dataclasses import dataclass
 from contextlib import suppress
-import click
+from pathlib import Path
 from yarl import URL
+import click
 
 
 @dataclass
@@ -139,6 +139,7 @@ class PlayList:
     "--output", "-o", help="File o write the playlist in, recommended extension '.xspf'"
 )
 def make_playlist(null: bool, trackfile: str, title: str, creator: str, album: str, output: str):
+    'Convert a list of paths to a vlc playlist.'
     if trackfile is None:
         trackfile = input()
     else:

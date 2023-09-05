@@ -1,11 +1,37 @@
-from dataclasses import dataclass
-from importlib import import_module
-from types import ModuleType
-from typing import Callable, Coroutine
-from click.core import Context, Parameter
-from aiohttp import web
+'''
+Module exports a terminal command that can be used a below.
+Example:
+    >>> ls
+    app.py
+    
+    >>> cat app.py
+    from aiohttp import web
+    routes = web.RouteTableDef()
+    
+    @routes.get('/')
+    async def index(request: web.Request):
+        return web.Response(text='Hello World')
+    
+    async def app_factory():
+        app = web.Application()
+        app.add_routes(routes)
+        return app
+    
+    >>> webrun app:app_factory --bind localhost:9080
+    Serving on http://localhost:9080.
+    (Press Ctrl-C to exit)
+    ...
+'''
+
 from uvloop import install as install_uvloop
+from click.core import Context, Parameter
+from typing import Callable, Coroutine
+from importlib import import_module
+from dataclasses import dataclass
+from types import ModuleType
+from aiohttp import web
 import click
+
 
 
 @dataclass
@@ -74,6 +100,9 @@ class TargetParam(click.ParamType):
 @click.option("--bind", "-b", type=BindParam(), help=BindParam.__doc__)
 @click.argument("target", type=TargetParam())
 def main(bind: BindArg, target: TargetArg):
+    '''Serve an aiohttp application {TARGET} <[package.]module>:<app_factory> on {BIND} <host>:<port>
+    Example:
+    '''
     try:
         install_uvloop()
         if bind is None: bind = BindArg('localhost', 8080)
