@@ -15,9 +15,9 @@ async def set_future_value(future) -> None:
 
 async def main() -> None:
     future = make_request()
-    print(f'Is the future done? {future.done()}')
+    print(f"Is the future done? {future.done()}")
     value = await future
-    print(f'Is the future done? {future.done()}')
+    print(f"Is the future done? {future.done()}")
     print(value)
 
 

@@ -2,8 +2,7 @@ import asyncio
 
 
 async def hello_world_message() -> str:
-    await asyncio.sleep(1)
-    return "Hello World!"
+    return await asyncio.sleep(1, "Hello World!")
 
 
 async def main() -> None:
