@@ -5,7 +5,7 @@ from util import async_timed
 
 @async_timed()
 async def get_example_status() -> int:
-    return requests.get('https://www.example.com').status_code
+    return requests.get("http://localhost:5052/delay").status_code
 
 
 @async_timed()
@@ -16,5 +16,6 @@ async def main():
     await task_1
     await task_2
     await task_3
+
 
 asyncio.run(main())

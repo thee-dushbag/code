@@ -8,7 +8,17 @@ async def index(req: web.Request):
     return web.Response(text="Hello World")
 
 
-routes = [web.route(hdrs.METH_ANY, "/", index)]
+async def sleeper(req: web.Request):
+    delay = int(req.match_info.get('time') or 1)
+    resp = web.Response(text=f'Sleeping for {delay} second(s).')
+    return await aio.sleep(delay, resp)
+
+
+routes = [
+    web.route(hdrs.METH_ANY, "/", index),
+    web.get('/delay', sleeper),
+    web.get('/delay/{time:[0-9]+}', sleeper)
+]
 
 
 async def application():

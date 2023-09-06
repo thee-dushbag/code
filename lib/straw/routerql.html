@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Strawberry GraphiQL</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,
+        <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+            <!-- Strawberry Emoji as a HTML Entity (hex)  -->
+            <text y=%22.9em%22 font-size=%2280%22>&#x1f353;</text>
+        </svg>"
+    />
+    <style>
+      body {
+        height: 100%;
+        margin: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      #graphiql {
+        height: 100vh;
+        display: flex;
+      }
+
+      .docExplorerHide {
+        display: none;
+      }
+
+      .doc-explorer-contents {
+        overflow-y: hidden !important;
+      }
+
+      .docExplorerWrap {
+        width: unset !important;
+        min-width: unset !important;
+      }
+
+      .graphiql-explorer-actions select {
+        margin-left: 4px;
+      }
+    </style>
+
+    <script src="http://192.168.0.100:9944/static/straw/react@17.0.2_umd_react.development.js"></script>
+    <script src="http://192.168.0.100:9944/static/straw/react-dom@17.0.2_umd_react-dom.development.js"></script>
+
+    <script src="http://192.168.0.100:9944/static/straw/js-cookie@3.0.5_dist_js.cookie.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="http://192.168.0.100:9944/static/straw/graphiql@2.4.7_graphiql.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="http://192.168.0.100:9944/static/straw/npm/@graphiql_plugin-explorer@0.1.15_dist_style.css"
+    />
+  </head>
+
+  <body>
+    <div id="graphiql" class="graphiql-container">Loading...</div>
+    <script src="http://192.168.0.100:9944/static/straw/graphiql@2.4.7_graphiql.min.js"></script>
+    <script src="http://192.168.0.100:9944/static/straw/@graphiql_plugin-explorer@0.1.15_dist_graphiql-plugin-explorer.umd.js"></script>
+    <script>
+      const fetchURL = window.location.href;
+
+      function httpUrlToWebSockeUrl(url) {
+        const parsedURL = new URL(url);
+        const protocol = parsedURL.protocol === "http:" ? "ws:" : "wss:";
+        parsedURL.protocol = protocol;
+        parsedURL.hash = "";
+        return parsedURL.toString();
+      }
+
+      const headers = {};
+      const csrfToken = Cookies.get("csrftoken");
+
+      if (csrfToken) {
+        headers["x-csrftoken"] = csrfToken;
+      }
+
+      const subscriptionsEnabled = JSON.parse("{{ SUBSCRIPTION_ENABLED }}");
+      const subscriptionUrl = subscriptionsEnabled
+        ? httpUrlToWebSockeUrl(fetchURL)
+        : null;
+
+      const fetcher = GraphiQL.createFetcher({
+        url: fetchURL,
+        headers: headers,
+        subscriptionUrl,
+      });
+
+      function GraphiQLWithExplorer() {
+        const [query, setQuery] = React.useState('');
+        const explorerPlugin = GraphiQLPluginExplorer.useExplorerPlugin({
+          query: query,
+          onEdit: setQuery,
+        });
+        return React.createElement(GraphiQL, {
+          fetcher: fetcher,
+          defaultEditorToolsVisibility: true,
+          plugins: [explorerPlugin],
+          query: query,
+          onEditQuery: setQuery,
+          inputValueDeprecation: true,
+        });
+      }
+
+      ReactDOM.render(
+        React.createElement(GraphiQLWithExplorer),
+        document.getElementById("graphiql")
+      );
+    </script>
+  </body>
+</html>
