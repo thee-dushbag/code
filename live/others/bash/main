@@ -1,0 +1,5 @@
+#!/usr/bin/env -S bash
+
+source ./named.sh
+location=`readlink -f $0`
+echo Script Location: $location
