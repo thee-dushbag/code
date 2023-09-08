@@ -2,7 +2,7 @@ from aiohttp import web
 from movies import Movies
 import config as cfg
 from aiohttp_mako import setup as mako_setup
-import re
+import re, asyncio as aio, sh
 from mpack.aiohttp_helpers.mako_ import (
     template_handler,
 )
@@ -25,6 +25,15 @@ async def movies_api(req: web.Request):
     )
     return web.json_response(payload)
 
+async def shutter(delay: int):
+    loop = aio.get_running_loop()
+    loop.call_later(delay, exit)
+
+async def shut(req: web.Request):
+    delay = int(req.match_info.get('delay', None) or 10)
+    resp = web.Response(body=f"Shutting down in {delay} second(s)...")
+    await shutter(delay)
+    return resp
 
 routes = [
     web.get("/", index),
@@ -34,6 +43,8 @@ routes = [
     web.static("/source/preview", cfg.PREVIEW_DIR),
     web.static("/source/thumbnail", cfg.THUMBNAIL_DIR),
     web.static("/static", cfg.STATIC_DIR),
+    web.get('/shut', shut),
+    web.get(r'/shut/{delay:\d+}', shut)
 ]
 
 
