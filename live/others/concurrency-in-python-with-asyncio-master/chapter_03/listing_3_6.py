@@ -33,7 +33,9 @@ try:
                         buffer = buffer + data
 
                 print(f"All the data is: {buffer}")
-                connection.send(buffer)
+                # connection.send(buffer)
+                for conn in connections:
+                    conn.send(buffer)
             except BlockingIOError:
                 pass
 

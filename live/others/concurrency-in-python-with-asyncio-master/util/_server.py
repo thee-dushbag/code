@@ -1,7 +1,6 @@
 from aiohttp import web, hdrs
-import asyncio as aio
+import asyncio as aio, rich
 from mpack.aiohttp_helpers import dev_setup, cors_setup
-
 
 async def index(req: web.Request):
     await aio.sleep(2)
@@ -21,8 +20,14 @@ routes = [
 ]
 
 
+@web.middleware
+async def log_client_data(req: web.Request, handler):
+    rich.print(dict(req.headers))
+    return await handler(req)
+
 async def application():
     app = web.Application()
+    app.middlewares.append(log_client_data)
     app.add_routes(routes)
     dev_setup(app)
     cors_setup(app)

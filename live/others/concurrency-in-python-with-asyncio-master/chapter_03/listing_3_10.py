@@ -6,18 +6,18 @@ import signal
 from typing import List
 
 
-async def echo(connection: socket,
-               loop: AbstractEventLoop) -> None:
+async def echo(connection: socket.socket, loop: AbstractEventLoop) -> None:
     try:
         while data := await loop.sock_recv(connection, 1024):
-            print('got data!')
-            if data == b'boom\r\n':
+            print("got data!")
+            if data == b"boom\r\n":
                 raise Exception("Unexpected network error")
             await loop.sock_sendall(connection, data)
     except Exception as ex:
         logging.exception(ex)
     finally:
         connection.close()
+
 
 echo_tasks = []
 
@@ -53,12 +53,12 @@ async def main():
     server_socket = socket.socket()
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-    server_address = ('127.0.0.1', 8000)
+    server_address = ("127.0.0.1", 8000)
     server_socket.setblocking(False)
     server_socket.bind(server_address)
     server_socket.listen()
 
-    for signame in {'SIGINT', 'SIGTERM'}:
+    for signame in {"SIGINT", "SIGTERM"}:
         loop.add_signal_handler(getattr(signal, signame), shutdown)
     await connection_listener(server_socket, loop)
 
