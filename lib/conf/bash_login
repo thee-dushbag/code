@@ -1,0 +1,30 @@
+# Set my constants
+export CONTENT_DIR=~/Content
+export BIN=$CONTENT_DIR/.bin
+export EXE_BIN=$BIN/exe
+export CORE_BIN=$BIN/core
+export CONTENT_BIN=$CONTENT_DIR/bin
+export CONTENT_MEDIA=$CONTENT_DIR/media
+export CONTENT_CODE=$CONTENT_DIR/code
+export MAIN_VSCODE_SETTINGS_SYMLINK=$CONTENT_CODE/.vscode
+export CONTENT_LIB=$CONTENT_CODE/lib
+export PYTHON_ENV=$CONTENT_BIN/py-env
+export PYTHONPATH=$CONTENT_LIB:$PYTHONPATH
+export STATICS_PORT=9944
+export STATICS_HOST=localhost
+export MOVIE_PORT=9080
+export MOVIE_HOST=localhost
+export EDITOR=nvim
+export CONTENT_CONF=$CONTENT_LIB/conf
+
+# Save working dir.
+_cur_dir=$(pwd)
+# Navigate to conf location.
+cd "$CONTENT_CONF"
+
+# Include My helper functions...
+source ./bash_methods
+# Include My Aliases...
+source ./bash_aliases
+# Go back to start path.
+cd "$_cur_dir"
