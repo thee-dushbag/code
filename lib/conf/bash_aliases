@@ -1,0 +1,177 @@
+CONTENT_DIR=~/Content
+BIN=$CONTENT_DIR/.bin
+EXE_BIN=$BIN/exe
+CORE_BIN=$BIN/core
+CONTENT_BIN=$CONTENT_DIR/bin
+CONTENT_MEDIA=$CONTENT_DIR/media
+CONTENT_CODE=$CONTENT_DIR/code
+CONTENT_LIB=$CONTENT_CODE/lib
+export PYTHONPATH=$CONTENT_LIB:$PYTHONPATH
+PYTHON_ENV=$CONTENT_BIN/py-env
+export STATICS_PORT=9944
+export STATICS_HOST=localhost
+export MOVIE_PORT=9080
+export MOVIE_HOST=localhost
+export EDITOR=nvim
+alias onpm=npm
+alias npm="npm --no-fund --no-audit --no-install-links"
+
+function _install_jspack() {
+    npm i $CONTENT_LIB/jspack
+}
+alias ijspack=_install_jspack
+
+function vscode_settings() {
+    if [[ ! -e ./.vscode ]]; then
+        ln -s $CONTENT_CODE/.vscode ./.vscode	
+    fi
+}
+
+function _set_host_port() {
+    export $1_HOST=$2
+    export $1_PORT=$3
+}
+
+function _get_origins() {
+    echo "MOVIE_ORIGIN   = $MOVIE_HOST:$MOVIE_PORT"
+    echo "STATICS_ORIGIN = $STATICS_HOST:$STATICS_PORT"
+}
+
+function _set_movie() {
+    _set_host_port MOVIE $1 $2
+}
+
+function _set_statics() {
+    _set_host_port STATICS $1 $2
+}
+
+function _set_origins_host() {
+    _set_movie $1 $MOVIE_PORT
+    _set_statics $1 $STATICS_PORT
+}
+
+function _set_origins_router_host() {
+    _set_origins_host "192.168.0.100"
+}
+
+function _set_origins_local_host() {
+    _set_origins_host "localhost"
+}
+
+. /etc/bash.bashrc
+. /etc/bash_completion
+
+function shlvl_() {
+    echo "Shell LEVEL: $SHLVL"
+}
+
+function _get_virtual_env() {
+	if [[ -d "$VIRTUAL_ENV" ]]; then
+		echo -n "$(basename "$VIRTUAL_ENV") "
+	else
+		echo -n ""
+	fi
+}
+
+function _get_state_char() {
+	# symbols="✓×"
+  if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
+		echo -n ' ✓'
+	else
+		echo -n ' ×'
+	fi
+}
+
+function _get_state_color() {
+	local OK_COLOR='\e[92;3m'
+	local ERR_COLOR='\e[91;3m'
+	# symbols="✓×"
+  if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
+		echo -en "$OK_COLOR"
+	else
+		echo -en "$ERR_COLOR"
+	fi
+}
+
+function _set_last_command_state() {
+	_LAST_COMMAND_STATE=$?
+}
+
+_LAST_COMMAND_STATE=0
+PROMPT_COMMAND=_set_last_command_state
+PS1=$'\[\e[0m\]\[$(_get_state_color)\]$(_get_state_char) \[\e[0m\]\[\e[97;1m\]$(_get_virtual_env)\[\e[93;1m\]\W\[\e[97;1m\] • \[\e[0m\]'
+
+# import my functions if they exist
+if [[ -f ~/.bash_utils ]]; then
+    . ~/.bash_utils
+#else
+#	echo "Bash Utils Not Found."
+fi
+
+# other conditionals
+# add my path to PATH
+
+function _add_dir_to_path() {
+    for dir; do
+        if [[ -d "$dir" ]]; then
+            export PATH="$dir":$PATH
+        else
+            echo "Your BIN: '$BIN' was not found."
+        fi
+    done
+}
+
+# activate my virtualenv
+
+function _activate_virtual_env() {
+    if [[ -f $PYTHON_ENV/bin/activate ]]; then
+        . $PYTHON_ENV/bin/activate
+    else
+        echo "Failed to activate virtual environment py-env: $PYTHON_ENV"
+    fi
+}
+
+_activate_virtual_env
+_add_dir_to_path "$CORE_BIN" "$EXE_BIN"
+
+# aliases
+alias pages="py ~/Content/code/live/python/general_/play/pro"
+alias origins_router="_set_origins_router_host"
+alias origins_local="_set_origins_local_host"
+alias origins="_get_origins"
+alias movie_origin="_set_movie"
+alias statics_origin="_set_statics"
+alias no_watch="watch_movie no-watch"
+alias mupt="sudo apt update; sudo apt upgrade"
+alias nv=nvim
+alias neof=neofetch
+alias pls=sudo
+alias ipy=ipython3
+alias ipython=ipython3
+alias ali="nv ~/.bash_aliases"
+alias agcorn="gunicorn --worker-class aiohttp.worker.GunicornWebWorker --reload"
+alias clr=clear
+alias python=python3
+alias opip=`which pip`
+# alias pip="opip --require-virtualenv"
+alias make_q="make --quiet"
+alias rune="make_q exe"
+alias run="make_q -B"
+alias react_app="cp -rv ~/Content/code/live/javascript/react_"
+alias statics="run -C ~/Content/code/live/python/statics"
+alias fhttpx="httpx --follow-redirects"
+alias shut="shutdown --poweroff now"
+alias boot="shutdown --reboot now"
+alias phttpx="fhttpx -m post"
+alias sql="sqlite3 --box"
+alias wifi_movie="origins_router && no_watch"
+alias wifi_load_movie="origins_router && watch_movie load"
+alias nameep="py -m mpack.nameep"
+alias webrun="py -m mpack.webrun"
+alias toxspf="py -m mpack.toxspf"
+alias mtools="py -m mpack.cmd_tools"
+alias ..="cd .."
+alias '_'="cd -"
+alias ...="cd .. && cd .."
+alias ....="cd .. && cd .. && cd .."
+alias activate=_activate_virtual_env
