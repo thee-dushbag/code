@@ -5,6 +5,7 @@ CORE_BIN=$BIN/core
 CONTENT_BIN=$CONTENT_DIR/bin
 CONTENT_MEDIA=$CONTENT_DIR/media
 CONTENT_CODE=$CONTENT_DIR/code
+MAIN_VSCODE_SETTINGS_SYMLINK=$CONTENT_CODE/.vscode
 CONTENT_LIB=$CONTENT_CODE/lib
 export PYTHONPATH=$CONTENT_LIB:$PYTHONPATH
 PYTHON_ENV=$CONTENT_BIN/py-env
@@ -22,8 +23,31 @@ function _install_jspack() {
 alias ijspack=_install_jspack
 
 function vscode_settings() {
-    if [[ ! -e ./.vscode ]]; then
-        ln -s $CONTENT_CODE/.vscode ./.vscode	
+    local target=$1
+    if [[ "$target" == '' ]]; then
+        target=.
+    fi
+    if [[ ! -d "$target"  ]]; then
+        echo Expected an existing directory path, found: $target
+        return 127
+    fi
+    if [[ ! -e "$MAIN_VSCODE_SETTINGS_SYMLINK" ]]; then
+        echo Main .vscode symlink/link was not found: $MAIN_VSCODE_SETTINGS_SYMLINK
+        return 1
+    fi
+    if [[ ! -L "$MAIN_VSCODE_SETTINGS_SYMLINK" ]]; then
+        echo Main .vscode \($MAIN_VSCODE_SETTINGS_SYMLINK\) is not a symlink?
+        read -p 'Continue Linking? [y/n] ' cont
+        if [[ 'y' != "$cont" ]]; then
+            return 127
+        fi
+    fi
+    if [[ -e "$target/.vscode" ]]; then
+        echo There exists a .vscode settings in the $target folder.
+        return 1
+    else
+        local vscode_path=$(realpath "$MAIN_VSCODE_SETTINGS_SYMLINK"  --strip --relative-to "$target")
+        ln -s "$vscode_path" "$target/.vscode"
     fi
 }
 
