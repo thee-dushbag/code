@@ -1,5 +1,5 @@
 from aiohttp import web, hdrs
-import asyncio as aio, rich
+import asyncio as aio #, rich
 from mpack.aiohttp_helpers import dev_setup, cors_setup
 
 async def index(req: web.Request):
@@ -14,15 +14,15 @@ async def sleeper(req: web.Request):
 
 
 routes = [
+    web.get('/delay/{time:[0-9]+}', sleeper),
     web.route(hdrs.METH_ANY, "/", index),
     web.get('/delay', sleeper),
-    web.get('/delay/{time:[0-9]+}', sleeper)
 ]
 
 
 @web.middleware
 async def log_client_data(req: web.Request, handler):
-    rich.print(dict(req.headers))
+    # rich.print(dict(req.headers))
     return await handler(req)
 
 async def application():

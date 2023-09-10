@@ -2,14 +2,14 @@ import asyncio
 import aiohttp
 import logging
 from util import async_timed
-from chapter_04 import fetch_status
+from __init__ import fetch_status
 
 
 @async_timed()
 async def main():
     async with aiohttp.ClientSession() as session:
-        good_request = fetch_status(session, 'https://www.example.com')
-        bad_request = fetch_status(session, 'python://bad')
+        good_request = fetch_status(session, 'http://localhost:5052')
+        bad_request = fetch_status(session, 'http://localhost:9080')
 
         fetchers = [asyncio.create_task(good_request),
                     asyncio.create_task(bad_request)]
@@ -24,8 +24,8 @@ async def main():
             if done_task.exception() is None:
                 print(done_task.result())
             else:
-                logging.error("Request got an exception",
-                              exc_info=done_task.exception())
+                logging.error("Request got an exception") #,
+                            #   exc_info=done_task.exception())
 
 
 asyncio.run(main())

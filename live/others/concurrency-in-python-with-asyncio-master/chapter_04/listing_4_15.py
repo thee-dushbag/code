@@ -1,13 +1,13 @@
 import asyncio
 import aiohttp
-from chapter_04 import fetch_status
+from __init__ import fetch_status, url
 from util import async_timed
 
+url = url + '/delay/0'
 
 @async_timed()
 async def main():
     async with aiohttp.ClientSession() as session:
-        url = 'https://example.com'
         fetchers = [asyncio.create_task(fetch_status(session, url)),
                     asyncio.create_task(fetch_status(session, url)),
                     asyncio.create_task(fetch_status(session, url, delay=3))]

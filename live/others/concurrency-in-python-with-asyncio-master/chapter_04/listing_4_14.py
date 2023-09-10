@@ -1,16 +1,15 @@
 import asyncio
 import aiohttp
-from chapter_04 import fetch_status
+from __init__ import fetch_status, url
 from util import async_timed
 
 
 @async_timed()
 async def main():
     async with aiohttp.ClientSession() as session:
-        url = 'https://www.example.com'
-        pending = [asyncio.create_task(fetch_status(session, url)),
-                   asyncio.create_task(fetch_status(session, url)),
-                   asyncio.create_task(fetch_status(session, url))]
+        pending = [asyncio.create_task(fetch_status(session, url, 1)),
+                   asyncio.create_task(fetch_status(session, url, 2)),
+                   asyncio.create_task(fetch_status(session, url, 3))]
 
         while pending:
             done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)

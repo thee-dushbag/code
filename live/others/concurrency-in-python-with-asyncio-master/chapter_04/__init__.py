@@ -2,8 +2,9 @@ import asyncio
 from aiohttp import ClientSession
 from util import async_timed
 
+url = 'http://localhost:5052'
 
-@async_timed()
+# @async_timed()
 async def fetch_status(session: ClientSession,
                        url: str,
                        delay: int = 0) -> int:

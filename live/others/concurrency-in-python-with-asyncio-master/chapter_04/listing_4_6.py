@@ -1,14 +1,14 @@
 import asyncio
 import aiohttp
-from chapter_04 import fetch_status
+from __init__ import fetch_status
 from util import async_timed
 
 
 @async_timed()
 async def main():
-    async with aiohttp.ClientSession() as session:
-        urls = ['https://example.com' for _ in range(1000)]
-        requests = [fetch_status(session, url) for url in urls]
+    tcp_conn = aiohttp.TCPConnector(limit=1000)
+    async with aiohttp.ClientSession(connector=tcp_conn) as session:
+        requests = [fetch_status(session, "http://localhost:5052") for _ in range(1000)]
         status_codes = await asyncio.gather(*requests)
         print(status_codes)
 
