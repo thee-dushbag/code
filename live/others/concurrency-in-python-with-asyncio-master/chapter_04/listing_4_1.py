@@ -13,6 +13,7 @@ class ConnectedSocket:
     async def __aenter__(self): #A
         print('Entering context manager, waiting for connection')
         loop = asyncio.get_event_loop()
+        print("Server waiting for connection.")
         connection, address = await loop.sock_accept(self._server_socket)
         self._connection = connection
         print('Accepted a connection')
@@ -24,7 +25,7 @@ class ConnectedSocket:
                         exc_tb: Optional[TracebackType]): #B
         print('Exiting context manager')
         self._connection.close()
-        print('Closed connection')
+        print('Server shutting down')
 
 
 async def main():
@@ -39,7 +40,7 @@ async def main():
 
     async with ConnectedSocket(server_socket) as connection: #C
         data = await loop.sock_recv(connection, 1024)
-        print(data) #D
+        print(f"Client Said: {data.decode()!r}") #D
 
 
 asyncio.run(main())
