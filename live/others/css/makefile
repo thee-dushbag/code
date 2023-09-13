@@ -1,6 +1,6 @@
 PORT=5052
 HOST=192.168.0.100
-WCLS=aiohttp.worker.GunicornUVLoopWorker
+WCLS=aiohttp.worker.GunicornUVLoopWebWorker
 WORKER_CLASS=--worker-class ${WCLS}
 BIND=--bind ${HOST}:${PORT}
 OPTIONS=--reload ${BIND} ${WORKER_CLASS}
