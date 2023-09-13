@@ -1,0 +1,48 @@
+* {
+  font-family: "CaskaydiaCove Nerd Font Mono", monospace;
+  box-sizing: border-box;
+  padding: none;
+  margin: none;
+  color: black;
+  outline: none;
+}
+
+body,
+html {
+  background-color: #bbb;
+}
+
+.screen {
+  height: 100vh;
+  /* width: 100vw; */
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main > h1 {
+  font-size: 40pt;
+}
+
+.section {
+  padding: 1em;
+  overflow-y: hidden;
+}
+
+.content {
+  text-align: justify;
+  text-indent: 2cm;
+  padding: 0.5cm;
+}
+
+.section > h2 {
+  text-align: center;
+  font-size: 30pt;
+}
+
+ul li::marker {
+  content: '> ';
+}
