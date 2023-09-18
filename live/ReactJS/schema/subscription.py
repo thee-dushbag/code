@@ -1,3 +1,4 @@
+from string import Template
 import strawberry as straw, asyncio as aio, typing as ty
 import schema._defs as defs
 import schema._schema as scheme
@@ -32,6 +33,14 @@ class Subscription:
             await aio.sleep(delay or 1)
 
     @straw.subscription
+    async def counter(self, message: str, delay: ty.Optional[float] = None) -> ty.AsyncGenerator[str, None]:
+        template = Template(message)
+        delay = delay or 0.5
+        for i in count(1):
+            yield template.substitute(count=i)
+            await aio.sleep(delay)
+
+    @straw.subscription
     async def context(self, info: Info[ty.Any, ty.Any]) -> ty.AsyncGenerator[str, None]:
         yield info.context["custom_value"]
 
@@ -48,11 +57,9 @@ class Subscription:
 
     @straw.subscription
     async def flavors(self) -> ty.AsyncGenerator[defs.Flavor, None]:
-        yield defs.Flavor.VANILLA
-        await aio.sleep(1)
-        yield defs.Flavor.STRAWBERRY
-        await aio.sleep(1)
-        yield defs.Flavor.CHOCOLATE
+        for flavor in list(defs.Flavor):
+            yield flavor
+            await aio.sleep(1)
 
     @straw.subscription
     async def flavors_invalid(self) -> ty.AsyncGenerator[defs.Flavor, None]:

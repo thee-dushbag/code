@@ -55,9 +55,7 @@
     "scope": "python",
     "description": "Switch builtin print for rich.console.Console().print which is prettier",
     "body": [
-      "from rich.console import Console",
-      "console = Console()",
-      "print = console.print"
+      "from rich import print"
     ]
   },
   "mpack_rich_print_python": {
@@ -75,24 +73,26 @@
   "init_ch": {
     "prefix": "init_header",
     "scope": "c, cpp",
-    "description": "Initialize c header file",
+    "description": "Initialize c/c++ header file",
     "body": [
       "#ifndef __HEADER_UNIQUE_MACRO",
       "#define __HEADER_UNIQUE_MACRO",
+      "",
       "$0",
+      "",
       "#endif //__HEADER_UNIQUE_MACRO"
     ]
   },
   "init_cpp": {
     "prefix": "init",
     "scope": "cpp",
-    "description": "Initialize cpp file",
-    "body": ["#include <iostream>", "", "auto main(int argc, char **argv) -> int {}"]
+    "description": "Initialize c++ file",
+    "body": ["#include <iostream>", "", "auto main(int argc, char **argv) -> int {$0}"]
   },
   "make_handler": {
     "prefix": "ahandler",
     "scope": "python",
-    "description": "Aiohttp Handler Boler plate",
+    "description": "Aiohttp Handler Boiler plate",
     "body": [
       "async def $0(req: web.Request):",
       "    ..."
@@ -111,6 +111,18 @@
       "async def application() -> web.Application:",
       "    app = web.Application()",
       "    return app"
+    ]
+  },
+  "setup_init": {
+    "prefix": "asetup",
+    "scope": "python",
+    "description": "Initialize Aiohttp Plugin",
+    "body": [
+      "from aiohttp import web",
+      "import typing as ty",
+      "",
+      "def setup(app: web.Application) -> ty.Any:",
+      "    ...$0"
     ]
   },
   "type_ignore": {

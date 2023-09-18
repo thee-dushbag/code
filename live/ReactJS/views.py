@@ -1,3 +1,4 @@
+from pprint import pprint
 from attrs import define, asdict
 from typing import Type, TypeVar
 from aiohttp import web
@@ -123,8 +124,15 @@ routes = [
     web.view("/data", DataView),
 ]
 
+@web.middleware
+async def log_req(req: web.Request, handler):
+    info = dict(req.headers)
+    info.update(method=req.method)
+    pprint(info)
+    return await handler(req)
 
 def setup(app: web.Application):
+    app.middlewares.append(log_req)
     app.add_routes(routes)
     cors_setup(app)
     dev_setup(app)

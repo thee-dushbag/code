@@ -1,5 +1,5 @@
 import strawberry as straw, typing as ty, asyncio as aio, time as ti
-from .globals import Gender
+from .globals import Gender, TEMPLATE
 from .one import Name
 from string import Template
 
@@ -36,12 +36,16 @@ class Greeting:
         "Template of the form 'Hello $name' where $name will be replaced with the name passed.",
     ] = None
 
+    def __post_init__(self):
+        self.template = TEMPLATE if self.template is None else self.template
+
+    @property
+    def temp(self) -> str:
+        return ty.cast(str, self.template)
+
     @straw.field
     async def greeting(self) -> str:
-        template = (
-            "Hello $name, how was your day?" if self.template is None else self.template
-        )
-        return Template(template).substitute(name=self.name)
+        return Template(self.temp).substitute(name=self.name)
 
     @straw.field
     async def time(self) -> str:

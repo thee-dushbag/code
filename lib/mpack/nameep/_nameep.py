@@ -20,6 +20,10 @@ class Context:
 
     def __post_init__(self):
         self._prepare()
+        if not self.output_dir.exists():
+            self.output_dir.mkdir()
+        assert self.output_dir.is_dir(), \
+            'Expected output_dir to be a path to an existing directory.'
 
     def _prepare(self):
         if isinstance(self.filelist, str):

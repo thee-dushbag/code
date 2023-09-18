@@ -4,6 +4,7 @@ from strawberry.file_uploads import Upload
 
 fake = Faker()
 NAME = "Stranger"
+TEMPLATE = "Hello $name, how was your day?"
 
 @straw.interface
 class Named:

@@ -101,6 +101,7 @@ function _get_state_color() {
 
 function _set_last_command_state() {
 	_LAST_COMMAND_STATE=$?
+  return $_LAST_COMMAND_STATE
 }
 
 _LAST_COMMAND_STATE=0
