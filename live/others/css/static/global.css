@@ -7,6 +7,10 @@
   outline: none;
 }
 
+.upper { text-transform: uppercase; }
+.lower { text-transform: lowercase; }
+.cap { text-transform: capitalize; }
+
 body,
 html {
   background-color: #bbb;
@@ -44,5 +48,5 @@ main > h1 {
 }
 
 ul li::marker {
-  content: '> ';
+  content: "> ";
 }
