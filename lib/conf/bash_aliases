@@ -49,3 +49,11 @@ alias '_'="cd -"
 alias ...="cd .. && cd .."
 alias ....="cd .. && cd .. && cd .."
 alias activate=_activate_virtual_env
+
+# xclip copy paste aliases
+# alias pbcopy='xclip -selection clipboard'
+# alias pbpaste='xclip -selection clipboard -o'
+
+# xsel copy paste aliases
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
