@@ -152,8 +152,17 @@ $ FORMAT='[green]Hello [bold yellow]{NAME_TO_GREET}[/bold yellow], did you eat a
 $ # The format above is click formatted text. click will know what to do with it. (:apple: is an icon in click.)
 $ KEY='NAME_TO_GREET'
 $ NAME="Simon Nganga"
+<<<<<<< HEAD
 $ python3 -m hi greet -f "$FORMAT" -k "$KEY" "$NAME"
 $ # The actual output is (Somewhat the actual output):
 $ # \033[92mHello \033[93;1mSimon Nganga\033[0m \033[92mdid you eat an 🍎?\033[0m
 Hello Simon Nganga, did you eat an 🍎?
+=======
+$ python3 -m hi greet --format "$FORMAT" --key "$KEY" "$NAME"
+$ # The actual output is (Somewhat the actual output):
+$ # \033[92mHello \033[93;1mSimon Nganga\033[0m \033[92mdid you eat an 🍎?\033[0m
+Hello Simon Nganga, did you eat an 🍎?
+$ # Same as above
+$ # python3 -m hi greet -f "$FORMAT" -k "$KEY" "$NAME"
+>>>>>>> b4a224e (Updated the project.hi.README.md with my new markdown documentation skills.)
 ```
