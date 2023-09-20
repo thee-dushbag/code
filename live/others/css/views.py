@@ -11,7 +11,7 @@ async def index(req: web.Request):
 routes = [
     web.route(hdrs.METH_ANY, '/', index),
     web.static('/static', STATIC_DIR),
-    web.static('/public', PUBLIC_DIR),
+    web.static('/', PUBLIC_DIR),
 ]
 
 def setup(app: web.Application):

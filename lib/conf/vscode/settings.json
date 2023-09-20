@@ -155,5 +155,8 @@
   },
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

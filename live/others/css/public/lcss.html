@@ -1,0 +1,124 @@
+<!DOCTYPE html5>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning CSS!</title>
+    <link rel="icon" type="image/png" href="/favicon-128.png" />
+    <link rel="stylesheet" href="/static/const.css" />
+    <link rel="stylesheet" href="/static/lcss.css" />
+    <script defer src="/static/lcss.js"></script>
+  </head>
+  <body class="bg-light pt-0">
+    <section class="topic-page p-3">
+      <h1
+        class="text-center my-1 border-1 border-solid border-radius-3 ft-size-6"
+      >
+        Learning CSS!
+      </h1>
+    </section>
+    <section class="topic-page">
+      <h1 class="text-center ft-size-5">
+        :not, :*-of-type, :in-range Selectors
+      </h1>
+      <form action="#!" class="px-3 py-5">
+        <div>
+          <label for="ranger">In-Range 0-100</label>
+          <input type="number" max="100" min="0" class="ranger" id="ranger" />
+        </div>
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" />
+        </div>
+        <div>
+          <label for="age">Age</label>
+          <input type="number" name="age" id="age" disabled />
+        </div>
+        <div>
+          <label for="tel">Phone</label>
+          <input
+            type="tel"
+            name="tel"
+            id="tel"
+            placeholder="+2547XXXXXXXX"
+            class=".example"
+          />
+        </div>
+        <div>
+          <input
+            type="submit"
+            class="ft-monospace border-2 btn border-orangered border-solid text-light bg-dark px-3 py-2 m-2"
+            value="Submit"
+          />
+        </div>
+      </form>
+      <div>
+        <p>Paragraph One</p>
+        <!-- <p>Paragraph Two</p> -->
+      </div>
+    </section>
+    <section class="topic-page">
+      <h1 class="text-center ft-size-4">Selectors</h1>
+      <div class="w-3">
+        <h2 class="text-center ft-size-3">Attribute Selectors</h2>
+        <div red_attr>Attribute red_attr</div>
+        <div red_attr="blue">Attribute red_attr</div>
+        <div red_attr="PURPLE">Attribute red_attr</div>
+      </div>
+      <div>
+        <h2 class="text-center ft-size-4">Combinators</h2>
+        <div class="parent">
+          <div class="one">This is 1</div>
+          <div class="two">This is 2</div>
+          <div class="three">Mr GAP</div>
+          <div class="one">This is 3</div>
+          <div class="two">This is 4</div>
+          <div class="one">This is 5</div>
+          <div class="three">Mr GAP</div>
+          <div class="two">This is 6</div>
+          <div class="one">This is 7</div>
+          <div class="two">This is 8</div>
+          <div class="three">Mr GAP</div>
+          <div class="one">This is 9</div>
+          <div class="two">This is 10</div>
+          <div class="three">Mr GAP</div>
+        </div>
+      </div>
+      <div class="even-odd">
+        <div class="even">This is Even</div>
+        <div class="odd">This is Odd</div>
+        <div class="even">This is Even</div>
+        <div class="odd">This is Odd</div>
+        <div class="even">This is Even</div>
+        <div class="odd">This is Odd</div>
+        <div class="even">This is Even</div>
+        <div class="odd">This is Odd</div>
+        <div class="even">This is Even</div>
+        <div class="odd">This is Odd</div>
+      </div>
+      <div class="oftype">
+        <p>This is a paragraph</p>
+        <div>This is a div</div>
+        <p>This is a paragraph</p>
+        <div>This is a div</div>
+        <p>This is a paragraph</p>
+        <div>This is a div</div>
+        <p>This is a paragraph</p>
+        <div>This is a div</div>
+        <p>This is a paragraph</p>
+        <div>This is a div</div>
+      </div>
+    </section>
+    <section class="topic-page p-3">
+      <h1 class="text-center ft-size-4">Lists</h1>
+      <ol>
+        <li>Opacity Level 0</li>
+        <li>Opacity Level 1</li>
+        <li>Opacity Level 2</li>
+        <li>Opacity Level 3</li>
+        <li>Opacity Level 4</li>
+        <li>Opacity Level 5</li>
+      </ol>
+    </section>
+  </body>
+</html>

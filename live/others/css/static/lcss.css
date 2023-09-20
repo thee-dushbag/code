@@ -1,0 +1,100 @@
+* {
+  font-family: "CaskaydiaCove Nerd Font Mono", monospace;
+}
+
+.topic-page {
+  min-height: 100vh;
+}
+
+.box {
+  background-color: var(--mycolor);
+  width: 5cm;
+  height: 5cm;
+}
+
+ol {
+  list-style-position: inside;
+  list-style-type: circle;
+  list-style-image: url(/favicon-64.png);
+}
+
+[red_attr] {
+  background-color: red;
+}
+
+[red_attr="blue"] {
+  background-color: blue;
+}
+
+[red_attr~="purple"] {
+  background-color: purple;
+}
+
+[red_attr="purple" i]
+/* [red_attr$="purple"] */
+/* [red_attr|="purple"] */ {
+  background-color: lime;
+}
+
+.parent {
+  background-color: greenyellow;
+}
+
+.parent > div {
+  /*Direct Child*/
+  background-color: whitesmoke;
+}
+
+.three ~ .two {
+  background-color: red;
+}
+/* 
+.even-odd > div {
+  background-color: blue;
+}
+
+.even-odd > div:nth-child(even) {
+  background-color: red;
+} */
+
+/* .even-odd > .even:first-of-type,
+.even-odd > .even:last-of-type {
+  background-color: green;
+} */
+
+.oftype > p:last-of-type,
+.oftype > p:first-of-type {
+  background-color: red;
+}
+.oftype > div:last-of-type,
+.oftype > div:first-of-type {
+  background-color: green;
+}
+.ranger {
+  background-color: red;
+}
+
+.ranger:in-range {
+  background-color: green;
+}
+
+input:not(:not([disabled], .example)) {
+  background-color: red;
+}
+
+input:not([disabled], .example, [type="submit"]) {
+  background-color: lime;
+}
+
+p:only-child {
+  background-color: yellow;
+}
+
+form {
+  transition: all 1s;
+}
+
+form:focus-within {
+  background-color: teal;
+  color: darkblue;
+}
