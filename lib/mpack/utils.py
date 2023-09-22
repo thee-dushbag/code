@@ -1,5 +1,6 @@
 from functools import wraps
-from typing import Callable, Generic, TypeVar, Any, Type
+from typing import Any, Callable, Generic, Type, TypeVar
+
 from . import print
 
 T = TypeVar("T")
@@ -127,4 +128,5 @@ class Tracer:
     def __get__(self, instance, owner):
         def _wrap(*a, **k):
             return self(instance, *a, **k)
+
         return _wrap

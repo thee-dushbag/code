@@ -1,6 +1,7 @@
 from typing import Any
+
 from mypyutils.events import Event
-from typing import Any
+
 
 class Object:
     def __init__(self, data: Any = None) -> None:

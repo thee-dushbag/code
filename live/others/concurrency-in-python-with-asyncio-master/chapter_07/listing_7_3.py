@@ -6,6 +6,6 @@ def get_status_code(url: str) -> int:
     return response.status_code
 
 
-url = 'https://www.example.com'
+url = "https://www.example.com"
 print(get_status_code(url))
 print(get_status_code(url))

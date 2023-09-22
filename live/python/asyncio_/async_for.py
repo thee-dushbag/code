@@ -1,6 +1,7 @@
 import asyncio as aio
-from typing import Any, Sequence
 from time import sleep
+from typing import Any, Sequence
+
 import mpack.timer as _t
 
 

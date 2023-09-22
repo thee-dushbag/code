@@ -1,17 +1,19 @@
 from typing import Any, Callable
 
+
 class AdjacentOperate:
     def __new__(cls, data: list[Any], func: Callable[..., Any]) -> list[Any]:
-        if not data: return []
+        if not data:
+            return []
         cls.func: Callable[..., Any] = func
         cls._cache = []
         cls.data = data
-        cls._crush_until() # type: ignore
+        cls._crush_until()  # type: ignore
         return cls._cache
 
     @classmethod
     def _crush_until(cls) -> None:
-        while cls._stack_crusher(): # type: ignore
+        while cls._stack_crusher():  # type: ignore
             cls.data: list[Any] = cls._cache
 
     @classmethod

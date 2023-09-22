@@ -1,6 +1,6 @@
-from mpack.aiohttp_helpers import dev_setup, cors_setup
-from views import setup as views_setup
 from aiohttp import web
+from mpack.aiohttp_helpers import cors_setup, dev_setup
+from views import setup as views_setup
 
 
 async def application() -> web.Application:

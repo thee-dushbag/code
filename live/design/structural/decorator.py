@@ -13,6 +13,7 @@ behavior. The client code demonstrates
 how decorators can be stacked to add
 multiple layers of functionality to objects."""
 
+
 class Component:
     def operation(self):
         pass

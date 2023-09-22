@@ -1,11 +1,12 @@
-from moviepy.editor import VideoFileClip, AudioFileClip
-from xml.etree import ElementTree as ET
-from typing import Optional, Sequence
-from dataclasses import dataclass
 from contextlib import suppress
+from dataclasses import dataclass
 from pathlib import Path
-from yarl import URL
+from typing import Optional, Sequence
+from xml.etree import ElementTree as ET
+
 import click
+from moviepy.editor import AudioFileClip, VideoFileClip
+from yarl import URL
 
 
 @dataclass
@@ -131,20 +132,27 @@ class PlayList:
     type=click.Path(exists=True, dir_okay=False),
     help="File to get track list from.",
 )
-@click.option('--null', '-0', help=r'Use zero terminator(\0) as a delimeter in the Piped/File input', is_flag=True)
+@click.option(
+    "--null",
+    "-0",
+    help=r"Use zero terminator(\0) as a delimeter in the Piped/File input",
+    is_flag=True,
+)
 @click.option("--album", "-a", help="Album name")
 @click.option("--title", "-t", help="Title of playlist")
 @click.option("--creator", "-c", help="Creator of the playlist/album/the contents.")
 @click.option(
     "--output", "-o", help="File o write the playlist in, recommended extension '.xspf'"
 )
-def make_playlist(null: bool, trackfile: str, title: str, creator: str, album: str, output: str):
-    'Convert a list of paths to a vlc playlist.'
+def make_playlist(
+    null: bool, trackfile: str, title: str, creator: str, album: str, output: str
+):
+    "Convert a list of paths to a vlc playlist."
     if trackfile is None:
         trackfile = input()
     else:
         trackfile = Path(trackfile).read_text()
-    trackList = [line for line in trackfile.split('\0' if null else '\n') if line]
+    trackList = [line for line in trackfile.split("\0" if null else "\n") if line]
     creator = creator or "Unknown"
     album = album or "Playlist Album"
     title = title or "Playlist"

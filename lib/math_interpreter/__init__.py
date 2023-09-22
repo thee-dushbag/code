@@ -1,32 +1,22 @@
-from .definitions import Interpreter, ValueChecker
 from .context import Context, SymbolType
-from .symbols import (
-    SubSymbol,
-    SumSymbol,
-    MulSymbol,
-    DivSymbol,
-    PowSymbol,
-    ModSymbol,
-    FloorSymbol,
-    FactSymbol,
-    PermSymbol,
-    RatiSymbol,
-    CombSymbol,
-)
+from .definitions import Interpreter, ValueChecker
+from .symbols import (CombSymbol, DivSymbol, FactSymbol, FloorSymbol,
+                      ModSymbol, MulSymbol, PermSymbol, PowSymbol, RatiSymbol,
+                      SubSymbol, SumSymbol)
 
-#*    3 * 9 + 5 / 7
-#*    +(3*9,5/7)
-#*    +(*(3,9),/(5,7))
+# *    3 * 9 + 5 / 7
+# *    +(3*9,5/7)
+# *    +(*(3,9),/(5,7))
 
-#*             +   SumSymbol
-#*             |
-#*        -----------
-#*       |           |
-#*       *           /    MulSymbol, DivSymbol
-#*       |           |
-#*    -------     -------
-#*   |       |   |       |
-#*   3       9   5       7 ValueSymbol
+# *             +   SumSymbol
+# *             |
+# *        -----------
+# *       |           |
+# *       *           /    MulSymbol, DivSymbol
+# *       |           |
+# *    -------     -------
+# *   |       |   |       |
+# *   3       9   5       7 ValueSymbol
 
 _context: Context = Context()
 _context.add_symbol("+", 1006, SumSymbol, SymbolType.bnu)

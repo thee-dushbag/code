@@ -5,15 +5,15 @@ list_lock = Lock()
 
 
 def sum_list(int_list: List[int]) -> int:
-    print('Waiting to acquire lock...')
+    print("Waiting to acquire lock...")
     with list_lock:
-        print('Acquired lock.')
+        print("Acquired lock.")
         if len(int_list) == 0:
-            print('Finished summing.')
+            print("Finished summing.")
             return 0
         else:
             head, *tail = int_list
-            print('Summing rest of list.')
+            print("Summing rest of list.")
             return head + sum_list(tail)
 
 

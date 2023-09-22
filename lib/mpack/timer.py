@@ -1,33 +1,36 @@
+from dataclasses import dataclass, field
+from functools import partial
+from functools import wraps as _wraps
 from inspect import iscoroutinefunction
 from time import perf_counter as _perf_counter
 from typing import Any, Callable, TypeVar
+
 from .timable import Time
-from functools import wraps as _wraps
-from dataclasses import dataclass, field
-from functools import partial
 
 FUNCTION_CALL_STR = "[{function_name}({args}, {kwargs})]"
 TAKEN_TIME_STR = "{target}: Took {lapse._time} seconds."
 
+
 def get_config(*, call_str=None, time_str=None):
     func_call_str = call_str or FUNCTION_CALL_STR
     take_time_str = time_str or TAKEN_TIME_STR
-    return TimeitConfig(
-        function_call_str=func_call_str,
-        taken_time_str=take_time_str
-    )
+    return TimeitConfig(function_call_str=func_call_str, taken_time_str=take_time_str)
 
-T = TypeVar('T')
+
+T = TypeVar("T")
+
 
 def str_func_args_kwargs(*args: Any, **kwargs: dict[str, Any]) -> tuple[str, str]:
     args_str = ", ".join(f"{arg!r}" for arg in args)
     kwargs_str = ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
     return args_str, kwargs_str
 
+
 @dataclass(kw_only=True, frozen=True, slots=True)
 class TimeitConfig:
     function_call_str: str = field()
     taken_time_str: str = field()
+
 
 @dataclass(frozen=True, slots=True)
 class TimeitFunction:
@@ -41,7 +44,7 @@ class TimeitFunction:
 
     async def async_call(self) -> Any:
         return await self.func(*self.args, **self.kwargs)
-    
+
     def __call__(self):
         return self.sync_call()
 

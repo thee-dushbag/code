@@ -1,5 +1,6 @@
 # type: ignore
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
+
 
 class Exporter(ABC):
     """This class is a interface for objects with export and imports."""
@@ -112,6 +113,7 @@ class MovieLoversFactory(ExporterFactory):
     def audio_exporter(self):
         return LowAudioExporter()
 
+
 def user_pr(values: dict[str, str]) -> int:
     value = ""
     while not value in values:
@@ -129,16 +131,21 @@ def convert_n_export(factory: ExporterFactory) -> None:
     audio_exporter.convert()
     audio_exporter.export()
 
+
 class ExporterAbstractFactory:
     __factories = {}
+
     @staticmethod
     def register(key: str, factory: ExporterFactory) -> None:
         ExporterAbstractFactory.__factories[key] = factory
+
     @staticmethod
     def get_factory(key: str) -> ExporterFactory:
-        if factory:= ExporterAbstractFactory.__factories.get(key):
+        if factory := ExporterAbstractFactory.__factories.get(key):
             return factory()
-        else: raise Exception("Factory key not mapped.")
+        else:
+            raise Exception("Factory key not mapped.")
+
 
 ExporterAbstractFactory.register(1, HighExpoterFactory)
 ExporterAbstractFactory.register(2, LowExpoterFactory)

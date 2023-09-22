@@ -1,19 +1,24 @@
-from statistics import mean, median, geometric_mean, harmonic_mean
-from utils import random_data_x
-from math import ceil, floor
-from typing import Sequence
 from functools import reduce
+from math import ceil, floor
+from statistics import geometric_mean, harmonic_mean, mean, median
+from typing import Sequence
+
 from rich.console import Console
+from utils import random_data_x
+
 console = Console()
 print = console.print
+
 
 def m_mean(data: list[int]):
     freq = len(data)
     return sum(data) / freq
 
+
 def m_harmonic_mean(data: list[int]):
     den = sum(1 / d for d in data)
     return len(data) / den
+
 
 def m_median(data: list[int]):
     freq = len(data)
@@ -23,9 +28,11 @@ def m_median(data: list[int]):
     vals = [data[p - 1] for p in points]
     return sum(vals) / len(vals)
 
+
 def m_geometric_mean(data: list[int]):
     prod = reduce(lambda x, y: x * y, data)
     return pow(prod, 1 / len(data))
+
 
 def main(argv: Sequence[str]) -> None:
     # data = [*range(1, 50, 3)]
@@ -52,7 +59,7 @@ def main(argv: Sequence[str]) -> None:
     print(f"Deviation: {deviations}")
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     from sys import argv
+
     main(argv[1:])

@@ -1,8 +1,11 @@
-from moviepy.editor import VideoFileClip, ImageSequenceClip
-import attrs, shutil as shu, asyncio as aio
-from string import ascii_lowercase, digits
-from random import choices
+import asyncio as aio
+import shutil as shu
 from pathlib import Path
+from random import choices
+from string import ascii_lowercase, digits
+
+import attrs
+from moviepy.editor import ImageSequenceClip, VideoFileClip
 
 
 @attrs.define
@@ -88,9 +91,7 @@ class PreviewEnv:
     def _save_frames(self, image_dir):
         video = VideoFileClip(str(self.clip))
         image_count = (
-            video.duration
-            if video.duration <= self.image_count
-            else self.image_count
+            video.duration if video.duration <= self.image_count else self.image_count
         )
         period = int(video.duration / image_count)
         for i in range(1, image_count + 1):

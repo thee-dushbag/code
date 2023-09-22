@@ -5,19 +5,19 @@ from contextlib import suppress
 
 async def trigger_event_periodically(event: Event):
     while True:
-        print('Triggering event!')
+        print("Triggering event!")
         event.set()
         await asyncio.sleep(1)
 
 
 async def do_work_on_event(event: Event):
     while True:
-        print('Waiting for event...')
+        print("Waiting for event...")
         await event.wait()
         event.clear()
-        print('Performing work!')
+        print("Performing work!")
         await asyncio.sleep(5)
-        print('Finished work!')
+        print("Finished work!")
 
 
 async def main():

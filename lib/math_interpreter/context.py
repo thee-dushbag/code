@@ -1,7 +1,8 @@
 # type: ignore
-from typing import Any
-from .symbols import Symbol
 from enum import Enum
+from typing import Any
+
+from .symbols import Symbol
 
 
 class SymbolType(Enum):
@@ -39,7 +40,9 @@ class Context:
 
     def cmp_sym_type(self, sym, expt) -> bool:
         expt = (
-            [SymbolType.unary, SymbolType.binary, SymbolType.bnu] if expt == SymbolType.bnu else [expt]
+            [SymbolType.unary, SymbolType.binary, SymbolType.bnu]
+            if expt == SymbolType.bnu
+            else [expt]
         )
         # print(f"Checking for {cur} in {expt}")
         return sym in expt

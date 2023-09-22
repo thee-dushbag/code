@@ -1,7 +1,9 @@
 from typing import Type
 
+
 class NotFoundEnum(Exception):
     ...
+
 
 class MyEnumValue:
     def __init__(self, name: "MyEnumAuto", value: int) -> None:
@@ -13,6 +15,7 @@ class MyEnumValue:
 
     def __repr__(self) -> str:
         return str(self)
+
 
 class BaseEnum:
     __enum__ = 0
@@ -30,7 +33,7 @@ class BaseEnum:
 
     @classmethod
     def string(cls) -> str:
-        return f'{cls.__name__}{cls[:]}'
+        return f"{cls.__name__}{cls[:]}"
 
     @classmethod
     def _slice_class(cls, sel: slice):
@@ -85,13 +88,16 @@ class BaseEnum:
         return cls._get_str_item(str(sel))
 
 
-class EV: ...
+class EV:
+    ...
+
 
 class AnnotatedBaseEnum(BaseEnum):
     @classmethod
     def _set_values(cls):
         for key, t in cls.__annotations__.items():
-            if not t == EV: continue
+            if not t == EV:
+                continue
             value = MyEnumAuto()
             value.__set_name__(cls, key)
             setattr(cls, key, value)

@@ -3,11 +3,14 @@ from sqlalchemy import orm
 
 Base = orm.declarative_base()
 
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
+
 
 class Approach(Base):
-    __tablename__ = 'approach'
+    __tablename__ = "approach"
+
 
 class Task(Base):
-    __tablename__ = 'tasks'
+    __tablename__ = "tasks"

@@ -1,7 +1,6 @@
-from sqlalchemy.orm import declarative_base, sessionmaker
 import sqlalchemy as sa
 from sqlalchemy.orm import Session as _Session
-
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 DB_URL = "sqlite:///original_.db"
 engine = sa.create_engine(DB_URL)

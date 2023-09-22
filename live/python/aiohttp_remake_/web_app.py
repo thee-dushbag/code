@@ -1,24 +1,22 @@
-from aiohttp import web
 from pathlib import Path
+
+from aiohttp import web
 from aiohttp_mako import setup as mako_setup
-from uvloop import install as install_uvloop
-from model_helpers import DatabaseManager
-from model import setup as database_setup
-from views import setup as views_setup
-from security import NoteAppAuthPolicy
+from aiohttp_security import SessionIdentityPolicy
+from aiohttp_security import setup as aio_security_setup
 from aiohttp_session import setup as aio_session_setup
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from cryptography.fernet import Fernet
-from aiohttp_security import (
-    setup as aio_security_setup,
-    SessionIdentityPolicy
-)
-
+from model import setup as database_setup
+from model_helpers import DatabaseManager
+from security import NoteAppAuthPolicy
+from uvloop import install as install_uvloop
+from views import setup as views_setup
 
 WORKING_PATH = Path.cwd()
-TEMPLATE_PATH = WORKING_PATH / 'templates'
-STATIC_PATH = WORKING_PATH / 'static'
-DNS = 'sqlite:///sessions.sqlite3'
+TEMPLATE_PATH = WORKING_PATH / "templates"
+STATIC_PATH = WORKING_PATH / "static"
+DNS = "sqlite:///sessions.sqlite3"
 SECRET_KEY = Fernet(Fernet.generate_key())
 install_uvloop()
 

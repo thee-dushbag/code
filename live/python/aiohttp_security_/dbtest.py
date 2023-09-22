@@ -1,12 +1,16 @@
-import db, db_utils
 import atexit
-from random import choice
 from pathlib import Path
+from random import choice
+
+import db
+import db_utils
 from faker import Faker
+
 fake = Faker()
 from mpack import print
 
 DELETE = 0
+
 
 def create_user():
     p = fake.password()
@@ -14,18 +18,22 @@ def create_user():
     e = fake.email()
     return db.User(email=e, name=n, password=p)
 
-db_file = Path('user_group_resrc.json')
+
+db_file = Path("user_group_resrc.json")
 perms = [db.Permission(i) for i in range(1, 4)]
 
-if db_file.exists() and DELETE: db_file.unlink()
+if db_file.exists() and DELETE:
+    db_file.unlink()
 
 database = db.load_database(db_file)
 atexit.register(db.save_database, database, db_file)
 manager = db_utils.DatabaseContentManager(database)
 
+
 def add_users(users):
     for u in users:
         manager.add_user(u)
+
 
 def create_resources(rids: int, usrbundles):
     for _ in range(rids):
@@ -33,6 +41,7 @@ def create_resources(rids: int, usrbundles):
         r = fake.sentence(4, False)
         p = choice(perms)
         user.add_resource(r, p)
+
 
 def create_groups(n, user_bundles):
     gids = []
@@ -42,6 +51,7 @@ def create_groups(n, user_bundles):
         gids.append(g)
     return gids
 
+
 def add_user_to_groups(m: int, userbundles, gids):
     c, t = 0, 0
     while c < m:
@@ -49,10 +59,13 @@ def add_user_to_groups(m: int, userbundles, gids):
         user = choice(userbundles)
         gid = choice(gids)
         if user.is_member(gid):
-            if t > m * 3: break
-            else: continue
+            if t > m * 3:
+                break
+            else:
+                continue
         user.join_group(gid)
         c += 1
+
 
 # users = [create_user() for _ in range(7)]
 # add_users(users)

@@ -1,8 +1,9 @@
+import subprocess as _subp
+from pathlib import Path
+from sys import argv, exit
+
 from aiohttp import web
 from aiohttp_cors import setup
-from pathlib import Path
-import subprocess as _subp
-from sys import argv, exit
 
 STATIC_PATH = Path(Path.cwd() / "static")
 
@@ -18,10 +19,10 @@ if __name__ == "__main__":
     appstring = argv[0].rpartition(".")[0] + ":app"
     try:
         exit(
-        _subp.run(
-            f"gunicorn -k aiohttp.worker.GunicornWebWorker -b localhost:4567 --reload {appstring}",
-            shell=True,
-        ).returncode
+            _subp.run(
+                f"gunicorn -k aiohttp.worker.GunicornWebWorker -b localhost:4567 --reload {appstring}",
+                shell=True,
+            ).returncode
         )
     except KeyboardInterrupt:
         print("Killing Workers")

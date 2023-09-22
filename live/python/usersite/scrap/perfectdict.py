@@ -26,19 +26,24 @@ class perfect_dict(dict):
     def _update_int_value(self, current_value: str, other_value: str):
         return other_value
 
-    def _update_seq_value(self, stype: Type, current_value: Sequence[Any], other_value: Sequence[Any]):
+    def _update_seq_value(
+        self, stype: Type, current_value: Sequence[Any], other_value: Sequence[Any]
+    ):
         store, hashes = [], set()
+
         def _mhash_impl(arg):
             arg = perfect_dict(**arg) if type(arg) == dict else arg
             if type(arg) == perfect_dict:
                 return arg._mhash()
             return str(hash(arg))
+
         def mhash(arg):
             hash_v = _mhash_impl(arg)
             if hash_v not in hashes:
                 hashes.add(hash_v)
                 store.append(arg)
             return hash_v
+
         for val in chain(current_value, other_value):
             mhash(val)
         return stype(store)
@@ -46,7 +51,9 @@ class perfect_dict(dict):
     def _update_list_value(self, current_value: list[Any], other_value: list[Any]):
         return self._update_seq_value(list, current_value, other_value)
 
-    def _update_tuple_value(self, current_value: tuple[Any, ...], other_value: tuple[Any, ...]):
+    def _update_tuple_value(
+        self, current_value: tuple[Any, ...], other_value: tuple[Any, ...]
+    ):
         return self._update_seq_value(tuple, current_value, other_value)
 
     def _mhash(self):
@@ -63,7 +70,9 @@ class perfect_dict(dict):
         ), f"Type[{_type.__name__}] update is unknown"
         return self._type_maps_[_type.__name__]
 
-    def _update_value_type(self, value_type: Type, current_value: Any, other_value: Any):
+    def _update_value_type(
+        self, value_type: Type, current_value: Any, other_value: Any
+    ):
         updater = self._type_maps(value_type)
         return updater(current_value, other_value)
 

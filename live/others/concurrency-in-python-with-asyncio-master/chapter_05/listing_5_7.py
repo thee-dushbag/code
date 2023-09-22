@@ -1,10 +1,10 @@
 import asyncio
+
 import asyncpg
+
 from __init__ import cred
 
-
-product_query = \
-    """
+product_query = """
 SELECT
 p.product_id,
 p.product_name,
@@ -25,12 +25,8 @@ async def query_product(pool):
 
 
 async def main():
-    async with asyncpg.create_pool(**cred,
-                                   min_size=6,
-                                   max_size=6) as pool:  # A
-
-        await asyncio.gather(query_product(pool),
-                             query_product(pool))  # B
+    async with asyncpg.create_pool(**cred, min_size=6, max_size=6) as pool:  # A
+        await asyncio.gather(query_product(pool), query_product(pool))  # B
 
 
 asyncio.run(main())

@@ -1,6 +1,10 @@
 from time import localtime
 from typing import cast
-from aiohttp import web, typedefs as _t, hdrs
+
+from aiohttp import hdrs
+from aiohttp import typedefs as _t
+from aiohttp import web
+
 from ..line import Line, aprint
 
 SUBSCRIBE = "subscribe"
@@ -74,10 +78,12 @@ async def print_request(req: web.Request, resp: web.StreamResponse):
     req_str = _get_request_string(req, resp)
     line.add_line(req_str)
 
+
 async def _line_ctx(app: web.Application):
     async with Line(aprint, timeout=2) as line:
         app[APP_KEY] = line
         yield
+
 
 def dev_setup(app: web.Application):
     app.on_response_prepare.append(print_request)

@@ -1,6 +1,8 @@
 import re
 from typing import Any
+
 from typing_extensions import Self
+
 
 class IniParser:
     def __init__(
@@ -63,4 +65,3 @@ class IniParser:
                 lines.append(f"{key}{self.dlm}{val}")
             serialized += self.tkdlm.join(lines) + self.tkdlm
         return serialized
-

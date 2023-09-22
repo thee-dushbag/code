@@ -1,6 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget
+
 from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget
 
 
 class Color(QWidget):

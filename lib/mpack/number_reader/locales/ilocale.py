@@ -44,6 +44,7 @@ class IContext(Protocol):
     def addgrp(self, grpcnt: int, grpname: str) -> None:
         ...
 
+
 class DefaultContext(IContext):
     def __init__(
         self,
@@ -103,13 +104,21 @@ class side(Enum):
 
 
 class DefaultLocale(ILocale):
-    def __init__(self, context: IContext, hside: side, gside: side, tconj: bool = False, sconj: bool = True, sep:str = ', ') -> None:
+    def __init__(
+        self,
+        context: IContext,
+        hside: side,
+        gside: side,
+        tconj: bool = False,
+        sconj: bool = True,
+        sep: str = ", ",
+    ) -> None:
         self.context = context
         self.group_name_side: side = gside
         self.hundred_name_side: side = hside
         self.tens_has_conj = tconj
         self.surround_conj_space = sconj
-        self.space = ' ' if self.surround_conj_space else ''
+        self.space = " " if self.surround_conj_space else ""
         self.sep = sep
 
     def read_decimal_number(self, number: str) -> str:
@@ -120,7 +129,8 @@ class DefaultLocale(ILocale):
 
     def group(self, grp_name: str, grp_index: int) -> str:
         group_name = self.context.getgrp(grp_index)
-        if grp_name == self.context.getones('0'): return grp_name
+        if grp_name == self.context.getones("0"):
+            return grp_name
         return (
             f"{group_name} {grp_name}"
             if self.group_name_side == side.left
@@ -154,9 +164,14 @@ class DefaultLocale(ILocale):
         one = self.context.getones(number[1])
         tens = "" if number[0] == "0" else self.context.gettens(number[0] + "0")
         ones = "" if number[1] == "0" else one
-        conj = self.context.getspecial('tens_conj') or f"{self.space}{self.context.getspecial('conj')}{self.space}" if self.tens_has_conj else self.space
+        conj = (
+            self.context.getspecial("tens_conj")
+            or f"{self.space}{self.context.getspecial('conj')}{self.space}"
+            if self.tens_has_conj
+            else self.space
+        )
         if ones and tens:
-            return f'{tens}{conj}{ones}'.strip()
+            return f"{tens}{conj}{ones}".strip()
         elif ones and not tens:
             return str(ones).strip()
         elif tens and not ones:
@@ -170,6 +185,6 @@ class DefaultLocale(ILocale):
         conj = str(self.context.getspecial("conj"))
         names = [name for name in names if name]
         if len(names) >= 2 and f"{self.space}{conj}{self.space}" not in names[-1]:
-            names[-1] = f'{names[-2]}{self.space}{conj}{self.space}{names[-1]}'
+            names[-1] = f"{names[-2]}{self.space}{conj}{self.space}{names[-1]}"
             names.pop(-2)
         return self.sep.join(names)

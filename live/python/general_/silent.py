@@ -1,5 +1,6 @@
 import sys
 
+
 class Silent:
     def __init__(self, outfile=None, infile=None) -> None:
         self.ofile = outfile or "sys.stdout"
@@ -7,7 +8,7 @@ class Silent:
         self.__open = False
         self.real = (sys.stdin, sys.stdout)
         self.silent = False
-    
+
     def __enter__(self):
         self.mute()
         return self.real
@@ -21,7 +22,7 @@ class Silent:
         self.silent = True
         sys.stdin = self.infile
         sys.stdout = self.outfile
-    
+
     def unmute(self):
         self.silent = False
         sys.stdin = self.real[0]
@@ -31,7 +32,7 @@ class Silent:
     def _open(self):
         self.__open = True
         self.outfile = open(self.ofile, "w+")
-        self.infile = open(self.ifile, 'w+')
+        self.infile = open(self.ifile, "w+")
 
     def _close(self):
         if not self.outfile.closed:

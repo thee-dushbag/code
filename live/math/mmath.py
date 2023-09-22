@@ -1,6 +1,8 @@
 def _gcd(a: int, b: int):
-    if b == 0: return a
+    if b == 0:
+        return a
     return _gcd(b, a % b)
+
 
 def gcd(a: int, b: int):
     a, b = abs(a), abs(b)

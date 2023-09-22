@@ -1,13 +1,13 @@
 import hashlib
 import os
+import random
 import string
 import time
-import random
 
 
 def random_password(length: int) -> bytes:
     ascii_lowercase = string.ascii_lowercase.encode()
-    return b''.join(bytes(random.choice(ascii_lowercase)) for _ in range(length))
+    return b"".join(bytes(random.choice(ascii_lowercase)) for _ in range(length))
 
 
 passwords = [random_password(10) for _ in range(10000)]

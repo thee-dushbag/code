@@ -1,14 +1,15 @@
+import json
 from cProfile import label
 from enum import Enum
-import json
 from random import choice
+from typing import Any, Type, cast
+
+import bcrypt
+import sqlalchemy as sa
 from faker import Faker
 from sqlalchemy.exc import IntegrityError, MultipleResultsFound, NoResultFound
-import sqlalchemy as sa
-from typing import Any, Type, cast
-from sqlalchemy.orm import declarative_base, sessionmaker, Session as _Session
-import bcrypt
-
+from sqlalchemy.orm import Session as _Session
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 metadata = sa.MetaData()
 Base: Type = declarative_base(metadata=metadata)
@@ -25,7 +26,7 @@ class User(Base):
     password = sa.Column(sa.String(50), nullable=False)
 
     def __str__(self):
-        return f'User(name={self.name!r}, password={self.password!r}, email={self.email!r})'
+        return f"User(name={self.name!r}, password={self.password!r}, email={self.email!r})"
 
 
 metadata.create_all(engine)
@@ -104,7 +105,8 @@ class UserManager:
         try:
             user = self.session.query(User).where(User.uid == uid).one()
             for key, val in (("name", name), ("email", email), ("password", password)):
-                if val: setattr(user, key, val)
+                if val:
+                    setattr(user, key, val)
             self.session.add(user)
             self.session.commit()
         except (MultipleResultsFound, NoResultFound, IntegrityError) as e:
@@ -202,15 +204,13 @@ class UserSite:
 from typing import Sequence
 
 
-
-
 def get_sample_users(n: int, fake: Faker) -> list[dict]:
     _p = lambda: choice(["gmail", "hotmail", "thunderbird", "outlook", "yahoo"])
     _e = lambda p: f'@{p}.{choice(["com", "mil", "xyz"])}'
-    gen_email = lambda name: name.replace('_', '').lower() + _e(_p())
+    gen_email = lambda name: name.replace("_", "").lower() + _e(_p())
 
     def gen_user(fake: Faker):
-        name = fake.name().replace(' ', '_')
+        name = fake.name().replace(" ", "_")
         pword = fake.password(25, 0, 0, 0)
         email = gen_email(name)
         return dict(name=name, password=pword, email=email)
@@ -223,7 +223,9 @@ def get_login_data() -> tuple[str, str]:
     password = input("Password: ")
     return name, password
 
+
 me = dict(name="Simon", password="1234", email="simongash@gmail.com")
+
 
 def main(argv: Sequence[str]) -> None:
     fake = Faker()
@@ -234,6 +236,7 @@ def main(argv: Sequence[str]) -> None:
     print(status)
     # signup_random_users(usersite, fake, 5)
 
+
 def signup_random_users(usersite: UserSite, fake: Faker, n: int, addme: bool = True):
     users = []
     _users = get_sample_users(n, fake)
@@ -241,9 +244,9 @@ def signup_random_users(usersite: UserSite, fake: Faker, n: int, addme: bool = T
         _users.append(me)
     for user in _users:
         status = usersite.signup(**user)
-        user['status'] = status.to_dict()
+        user["status"] = status.to_dict()
         users.append(user)
-    with open('states.json', 'w') as s:
+    with open("states.json", "w") as s:
         json.dump(dict(users=users), s)
 
 

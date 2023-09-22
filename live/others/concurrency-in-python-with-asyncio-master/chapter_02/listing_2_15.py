@@ -1,5 +1,5 @@
-from asyncio import Future
 import asyncio
+from asyncio import Future
 
 
 def make_request() -> Future:

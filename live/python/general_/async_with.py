@@ -1,7 +1,9 @@
+import asyncio as aio
 from time import sleep
 from typing import Sequence
-import asyncio as aio
+
 from mpack.timer import timer
+
 
 async def grange_async(start, stop, step=1, delay=0.5):
     while start < stop:
@@ -44,30 +46,36 @@ class With:
     def __exit__(self, *_):
         print("__EXIT__")
 
+
 @timer
-def do_sync_with(value: int, delay: float = .5):
+def do_sync_with(value: int, delay: float = 0.5):
     with With(value, delay) as w:
         w.count_sync()
 
+
 @timer
-async def do_async_with(value: int, delay: float = .5):
+async def do_async_with(value: int, delay: float = 0.5):
     async with With(value, delay) as w:
         await w.count_async()
 
+
 @timer
-async def do_async_with_p(value: int, delay: float = .5):
+async def do_async_with_p(value: int, delay: float = 0.5):
     async with With(value, delay) as w:
         w.count_sync()
 
+
 @timer
-async def do_async_with_p2(value: int, delay: float = .5):
+async def do_async_with_p2(value: int, delay: float = 0.5):
     with With(value, delay) as w:
         await w.count_async()
 
+
 @timer
-async def do_async_with_n(value: int, delay: float = .5):
+async def do_async_with_n(value: int, delay: float = 0.5):
     with With(value, delay) as w:
         w.count_sync()
+
 
 @timer
 async def main(argv: Sequence[str]) -> None:
@@ -77,6 +85,8 @@ async def main(argv: Sequence[str]) -> None:
     t3 = aio.create_task(do_async_with_p2(value))
     await aio.gather(t2, t3)
 
+
 if __name__ == "__main__":
     from sys import argv
+
     aio.run(main(argv[1:]))

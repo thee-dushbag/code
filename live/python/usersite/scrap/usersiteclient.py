@@ -1,7 +1,8 @@
+import re
 from dataclasses import asdict, dataclass
 from typing import cast
+
 from httpx import AsyncClient
-import re
 
 
 @dataclass
@@ -60,7 +61,6 @@ class UserSiteClient:
             page = await self.session.get(self.config.logout_url.format(self.user_id))
             self.user_id = self.config.invalid_uid
             return page
-
 
     async def signup(self):
         if self.connected:

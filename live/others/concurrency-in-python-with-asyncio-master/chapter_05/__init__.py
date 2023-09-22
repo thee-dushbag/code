@@ -1,6 +1,8 @@
-import os, typing as ty
+import os
+import typing as ty
 
 password = os.getenv("PG_PASSWORD") or ""
+
 
 class Credential(ty.TypedDict):
     host: str
@@ -8,6 +10,7 @@ class Credential(ty.TypedDict):
     user: str
     password: str
     database: str
+
 
 cred = Credential(
     host="localhost",

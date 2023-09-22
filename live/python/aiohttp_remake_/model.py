@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from typing import Callable, Type
-from aiohttp import web
+
 import sqlalchemy as sa
-from sqlalchemy.orm import declarative_base, sessionmaker, Session as _Session
+from aiohttp import web
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session as _Session
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 APP_KEY = "aiohttp.security.test.session.database.model"
 
@@ -36,11 +38,8 @@ class User(Base):
     password = sa.Column(sa.String(50), nullable=False)
 
     def todict(self):
-        return dict(
-            name=self.name,
-            email=self.email,
-            user_id=self.user_id
-        )
+        return dict(name=self.name, email=self.email, user_id=self.user_id)
+
 
 class Note(Base):
     __tablename__ = "notes"
@@ -60,7 +59,6 @@ class Note(Base):
         )
 
 
-
 def init_database(dns: str):
     engine = sa.create_engine(dns)
     metadata: sa.MetaData = Base.metadata
@@ -70,11 +68,16 @@ def init_database(dns: str):
 
 
 def insert_access_rights(md: DatabaseModel):
-    private = Access(access_id=1, name='PRIVATE', description='Only The Owner Can Access This Note')
-    public = Access(access_id=2, name='PUBLIC', description='EveryOne Can Access This Note')
+    private = Access(
+        access_id=1, name="PRIVATE", description="Only The Owner Can Access This Note"
+    )
+    public = Access(
+        access_id=2, name="PUBLIC", description="EveryOne Can Access This Note"
+    )
     session = md.create_session()
     session.add_all((private, public))
-    try: session.commit()
+    try:
+        session.commit()
     except IntegrityError:
         session.rollback()
 

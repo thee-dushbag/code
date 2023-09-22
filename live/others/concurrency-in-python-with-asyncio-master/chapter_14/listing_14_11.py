@@ -2,7 +2,6 @@ from chapter_14.listing_14_8 import CustomFuture
 
 
 class CustomTask(CustomFuture):
-
     def __init__(self, coro, loop):
         super(CustomTask, self).__init__()
         self._coro = coro

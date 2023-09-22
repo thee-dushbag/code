@@ -1,8 +1,8 @@
 import asyncio
-from asyncio import AbstractEventLoop
-import socket
 import logging
 import signal
+import socket
+from asyncio import AbstractEventLoop
 from typing import List
 
 

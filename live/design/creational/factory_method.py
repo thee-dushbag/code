@@ -14,10 +14,11 @@ class Product(ABC):
     def operate(self):
         string: str = self.operation()
         print(f"Operating on: {string!r}")
-    
+
     def __str__(self) -> str:
         string = self.operation()
-        return f'{self.__class__.__name__}({string!r})'
+        return f"{self.__class__.__name__}({string!r})"
+
 
 # Concrete Products
 class ConcreteProductA(Product):
@@ -39,7 +40,7 @@ class Creator(ABC):
     def operate(self):
         product = self.factory_method()
         self._operate(product)
-    
+
     def _operate(self, product: Product):
         print(f"Created {product.__class__.__name__}")
         product.operate()
@@ -49,12 +50,13 @@ class Creator(ABC):
 class ConcreteCreatorA(Creator):
     def factory_method(self) -> Product:
         return ConcreteProductA()
-    
+
     def operate(self):
         print("Aquiring resources...")
         product = self.factory_method()
         print(f"Established a connecting to: {product}")
         self._operate(product)
+
 
 class ConcreteCreatorB(Creator):
     def factory_method(self) -> Product:

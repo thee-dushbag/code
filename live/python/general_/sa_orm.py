@@ -1,14 +1,14 @@
-from typing import Any, Sequence
-from pydantic import BaseModel, EmailStr, Field
-import sqlalchemy as sa
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm.session import sessionmaker
 import json as js
 from random import choice, randint
+from typing import Any, Sequence
+
+import sqlalchemy as sa
+from pydantic import BaseModel, EmailStr, Field
+from rich.console import Console
 from rich.table import Table
 from rich.text import Text
-from rich.console import Console
-
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm.session import sessionmaker
 
 console = Console()
 Base = declarative_base()

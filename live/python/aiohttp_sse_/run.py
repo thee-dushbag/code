@@ -1,5 +1,9 @@
-import asyncio as aio, mpack.bqueue as bq, random as r, typing as ty
+import asyncio as aio
+import random as r
+import typing as ty
 from itertools import count
+
+import mpack.bqueue as bq
 
 T = ty.TypeVar("T")
 
@@ -21,7 +25,7 @@ async def processor(
                 runner.create_task(process(item))
         except aio.CancelledError:
             # await q.push(ty.cast(T, None))
-            q.release_waiter(waiter) #type:ignore
+            q.release_waiter(waiter)  # type:ignore
         except bq.NoValue:
             ...
     print(q)

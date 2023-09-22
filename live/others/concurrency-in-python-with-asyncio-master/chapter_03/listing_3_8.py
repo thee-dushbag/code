@@ -1,8 +1,8 @@
 import asyncio
-from socket import socket
+import logging as log
 import socket as sock
 from asyncio import AbstractEventLoop, CancelledError
-import logging as log
+from socket import socket
 
 log.basicConfig(level=log.INFO)
 echos = []

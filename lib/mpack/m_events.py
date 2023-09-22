@@ -1,9 +1,11 @@
 from concurrent.futures import ThreadPoolExecutor, wait
-from typing_extensions import Self
-from typing import Any, Callable, Union
 from functools import wraps
+from typing import Any, Callable, Union
 
-__all__: tuple[str, ...] = ("Event","EventObject", "EventTask")
+from typing_extensions import Self
+
+__all__: tuple[str, ...] = ("Event", "EventObject", "EventTask")
+
 
 class EventObject:
     def __init__(self, event: str, data: Any = None) -> None:
@@ -14,7 +16,7 @@ class EventObject:
     def construct(obj):
         return obj if isinstance(obj, EventObject) else EventObject(str(obj))
 
-    def __eq__(self: Self, __value: Union['EventObject', Any]) -> bool:
+    def __eq__(self: Self, __value: Union["EventObject", Any]) -> bool:
         __value = EventObject.construct(__value)
         return self.event == __value.event
 
@@ -23,6 +25,7 @@ class EventObject:
 
     def __hash__(self) -> int:
         return hash(self.event)
+
 
 class EventTask:
     def __init__(
@@ -34,7 +37,9 @@ class EventTask:
         self.last = None
 
     @classmethod
-    def construct(cls, func: Callable[..., Any] | 'EventTask', *args: Any, **kwargs) -> 'EventTask':
+    def construct(
+        cls, func: Callable[..., Any] | "EventTask", *args: Any, **kwargs
+    ) -> "EventTask":
         return func if isinstance(func, EventTask) else EventTask(func, *args, **kwargs)
 
     def __call__(self: Self, event_object: EventObject) -> Any:
@@ -80,10 +85,12 @@ class Event:
         if event in self._event_rg:
             self._event_rg.pop(event)
 
+
 def eventable(func: Callable[..., Any]) -> Callable[..., Any]:
     @wraps(func)
     def inner(event_object: EventObject, *args: Any, **kwargs: Any) -> Any:
-        inner.event_object = event_object # type: ignore
+        inner.event_object = event_object  # type: ignore
         res = func(*args, **kwargs)
         return res
+
     return inner

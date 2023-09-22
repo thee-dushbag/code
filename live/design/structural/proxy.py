@@ -17,16 +17,19 @@ class Subject:
     def request(self):
         pass
 
+
 class RealSubject(Subject):
     def request(self):
-        return 'RealSubject request'
+        return "RealSubject request"
+
 
 class Proxy(Subject):
     def __init__(self, real_subject):
         self.real_subject = real_subject
 
     def request(self):
-        return f'Proxy request calling real subject: {self.real_subject.request()}'
+        return f"Proxy request calling real subject: {self.real_subject.request()}"
+
 
 # Client code
 real_subject = RealSubject()
@@ -35,5 +38,5 @@ proxy = Proxy(real_subject)
 result_real = real_subject.request()
 result_proxy = proxy.request()
 
-print('Real Subject result:', result_real)
-print('Proxy result:', result_proxy)
+print("Real Subject result:", result_real)
+print("Proxy result:", result_proxy)

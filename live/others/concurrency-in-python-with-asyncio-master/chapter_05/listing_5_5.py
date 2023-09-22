@@ -1,16 +1,18 @@
-import asyncpg
 import asyncio
-from typing import Any, List, Tuple, Union
 from random import sample
+from typing import Any, List, Tuple, Union
+
+import asyncpg
+
 from __init__ import cred
 
 
 def load_common_words() -> List[str]:
-    with open('common_words.txt') as common_words:
+    with open("common_words.txt") as common_words:
         return common_words.readlines()
 
 
-def generate_brand_names(words: List[str]) -> List[Tuple[Union[str, Any ]]]:
+def generate_brand_names(words: List[str]) -> List[Tuple[Union[str, Any]]]:
     return [(words[index],) for index in sample(range(100), 100)]
 
 

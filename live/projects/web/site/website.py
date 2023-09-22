@@ -1,8 +1,9 @@
-from pprint import pprint
-from aiohttp import web
-import aiohttp_jinja2 as aji
-from jinja2 import FileSystemLoader
 from pathlib import Path
+from pprint import pprint
+
+import aiohttp_jinja2 as aji
+from aiohttp import web
+from jinja2 import FileSystemLoader
 
 TEMPLATE_DIR = Path(Path.cwd() / "templates")
 app = web.Application()
@@ -27,7 +28,7 @@ async def greet_post(req: web.Request):
     data = await req.post()
     name = data.get("name", "")
     pprint(dict(data))
-    location = req.app.router['greet'].url_for(name=name)
+    location = req.app.router["greet"].url_for(name=name)
     raise web.HTTPSeeOther(location)
 
 

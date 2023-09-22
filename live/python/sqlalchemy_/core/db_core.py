@@ -1,14 +1,14 @@
+from dataclasses import asdict
 from pprint import pprint
+from typing import Union
+
 import core_model as tbl
 import db_core_data as dat
 import sqlalchemy as sa
-from typing import Union
-from dataclasses import asdict
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 from sqlalchemy.exc import IntegrityError
-
 
 console = Console()
 conn = tbl.engine.connect()

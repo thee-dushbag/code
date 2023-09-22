@@ -1,6 +1,7 @@
 import enum
-from attrs import define, field, asdict
 from typing import Any, Protocol, SupportsFloat, TypeGuard
+
+from attrs import asdict, define, field
 
 MILLISEONDS_SECONDS = 0.001
 SECONDS_MILLISECONDS = 1000

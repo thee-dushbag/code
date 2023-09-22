@@ -1,8 +1,9 @@
-from random import randint
-from dataclasses import dataclass, field
-from statistics import mean
-from math import ceil, log2, log10
 import math
+from dataclasses import dataclass, field
+from math import ceil, log2, log10
+from random import randint
+from statistics import mean
+
 
 def random_data_x(size: int, start: int, stop: int) -> list[int]:
     assert start < stop and isinstance(start, int) and isinstance(stop, int)
@@ -10,16 +11,18 @@ def random_data_x(size: int, start: int, stop: int) -> list[int]:
 
 
 def div10(number: float):
-    whole, _, decimal = str(number).partition('.')
-    decimal = '' if decimal == '0' else decimal
-    number = int(f'{whole}{decimal}')
+    whole, _, decimal = str(number).partition(".")
+    decimal = "" if decimal == "0" else decimal
+    number = int(f"{whole}{decimal}")
     decimal_places = len(decimal)
-    return number, 10 ** decimal_places, decimal_places
+    return number, 10**decimal_places, decimal_places
+
 
 def mrange(start: float, stop: float, step: float = 1):
     while start < stop:
         yield start
         start += step
+
 
 class GroupedData:
     def __init__(self, data: list[float | int], unit_size: float = 1) -> None:
@@ -34,13 +37,26 @@ class GroupedData:
         _class_interval = self.range / self.number_of_classes
         _, _, self.unit_size_dp = div10(unit_size)
         self.class_interval = round(_class_interval, self.unit_size_dp)
-        self.lower_class_limits = [*mrange(self.min_value, self.max_value + self.unit_size, self.class_interval + self.unit_size)]
-        self.upper_class_limits = [lower_limit + self.class_interval for lower_limit in self.lower_class_limits]
-        self.groups = [GroupClass(lower_limit, upper_limit, self.unit_size) for lower_limit, upper_limit in zip(self.lower_class_limits, self.upper_class_limits)]
+        self.lower_class_limits = [
+            *mrange(
+                self.min_value,
+                self.max_value + self.unit_size,
+                self.class_interval + self.unit_size,
+            )
+        ]
+        self.upper_class_limits = [
+            lower_limit + self.class_interval for lower_limit in self.lower_class_limits
+        ]
+        self.groups = [
+            GroupClass(lower_limit, upper_limit, self.unit_size)
+            for lower_limit, upper_limit in zip(
+                self.lower_class_limits, self.upper_class_limits
+            )
+        ]
         for data in self._data:
             for group in self.groups:
                 group.add_item(data)
-    
+
     def get_mean(self) -> float:
         fx = sum(g.frequency * g.mid_point for g in self.groups)
         tf = sum(g.frequency for g in self.groups)
@@ -51,7 +67,7 @@ class GroupedData:
         mean = mean or self.get_mean()
         deviation = 0
         for g in self.groups:
-            deviation += (mean - g.mid_point)
+            deviation += mean - g.mid_point
         return deviation
 
 

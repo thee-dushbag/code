@@ -1,12 +1,14 @@
-import asyncpg
 import asyncio
+
+import asyncpg
+
 from __init__ import cred
 
 
 async def main():
     connection = await asyncpg.connect(**cred)
     version = connection.get_server_version()
-    print(f'Connected! Postgres version is {version}')
+    print(f"Connected! Postgres version is {version}")
     await connection.close()
 
 

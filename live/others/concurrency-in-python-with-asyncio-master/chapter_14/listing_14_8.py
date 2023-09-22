@@ -1,5 +1,4 @@
 class CustomFuture:
-
     def __init__(self):
         self._result = None
         self._is_finished = False

@@ -1,13 +1,14 @@
-from httpx import Client, AsyncClient
-from bs4 import BeautifulSoup
-from time import sleep
-from faker import Faker
-from mpack.timer import timer_conf, TimeitConfig
 import asyncio as aio
+from time import sleep
 from typing import Sequence
 
+from bs4 import BeautifulSoup
+from faker import Faker
+from httpx import AsyncClient, Client
+from mpack.timer import TimeitConfig, timer_conf
+
 GREET_URL_SITE = "http://localhost:4321"
-CSRF_TOKEN = 'ThisIsMyCRSFTOKEN'
+CSRF_TOKEN = "ThisIsMyCRSFTOKEN"
 config = TimeitConfig(
     function_call_str="{function_name!r}", taken_time_str="[{target}]: {lapse} seconds."
 )
@@ -25,7 +26,9 @@ def get_greet_sync(name: str, delay: float = 0.8) -> str:
 
 async def get_greet_async(name: str, delay: float = 0.8) -> str:
     async with AsyncClient(base_url=GREET_URL_SITE, follow_redirects=True) as client:
-        greetings = await client.post("/greet_post", data=dict(name=name, csrfmiddlewaretoken=CSRF_TOKEN))
+        greetings = await client.post(
+            "/greet_post", data=dict(name=name, csrfmiddlewaretoken=CSRF_TOKEN)
+        )
         await aio.sleep(delay)
     if greetings.status_code == 200:
         soup = BeautifulSoup(greetings.content.decode(), "lxml")

@@ -1,9 +1,10 @@
 import time
+
 import requests
 
 
 def read_example() -> None:
-    response = requests.get('https://www.example.com')
+    response = requests.get("https://www.example.com")
     print(response.status_code)
 
 
@@ -14,4 +15,4 @@ read_example()
 
 sync_end = time.time()
 
-print(f'Running synchronously took {sync_end - sync_start:.4f} seconds.')
+print(f"Running synchronously took {sync_end - sync_start:.4f} seconds.")

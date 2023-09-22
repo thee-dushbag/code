@@ -1,5 +1,7 @@
-import bcrypt, model as md
+import bcrypt
+import model as md
 from sqlalchemy import exc
+
 
 def hash_password(password: str) -> str:
     bpass = password.encode()
@@ -7,11 +9,13 @@ def hash_password(password: str) -> str:
     hpass = bcrypt.hashpw(bpass, salt)
     return hpass.decode()
 
+
 def check_password(password: str, hashed: str) -> bool:
     bpass = password.encode()
     hpass = hashed.encode()
     _e = bcrypt.checkpw(bpass, hpass)
     return _e
+
 
 def _end_session(session, *excs):
     excs = excs or (Exception,)
@@ -22,6 +26,7 @@ def _end_session(session, *excs):
         return False
     else:
         return True
+
 
 def add_user(session, username: str, password: str):
     hpass = hash_password(password)

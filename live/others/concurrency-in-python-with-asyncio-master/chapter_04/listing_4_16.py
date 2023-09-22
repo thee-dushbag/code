@@ -1,8 +1,11 @@
 import asyncio
+
 import aiohttp
+
 from __init__ import fetch_status, url
 
-url += '/delay/0'
+url += "/delay/0"
+
 
 async def main():
     async with aiohttp.ClientSession() as session:

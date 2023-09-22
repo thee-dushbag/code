@@ -1,4 +1,6 @@
-import sys, typing as ty, dataclasses as dt
+import dataclasses as dt
+import sys
+import typing as ty
 
 __all__ = (
     "reset",
@@ -56,6 +58,7 @@ def create_null_stream(nullfile: str, *, own=False):
 
     if not own:
         from atexit import register
+
         @register
         def _close_nullfile():
             if not oefile.closed:

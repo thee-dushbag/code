@@ -1,6 +1,8 @@
 import asyncio
 import logging
+
 import asyncpg
+
 from __init__ import cred
 
 
@@ -12,12 +14,12 @@ async def main():
             await connection.execute(insert_brand)
             await connection.execute(insert_brand)  # A
     except Exception:
-        logging.exception('Error while running transaction')  # B
+        logging.exception("Error while running transaction")  # B
     finally:
         query = """SELECT brand_name FROM brand 
                     WHERE brand_name LIKE 'big_%'"""
         brands = await connection.fetch(query)  # C
-        print(f'Query result was: {brands}')
+        print(f"Query result was: {brands}")
 
         await connection.close()
 

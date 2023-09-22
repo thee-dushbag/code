@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from typing import (Any, Callable, Coroutine, Generic, Type, TypeVar, cast,
+                    overload)
+
 from .timable import Time
-from typing import Callable, Any, Coroutine, TypeVar, overload, Generic, cast, Type
 
 _T = TypeVar("_T")
 FUNCTION_CALL_STR: str
@@ -37,27 +39,21 @@ class TimeitConfig:
     taken_time_str: str
 
 def str_func_args_kwargs(*args: Any, **kwargs: dict[str, Any]) -> tuple[str, str]: ...
-
 def timer_sync(
     func: _Function[_T], config: TimeitConfig | None = None
 ) -> _TimeitFunction[_T]: ...
-
 def timer_async(
     func: _CoroFunction[_T], config: TimeitConfig | None = None
 ) -> _TimeitFunctionCoro[_T]: ...
-
 @overload
 def timer(
     func: _CoroFunction[_T], config: TimeitConfig | None = None
 ) -> _TimeitFunctionCoro[_T]: ...
-
 @overload
 def timer(
     func: _Function[_T], config: TimeitConfig | None = None
 ) -> _TimeitFunction[_T]: ...
-
 def timer_sync_conf(config: TimeitConfig) -> _TimeitConfFunction[Any]: ...
 def timer_async_conf(config: TimeitConfig) -> _TimeitConfFunctionCoro[Any]: ...
-
 def timer_conf(config: TimeitConfig) -> _Function[Any]:
     "Please use timer_sync_conf or timer_async_conf for type hints."

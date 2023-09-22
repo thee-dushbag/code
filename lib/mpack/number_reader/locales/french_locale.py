@@ -10,20 +10,20 @@ BASIC_NUMBERS = {
     6: "six",
     7: "sept",
     8: "huit",
-    9: "neuf"
+    9: "neuf",
 }
 
 TENS_UNIQUE = {
-    11: 'onze',
-    12: 'donze',
-    13: 'treize',
-    14: 'quatorze',
-    15: 'quinze',
-    16: 'seize',
+    11: "onze",
+    12: "donze",
+    13: "treize",
+    14: "quatorze",
+    15: "quinze",
+    16: "seize",
 }
 
 TENS = {
-    10: 'dix',
+    10: "dix",
     20: "vingt",
     30: "trente",
     40: "quarante",
@@ -34,19 +34,11 @@ TENS = {
     90: "nonante",
 }
 
-SPECIALS = {
-    'conj': 'et',
-    'tens_conj': '-',
-    '.': 'virgule'
-}
+SPECIALS = {"conj": "et", "tens_conj": "-", ".": "virgule"}
 
-OTHERS = {
-    -1: 'cent',
-    0: '',
-    1: 'mille',
-    2: 'million',
-    3: 'milliard'
-}
+OTHERS = {-1: "cent", 0: "", 1: "mille", 2: "million", 3: "milliard"}
 
-context = DefaultContext(numbers={**BASIC_NUMBERS, **TENS_UNIQUE, **TENS}, grpmaps={**OTHERS})
+context = DefaultContext(
+    numbers={**BASIC_NUMBERS, **TENS_UNIQUE, **TENS}, grpmaps={**OTHERS}
+)
 context.addspecial(**SPECIALS)

@@ -1,5 +1,6 @@
 import asyncio
 from asyncio import StreamReader, StreamWriter
+
 import uvloop
 
 
@@ -16,5 +17,5 @@ async def main():
     await server.serve_forever()
 
 
-uvloop.install() #A
+uvloop.install()  # A
 asyncio.run(main())

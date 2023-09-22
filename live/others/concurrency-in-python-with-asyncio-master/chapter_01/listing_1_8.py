@@ -1,10 +1,11 @@
-import time
 import threading
+import time
+
 import requests
 
 
 def read_example() -> None:
-    response = requests.get('https://www.example.com')
+    response = requests.get("https://www.example.com")
     print(response.status_code)
 
 
@@ -16,11 +17,11 @@ thread_start = time.time()
 thread_1.start()
 thread_2.start()
 
-print('All threads running!')
+print("All threads running!")
 
 thread_1.join()
 thread_2.join()
 
 thread_end = time.time()
 
-print(f'Running with threads took {thread_end - thread_start:.4f} seconds.')
+print(f"Running with threads took {thread_end - thread_start:.4f} seconds.")

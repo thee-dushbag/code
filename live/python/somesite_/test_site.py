@@ -1,8 +1,9 @@
 from typing import Any, Callable, Coroutine, cast
-from aiohttp import web
-from jinja2.utils import Namespace
-from jinja2 import Environment, FileSystemLoader
+
 import aiohttp_jinja2 as aji
+from aiohttp import web
+from jinja2 import Environment, FileSystemLoader
+from jinja2.utils import Namespace
 
 APP_KEY = "My Fucking AppKey"
 
@@ -21,7 +22,7 @@ def page_template(page_name: str, app_key: str | None = None):
                 text: str = main_page.render(
                     page=page, data=Namespace(**data, request=request)
                 )
-                return web.Response(text=text, content_type='text/html')
+                return web.Response(text=text, content_type="text/html")
 
             return receive_request
 
@@ -40,34 +41,36 @@ async def index(req: web.Request):
     return {"name": "Simon Nganga"}
 
 
-@routes.post('/login', name='login')
+@routes.post("/login", name="login")
 async def login(req: web.Request):
     data = await req.post()
-    username = data['username']
-    password = data['password']
+    username = data["username"]
+    password = data["password"]
     print(f"Login Attempt: {username=} {password=}")
-    return web.HTTPSeeOther('/')
+    return web.HTTPSeeOther("/")
 
 
-@routes.post('/upload_', name='file_uploa')
+@routes.post("/upload_", name="file_uploa")
 async def upload_file(req: web.Request):
     data = await req.post()
-    file = cast(web.FileField, data['file'])
-    username = cast(str, data['username'])
+    file = cast(web.FileField, data["file"])
+    username = cast(str, data["username"])
     print(f"File Uploaded: {username=} {file=} {type(file)=}")
-    return web.HTTPSeeOther('/')
+    return web.HTTPSeeOther("/")
 
-@routes.post('/upload', name='file_upload')
+
+@routes.post("/upload", name="file_upload")
 async def upload_file_multipart(req: web.Request):
     fields = await req.multipart()
-    username, file = '', ''
+    username, file = "", ""
     async for field in fields:
-        if field.name == 'username':
+        if field.name == "username":
             username = await field.text()
-        if field.name == 'file':
+        if field.name == "file":
             file = field.filename
     print(f"File Uploaded: {username=} {file=} {type(file)=}")
-    return web.HTTPSeeOther('/')
+    return web.HTTPSeeOther("/")
+
 
 app = web.Application()
 env = aji.setup(app, loader=loader, app_key=APP_KEY)

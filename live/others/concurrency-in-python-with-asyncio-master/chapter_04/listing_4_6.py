@@ -1,7 +1,9 @@
 import asyncio
+
 import aiohttp
-from __init__ import fetch_status
 from util import async_timed
+
+from __init__ import fetch_status
 
 
 @async_timed()

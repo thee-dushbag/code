@@ -1,5 +1,8 @@
-import strawberry as straw, typing as ty
+import typing as ty
+
+import strawberry as straw
 from strawberry.types import ExecutionContext
+
 
 class Schema(straw.Schema):
     def process_errors(

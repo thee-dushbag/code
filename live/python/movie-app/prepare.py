@@ -1,6 +1,7 @@
-from pathlib import Path
-from moviepy.editor import VideoFileClip
 import asyncio as aio
+from pathlib import Path
+
+from moviepy.editor import VideoFileClip
 
 CONTENT_DIR = Path.home() / "Content"
 RESOURCE_DIR = CONTENT_DIR / ".bin" / "resources"
@@ -27,10 +28,8 @@ def create_thumbnails(movies: list[Path]):
 
 async def create_previews(movies: list[Path]):
     from mpack.preview import Previews
-    not_found = list(
-        mov for mov in movies
-        if not (PREVIEW_DIR / mov.name).exists()
-    )
+
+    not_found = list(mov for mov in movies if not (PREVIEW_DIR / mov.name).exists())
     if not not_found:
         return
     previews = Previews(not_found, PREVIEW_DIR)

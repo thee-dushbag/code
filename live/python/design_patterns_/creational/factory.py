@@ -1,6 +1,6 @@
 # type: ignore
 
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 
 
 class Exporter(ABC):
@@ -114,6 +114,7 @@ class MovieLoversFactory(ExporterFactory):
     def audio_exporter(self):
         return LowAudioExporter()
 
+
 def user_pr(values: dict[str, str]) -> int:
     value = ""
     while not value in values:
@@ -130,4 +131,3 @@ def convert_n_export(factory: ExporterFactory) -> None:
     video_exporter.export()
     audio_exporter.convert()
     audio_exporter.export()
-

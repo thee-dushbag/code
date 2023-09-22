@@ -13,8 +13,8 @@ demonstrates how prototypes can be cloned
 to create independent instances."""
 
 
-from typing import Any, Callable, Generic, Protocol, Self, TypeGuard, TypeVar
 import copy
+from typing import Any, Callable, Generic, Protocol, Self, TypeGuard, TypeVar
 
 T = TypeVar("T")
 

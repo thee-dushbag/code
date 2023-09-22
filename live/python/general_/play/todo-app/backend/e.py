@@ -1,14 +1,5 @@
-from o import (
-    Application,
-    RouteTableDef,
-    MiddlewareChain,
-    Request,
-    Response,
-    ANotFound,
-    AOKRedirect,
-    APartialContent,
-    ANotAuthorized,
-)
+from o import (ANotAuthorized, ANotFound, AOKRedirect, APartialContent,
+               Application, MiddlewareChain, Request, Response, RouteTableDef)
 
 routes = RouteTableDef()
 middle = MiddlewareChain()
@@ -28,9 +19,9 @@ def catch_404(req, handler):
 def auth(req, handler):
     user, passwd = "username", "password"
     if user not in req:
-        raise ANotAuthorized(f'{user} not found')
+        raise ANotAuthorized(f"{user} not found")
     if passwd not in req:
-        raise ANotAuthorized(f'{passwd} not found')
+        raise ANotAuthorized(f"{passwd} not found")
     return handler(req)
 
 
@@ -63,9 +54,7 @@ def greet(req: Request):
 
 app = Application(routes, middle)
 
-req = Request(
-    path="hello", name="simon nganga", password="myPassword5052"
-)
+req = Request(path="hello", name="simon nganga", password="myPassword5052")
 req.app = app
 print(req.resolve())
 req.path = "greet"

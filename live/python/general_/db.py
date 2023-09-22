@@ -1,6 +1,7 @@
-import sqlalchemy as sa
-from random import randint
 from pprint import pprint
+from random import randint
+
+import sqlalchemy as sa
 
 
 def phone():
@@ -170,5 +171,9 @@ for row in r:
 # print(r.fetchall())
 
 cols = (users.c.name, sa.func.sum(products.c.unit_cost * orders.c.quantity))
-q = sa.select(*cols).select_from(orders.join(products).join(users)).group_by(users.c.uid)
+q = (
+    sa.select(*cols)
+    .select_from(orders.join(products).join(users))
+    .group_by(users.c.uid)
+)
 r = conn.execute(q)
