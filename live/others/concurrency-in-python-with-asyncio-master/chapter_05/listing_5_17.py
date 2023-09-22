@@ -1,5 +1,6 @@
 import asyncpg
 import asyncio
+from __init__ import cred
 
 
 async def take(generator, to_take: int):
@@ -12,11 +13,7 @@ async def take(generator, to_take: int):
 
 
 async def main():
-    connection = await asyncpg.connect(host='127.0.0.1',
-                                       port=5432,
-                                       user='postgres',
-                                       database='products',
-                                       password='password')
+    connection = await asyncpg.connect(**cred)
     async with connection.transaction():
         query = 'SELECT product_id, product_name from product'
         product_generator = connection.cursor(query)

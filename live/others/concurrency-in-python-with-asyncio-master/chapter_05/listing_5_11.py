@@ -1,14 +1,11 @@
 import asyncio
 import asyncpg
 import logging
+from __init__ import cred
 
 
 async def main():
-    connection = await asyncpg.connect(host='127.0.0.1',
-                                       port=5432,
-                                       user='postgres',
-                                       database='products',
-                                       password='password')
+    connection = await asyncpg.connect(**cred)
     async with connection.transaction():
         await connection.execute("INSERT INTO brand VALUES(DEFAULT, 'my_new_brand')")
 

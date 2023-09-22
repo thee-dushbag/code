@@ -1,13 +1,10 @@
 import asyncio
 import asyncpg
+from __init__ import cred
 
 
 async def main():
-    connection = await asyncpg.connect(host='127.0.0.1',
-                                       port=5432,
-                                       user='postgres',
-                                       database='products',
-                                       password='password')
+    connection = await asyncpg.connect(**cred)
 
     query = 'SELECT product_id, product_name FROM product'
     async with connection.transaction():

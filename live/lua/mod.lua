@@ -38,7 +38,7 @@ M.getnames = function(n)
 end
 
 M.tabledata = function()
-  data = {
+  local data = {
     name = 'Simon Nganga',
     age = 20,
     school = 'Havard'
@@ -47,7 +47,7 @@ M.tabledata = function()
 end
 
 M.daysprint = function()
-  days = {
+  local days = {
     "Sunday",
     "Monday",
     "Tuesday",
@@ -119,12 +119,12 @@ M.structures = function()
 
   ----- Generic For: Mainly used to traverse data in a container(table).
   -- Consider some data
-  numbers = { 9, 8, 7, 6, 5, 4, 3, 2, 1 }
+  local numbers = { 9, 8, 7, 6, 5, 4, 3, 2, 1 }
   for index, value in ipairs(numbers) do
     print("numbers['" .. index .. "']: " .. value)
   end
 
-  data = {
+  local data = {
     name = 'Simon Nganga',
     age = 20,
     school = 'Jkuat University'
@@ -166,20 +166,20 @@ M.stringtypes = function()
     String
     Three
   ]]
-  function stype(args)
+  local function stype(args)
     for _, arg in ipairs(args) do
       print("Typeof '" .. arg .. "': " .. type(arg))
     end
   end
 
-  stype({ sstr, dstr, mstr })
+  stype{ sstr, dstr, mstr }
 end
 
 M.multfunc = function()
-  function square(number)
+  local function square(number)
     return number, number ^ 2
   end
-
+  local number, squared
   for i = 1, 10 do
     number, squared = square(i)
     print(number .. " ^ 2 = " .. squared)
@@ -218,9 +218,9 @@ end
 
 M.multargfuncr = function()
   -- Lua code...
-  function add(...)
+  local function add(...)
     local init = 0
-    count = select('#', ...)                -- get the number of passed varargs
+    local count = select('#', ...)                -- get the number of passed varargs
     for index, value in ipairs { ... } do
       print("arguments[" .. index .. "]: " .. value)
       init = init + value

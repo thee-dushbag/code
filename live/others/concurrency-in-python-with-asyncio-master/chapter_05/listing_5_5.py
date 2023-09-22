@@ -2,6 +2,7 @@ import asyncpg
 import asyncio
 from typing import Any, List, Tuple, Union
 from random import sample
+from __init__ import cred
 
 
 def load_common_words() -> List[str]:
@@ -21,11 +22,7 @@ async def insert_brands(common_words, connection) -> int:
 
 async def main():
     common_words = load_common_words()
-    connection = await asyncpg.connect(host='127.0.0.1',
-                                       port=5432,
-                                       user='postgres',
-                                       database='products',
-                                       password='password')
+    connection = await asyncpg.connect(**cred)
     await insert_brands(common_words, connection)
 
 

@@ -2,7 +2,8 @@ import asyncio
 import asyncpg
 from random import randint, sample
 from typing import List, Tuple
-from chapter_05.listing_5_5 import load_common_words
+from listing_5_5 import load_common_words
+from __init__ import cred
 
 
 def gen_products(common_words: List[str],
@@ -31,11 +32,7 @@ def gen_skus(product_id_start: int,
 
 async def main():
     common_words = load_common_words()
-    connection = await asyncpg.connect(host='127.0.0.1',
-                                       port=5432,
-                                       user='postgres',
-                                       database='products',
-                                       password='password')
+    connection = await asyncpg.connect(**cred)
 
     product_tuples = gen_products(common_words,
                                   brand_id_start=1,

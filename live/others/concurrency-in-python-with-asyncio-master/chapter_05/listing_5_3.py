@@ -1,16 +1,11 @@
 import asyncpg
 import asyncio
 from chapter_05.listing_5_2 import *
+from __init__ import cred
 
 
 async def main():
-    connection: asyncpg.Connection = await asyncpg.connect(
-        host="127.0.0.1",
-        port=5432,
-        user="postgres",
-        database="products",
-        password="password",
-    )
+    connection: asyncpg.Connection = await asyncpg.connect(**cred)
     statements = [
         CREATE_BRAND_TABLE,
         CREATE_PRODUCT_TABLE,

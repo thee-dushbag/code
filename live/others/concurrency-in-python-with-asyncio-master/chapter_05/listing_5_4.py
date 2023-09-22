@@ -2,14 +2,10 @@ import asyncpg
 import asyncio
 from asyncpg import Record
 from typing import List
-
+from __init__ import cred
 
 async def main():
-    connection = await asyncpg.connect(host='127.0.0.1',
-                                       port=5432,
-                                       user='postgres',
-                                       database='products',
-                                       password='password')
+    connection = await asyncpg.connect(**cred)
     await connection.execute("INSERT INTO brand VALUES(DEFAULT, 'Levis')")
     await connection.execute("INSERT INTO brand VALUES(DEFAULT, 'Seven')")
 
