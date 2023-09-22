@@ -1,6 +1,6 @@
+from aiohttp import web
 from mpack import aiohttp_helpers as ah
 from views import setup as views_setup
-from aiohttp import web
 
 
 async def application(*_, **__):

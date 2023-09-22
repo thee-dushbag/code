@@ -1,7 +1,11 @@
-import strawberry as straw, typing as ty, contextlib
+import contextlib
+import typing as ty
+
 import schema._defs as defs
-from strawberry.types import Info
+import strawberry as straw
 from strawberry.file_uploads import Upload
+from strawberry.types import Info
+
 
 def _read_file(text_file: Upload) -> str:
     print(f"Text FILE: {text_file!r}")

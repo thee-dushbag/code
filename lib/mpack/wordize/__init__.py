@@ -39,13 +39,9 @@ GROUPS = {0: "", 1: "thousand", 2: "million", 3: "billion", 4: "quadtillion"}
 
 SPECIALS = {".": "point", "cond": "and", "100": "hundred"}
 
-from .towords import (
-    Context,
-    Symbol,
-    Wordizer,
-    NumberSpliter,
-)
 from itertools import chain
+
+from .towords import Context, NumberSpliter, Symbol, Wordizer
 
 _context = Context()
 

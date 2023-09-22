@@ -1,7 +1,9 @@
-from aiohttp_security.abc import AbstractAuthorizationPolicy
-from aiohttp_security import SessionIdentityPolicy, setup as security_setup
 from aiohttp import web
+from aiohttp_security import SessionIdentityPolicy
+from aiohttp_security import setup as security_setup
+from aiohttp_security.abc import AbstractAuthorizationPolicy
 from model import Database
+
 
 class UserAuthentication(AbstractAuthorizationPolicy):
     def __init__(self, db: Database) -> None:
@@ -12,6 +14,7 @@ class UserAuthentication(AbstractAuthorizationPolicy):
 
     async def authorized_userid(self, identity):
         return
+
 
 def setup(app: web.Application, db: Database):
     auth = UserAuthentication(db)

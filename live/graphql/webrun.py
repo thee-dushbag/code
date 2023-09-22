@@ -1,8 +1,9 @@
-from uvloop import install as install_uvloop
-from main import application
-from aiohttp import web
 from os import getenv
 from sys import argv
+
+from aiohttp import web
+from main import application
+from uvloop import install as install_uvloop
 
 PORT = 5052
 STATICS_HOST = getenv("STATICS_HOST")

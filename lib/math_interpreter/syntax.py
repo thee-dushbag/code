@@ -1,17 +1,21 @@
 # type: ignore
-from typing import Callable
+from typing import Callable, Protocol
+
 from math_interpreter.context import Context, SymbolType
 from math_interpreter.parse_tree import StringLike
-from typing import Protocol
+
 
 class ValueType(Protocol):
     value: int = 1
     symbol: int = 2
 
-class ValueChecker(Protocol):
-    def __init__(self, values: str) -> None: pass
-    def is_defined(self, val) -> bool: pass
 
+class ValueChecker(Protocol):
+    def __init__(self, values: str) -> None:
+        pass
+
+    def is_defined(self, val) -> bool:
+        pass
 
 
 class LexicalAnalyzer:
@@ -37,7 +41,7 @@ class OpCrusher:
     def __init__(self, context: Context, template: str) -> None:
         self.context: Context = context
         self.template = template
-    
+
     def resolve_dblsym(self, tokens) -> None:
         targets = []
         prev = None
@@ -49,7 +53,7 @@ class OpCrusher:
         while targets:
             cur = targets.pop(0)
             rside = tokens[cur + 1]
-            tokens[cur] = self.template.format(lside='', rside=rside, symb=tokens[cur])
+            tokens[cur] = self.template.format(lside="", rside=rside, symb=tokens[cur])
 
     def crush(self, tokens: list[str], symb: str) -> str:
         self.resolve_dblsym(tokens)
@@ -58,49 +62,55 @@ class OpCrusher:
         return tokens
 
     def _crush(self, tokens: str, symb: str) -> str:
-        cache:list[str] = []
+        cache: list[str] = []
         for index, val in enumerate(tokens):
             if val != symb:
                 cache.append(val)
-            else: break
+            else:
+                break
         lside = None
-        if cache: lside = cache[-1]
+        if cache:
+            lside = cache[-1]
         rside = tokens[index + 1]
         if self.context.is_defined(lside):
             lside = None
         else:
-            if cache: cache.pop()
-        temp = self.template.format(lside=lside if lside else '', symb=symb, rside=rside)
+            if cache:
+                cache.pop()
+        temp = self.template.format(
+            lside=lside if lside else "", symb=symb, rside=rside
+        )
         cache.append(temp)
         if (index + 2) < len(tokens):
-            cache.extend(tokens[index + 2:])
+            cache.extend(tokens[index + 2 :])
         return cache
-    
+
     def _update(self, tokens: list[str], val: str) -> None:
         if self.context.is_defined(val):
             tokens.append(val)
-            tokens.append('')
+            tokens.append("")
         else:
             if tokens:
                 tokens[-1] += val
             else:
                 tokens.append(val)
 
-    def breaker(self, string: str)->list[str]:
-        string :StringLike = StringLike(string)
+    def breaker(self, string: str) -> list[str]:
+        string: StringLike = StringLike(string)
         tokens: list[str] = []
         while string.string:
             ch = string.pop(0)
-            if ch == ' ': continue
+            if ch == " ":
+                continue
             self._update(tokens, ch)
-        return [tok for tok in tokens if tok != '']
+        return [tok for tok in tokens if tok != ""]
 
 
 class SyntaxBreaker:
     def __init__(self, symbols: Context, values: ValueChecker) -> None:
         self.context: Context = symbols
         self.values: ValueChecker = values
-        self.opcrusher:OpCrusher= OpCrusher(symbols, '{symb}({lside},{rside})')
+        self.opcrusher: OpCrusher = OpCrusher(symbols, "{symb}({lside},{rside})")
 
     def analyze(self, mathstr: str) -> str:
         tokens = self.opcrusher.breaker(mathstr)

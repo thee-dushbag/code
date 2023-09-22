@@ -1,9 +1,8 @@
-from sqlalchemy.ext.automap import automap_base, AutomapBase
-from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
-from sqlalchemy.exc import IntegrityError
 from db_orm import print_table, users_order_query
-
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.automap import AutomapBase, automap_base
+from sqlalchemy.orm import sessionmaker
 
 engine: sa.Engine = sa.create_engine("sqlite:///db.sqlite3", echo=False)
 Base: AutomapBase = automap_base()

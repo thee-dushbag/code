@@ -1,7 +1,8 @@
-from dataclasses import dataclass, field, asdict
-from random import choice, randint
+from dataclasses import asdict, dataclass, field
 from math import floor
-from pydantic import BaseModel, Field, EmailStr
+from random import choice, randint
+
+from pydantic import BaseModel, EmailStr, Field
 
 
 def mrange_id(start: int = 0, step: int = 1):

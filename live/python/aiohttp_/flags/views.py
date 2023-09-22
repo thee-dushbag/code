@@ -1,16 +1,15 @@
-from aiohttp import web
-from typing import cast
-import db as _db, security as _sc
 from pathlib import Path
-from aiohttp_mako import setup as mako_setup, template as _temp
+from typing import cast
+
+import db as _db
+import security as _sc
+from aiohttp import web
+from aiohttp_mako import setup as mako_setup
+from aiohttp_mako import template as _temp
+from aiohttp_security import (check_authorized, check_permission, forget,
+                              remember)
 from mpack import flags
-from mpack.aiohttp_helpers.mako_ import template_handler, TemplateHandler
-from aiohttp_security import (
-    check_authorized,
-    check_permission,
-    remember,
-    forget,
-)
+from mpack.aiohttp_helpers.mako_ import TemplateHandler, template_handler
 
 # constants
 WORKING_DIR = Path(__file__).parent

@@ -3,9 +3,9 @@ import asyncio
 
 @asyncio.coroutine
 def coroutine():
-    print('Sleeping!')
+    print("Sleeping!")
     yield from asyncio.sleep(1)
-    print('Finished!')
+    print("Finished!")
 
 
 asyncio.run(coroutine())

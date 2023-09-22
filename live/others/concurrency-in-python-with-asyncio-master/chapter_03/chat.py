@@ -1,11 +1,12 @@
+import socket
 from collections.abc import Iterable
 from concurrent.futures import Future, ThreadPoolExecutor, wait
 from dataclasses import dataclass, field
-import socket
 from threading import Lock
 from typing import Any, Callable, Optional
 
 # Threaded ChatRoom
+
 
 class Clients(list[socket.socket]):
     _lock = Lock()
@@ -61,7 +62,8 @@ class ClientWrapper:
             print("Client Wrapper running")
             while True:
                 data = self.client.recv(1024)
-                if not data.strip(): continue
+                if not data.strip():
+                    continue
                 self.broadcast(data)
         except BaseException as e:
             print(f"Client Wrapper error: {str(e)!r}")

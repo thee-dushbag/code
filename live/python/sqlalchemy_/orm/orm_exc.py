@@ -1,7 +1,7 @@
-import orm_model as tbl
 import db_orm as db
+import orm_model as tbl
 import sqlalchemy as sa
-from sqlalchemy.exc import MultipleResultsFound, IntegrityError
+from sqlalchemy.exc import IntegrityError, MultipleResultsFound
 
 ses = db.session
 

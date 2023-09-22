@@ -60,7 +60,7 @@ class ClassHandler:
 handler = ClassHandler()
 
 
-@routes.view('/interact')
+@routes.view("/interact")
 class Interact(web.View):
     async def get(self):
         return web.Response(text="Interact.get method")
@@ -73,6 +73,7 @@ class Interact(web.View):
 
     async def patch(self):
         return web.Response(text="Interact.patch method")
+
 
 app = web.Application()
 # app.add_routes([web.get('/', hello)])

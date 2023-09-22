@@ -1,13 +1,12 @@
-from os import getenv
-from uvloop import install as install_uvloop
-from pathlib import Path
-from aiohttp import hdrs
-from mpack.aiohttp_helpers import cors_setup, dev_setup
-from aiohttp import web
-from faker import Faker
-from typing import Any
 import json
+from os import getenv
+from pathlib import Path
+from typing import Any
 
+from aiohttp import hdrs, web
+from faker import Faker
+from mpack.aiohttp_helpers import cors_setup, dev_setup
+from uvloop import install as install_uvloop
 
 install_uvloop()
 CUR_DIR = Path(__file__).parent
@@ -87,7 +86,8 @@ async def app_factory():
     dev_setup(app)
     return app
 
-if __name__ == '__main__':
-    HOST = getenv('STATICS_HOST')
-    PORT = int(getenv('STATICS_PORT') or 9944)
+
+if __name__ == "__main__":
+    HOST = getenv("STATICS_HOST")
+    PORT = int(getenv("STATICS_PORT") or 9944)
     web.run_app(app_factory(), host=HOST, port=PORT)

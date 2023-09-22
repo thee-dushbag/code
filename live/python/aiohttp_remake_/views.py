@@ -1,20 +1,17 @@
 from typing import Callable, Mapping
+
+import model_helpers as mh
 from aiohttp import web
 from aiohttp.web_request import Request
-from yarl import URL
+from aiohttp_security import check_authorized, is_anonymous, remember
 from utils import url_for
-import model_helpers as mh
-from aiohttp_security import (
-    check_authorized,
-    is_anonymous,
-    remember,
-)
+from yarl import URL
 
 url: Callable[..., URL]
 routes = web.RouteTableDef()
 
 
-@routes.view("/notes", name='note')
+@routes.view("/notes", name="note")
 class NoteView(web.View):
     def __init__(self, request: Request) -> None:
         super().__init__(request)
@@ -24,15 +21,16 @@ class NoteView(web.View):
         q = self.request.query.get("user_id", None)
         if q is None:
             raise web.HTTPBadRequest
-        try: user_id = int(q)
+        try:
+            user_id = int(q)
         except ValueError:
             raise web.HTTPBadRequest
         n = mh.get_all_user_public_notes(self.manager, user_id).all()
         notes = [note.todict() for note in n]
         resp = web.json_response(notes)
-        await remember(self.request, resp, 'simon')
+        await remember(self.request, resp, "simon")
         return resp
-    
+
     async def _get_all_notes(self, user_id: int):
         notes = mh.get_all_user_notes(self.manager, user_id).all()
         notes = [note.todict() for note in notes]
@@ -45,42 +43,48 @@ class NoteView(web.View):
         return await self._get_all_notes(user.user_id)  # type:ignore
 
     async def _construct_note(self, src: Mapping, uid):
-        title = src.get('title')
-        text = src.get('text')
-        access_id = src.get('access_id')
+        title = src.get("title")
+        text = src.get("text")
+        access_id = src.get("access_id")
         return mh.Note(title=title, text=text, user_id=uid, access_id=access_id)
 
     async def post(self):
-        user: mh.User = await check_authorized(self.request) #type:ignore
+        user: mh.User = await check_authorized(self.request)  # type:ignore
         data = await self.request.post()
         note: mh.Note = await self._construct_note(data, user.user_id)
         self.manager.add_note(note)
         raise web.HTTPFound(self.request.path)
-    
+
     async def put(self):
-        user: mh.User = await check_authorized(self.request) #type:ignore
-        note_id = self.request.query.get('note_id', None)
+        user: mh.User = await check_authorized(self.request)  # type:ignore
+        note_id = self.request.query.get("note_id", None)
         if note_id is None:
             raise web.HTTPBadRequest
-        try: note_id = int(note_id)
-        except ValueError: raise web.HTTPBadRequest
+        try:
+            note_id = int(note_id)
+        except ValueError:
+            raise web.HTTPBadRequest
         note = self.manager.get_note_by_id(note_id)
         data = await self.request.post()
-        title = data.get('title', None)
-        text = data.get('text', None)
+        title = data.get("title", None)
+        text = data.get("text", None)
         if note is None:
             raise web.HTTPBadRequest
-        if title: note.title = str(title) #type: ignore
-        if text: note.text = str(text)#type: ignore
+        if title:
+            note.title = str(title)  # type: ignore
+        if text:
+            note.text = str(text)  # type: ignore
         self.manager.session.commit()
 
     async def delete(self):
-        user: mh.User = await check_authorized(self.request) #type:ignore
-        note_id = self.request.query.get('note_id', None)
+        user: mh.User = await check_authorized(self.request)  # type:ignore
+        note_id = self.request.query.get("note_id", None)
         if note_id is None:
             raise web.HTTPBadRequest
-        try: note_id = int(note_id)
-        except ValueError: raise web.HTTPBadRequest
+        try:
+            note_id = int(note_id)
+        except ValueError:
+            raise web.HTTPBadRequest
         note = self.manager.get_note_by_id(note_id)
         if note is None:
             raise web.HTTPBadRequest
@@ -89,7 +93,7 @@ class NoteView(web.View):
         return web.json_response(noted)
 
 
-@routes.view('/users', name='user')
+@routes.view("/users", name="user")
 class UserView(web.View):
     ...
 

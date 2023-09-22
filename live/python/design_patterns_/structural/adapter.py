@@ -1,7 +1,10 @@
 # type: ignore
+import copy
+import json
+import os
 from abc import ABC, abstractmethod
-import json, copy, os
 from typing import Any
+
 
 class DataSource(ABC):
     @abstractmethod
@@ -65,11 +68,14 @@ class IniFormatter(Formatter):
                 current_section[key] = value
         return result
 
+
 class JsonFormatter(Formatter):
-    def format(self: "Formatter", data: dict[str: dict[str, str]]) -> str:
+    def format(self: "Formatter", data: dict[str : dict[str, str]]) -> str:
         return json.dumps(data)
-    def loader(self: "Formatter", data: str) -> dict[str: dict[str: str]]:
+
+    def loader(self: "Formatter", data: str) -> dict[str : dict[str:str]]:
         return json.loads(data)
+
 
 class UserDataCollectorIni(CollectData):
     def __init__(self, formatter: Formatter, source: DataSource, *section: str):
@@ -154,6 +160,7 @@ class MyMixinDataSource(IniFileDataSource, StdOutDataSource):
 
     def read(self: "DataSource", pmt: str = "") -> str:
         return IniFileDataSource.read(self, pmt)
+
 
 if __name__ == "__main__":
     formatter = JsonFormatter()

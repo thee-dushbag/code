@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from random import choice
+
 from bs4 import BeautifulSoup
 from faker import Faker
 from perfectdict import perfect_dict
@@ -46,13 +47,13 @@ def save_all(filepath: str, data: dict, *, overwrite: bool = False):
 
 
 async def get_welcome(content: str, parser: str | None = None):
-    soup = BeautifulSoup(content, parser or 'lxml')
-    welcome = soup.find('h2', attrs={'id': 'welcome'})
-    return welcome.text if welcome else 'Not Welcomed'
+    soup = BeautifulSoup(content, parser or "lxml")
+    welcome = soup.find("h2", attrs={"id": "welcome"})
+    return welcome.text if welcome else "Not Welcomed"
 
 
 def load_users(filename: str, key: str | None = None) -> list[dict]:
     path = Path(filename)
     if path.exists() and path.is_file():
-        return json.loads(path.read_text())[key or 'users']
+        return json.loads(path.read_text())[key or "users"]
     return []

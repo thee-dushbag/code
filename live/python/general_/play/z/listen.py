@@ -1,7 +1,8 @@
-from aiohttp_sse_client.client import EventSource, ClientConnectionError
 import asyncio as aio
 from datetime import timedelta
-from time import time, asctime, localtime
+from time import asctime, localtime, time
+
+from aiohttp_sse_client.client import ClientConnectionError, EventSource
 from yarl import URL
 
 rtime = timedelta(seconds=5)

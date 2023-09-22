@@ -1,4 +1,6 @@
-import strawberry, typing as ty
+import typing as ty
+
+import strawberry
 from strawberry.extensions import SchemaExtension
 from strawberry.permission import BasePermission
 from strawberry.types import ExecutionContext, Info

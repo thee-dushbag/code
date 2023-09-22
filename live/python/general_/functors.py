@@ -1,5 +1,6 @@
 import threading as th
 from typing import Callable
+
 from typing_extensions import Any, Self
 
 
@@ -21,6 +22,7 @@ def my_mul(x: Any, y: Any) -> Any:
 def my_div(x: Any, y: Any) -> Any:
     print(f"{x} / {y} = {x / y}")
     return x / y
+
 
 class SumFunctor:
     def __init__(self, x: Any = 0, y: Any = 0, res: Any | None = None) -> None:

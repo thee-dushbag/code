@@ -1,8 +1,9 @@
-from uvloop import install as install_uvloop
-from mpack.aiohttp_helpers import cors_setup, dev_setup
-from views import setup as views_setup
 from aiohttp import web
 from movies import setup as movie_setup
+from mpack.aiohttp_helpers import cors_setup, dev_setup
+from uvloop import install as install_uvloop
+from views import setup as views_setup
+
 
 async def application() -> web.Application:
     install_uvloop()
@@ -13,8 +14,10 @@ async def application() -> web.Application:
     views_setup(app, mov)
     return app
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     from os import getenv
-    HOST = getenv('MOVIE_HOST')
+
+    HOST = getenv("MOVIE_HOST")
     PORT = int(getenv("MOVIE_PORT") or 5052)
     web.run_app(application(), host=HOST, port=PORT)

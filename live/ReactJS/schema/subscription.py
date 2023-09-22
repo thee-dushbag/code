@@ -1,10 +1,14 @@
+import asyncio as aio
+import typing as ty
+from itertools import count
 from string import Template
-import strawberry as straw, asyncio as aio, typing as ty
+
 import schema._defs as defs
 import schema._schema as scheme
+import strawberry as straw
+from strawberry.subscriptions.protocols.graphql_transport_ws.types import \
+    PingMessage
 from strawberry.types import Info
-from itertools import count
-from strawberry.subscriptions.protocols.graphql_transport_ws.types import PingMessage
 
 
 @straw.type
@@ -33,7 +37,9 @@ class Subscription:
             await aio.sleep(delay or 1)
 
     @straw.subscription
-    async def counter(self, message: str, delay: ty.Optional[float] = None) -> ty.AsyncGenerator[str, None]:
+    async def counter(
+        self, message: str, delay: ty.Optional[float] = None
+    ) -> ty.AsyncGenerator[str, None]:
         template = Template(message)
         delay = delay or 0.5
         for i in count(1):

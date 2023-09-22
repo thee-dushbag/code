@@ -16,7 +16,7 @@ async def main():
     for _ in range(1000):
         tasks = [asyncio.create_task(increment()) for _ in range(100)]
         await asyncio.gather(*tasks)
-        print(f'Counter is {counter}')
+        print(f"Counter is {counter}")
         assert counter == 100
         counter = 0
 

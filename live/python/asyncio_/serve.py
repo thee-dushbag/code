@@ -1,6 +1,7 @@
-from aiohttp import web, hdrs
 import asyncio as aio
-from mpack.aiohttp_helpers import dev_setup, cors_setup
+
+from aiohttp import hdrs, web
+from mpack.aiohttp_helpers import cors_setup, dev_setup
 
 
 async def index(req: web.Request):
@@ -18,8 +19,10 @@ async def application():
     cors_setup(app)
     return app
 
+
 def run():
     web.run_app(application(), host="localhost", port=5052)
+
 
 if __name__ == "__main__":
     run()

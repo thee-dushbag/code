@@ -2,7 +2,6 @@ import asyncio
 
 
 class TaskRunner:
-
     def __init__(self):
         self.loop = asyncio.new_event_loop()
         self.tasks = []
@@ -30,14 +29,12 @@ class TaskRunner:
 if __name__ == "__main__":
 
     def regular_function():
-        print('Hello from a regular function!')
-
+        print("Hello from a regular function!")
 
     async def coroutine_function():
-        print('Running coroutine, sleeping!')
+        print("Running coroutine, sleeping!")
         await asyncio.sleep(1)
-        print('Finished sleeping!')
-
+        print("Finished sleeping!")
 
     runner = TaskRunner()
     runner.add_task(coroutine_function)

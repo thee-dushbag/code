@@ -1,11 +1,13 @@
-#type: ignore
-from .parse_tree import SymbolTree
+# type: ignore
 from .context import Context
+from .parse_tree import SymbolTree
 from .syntax import LexicalAnalyzer, SyntaxBreaker
+
 
 class ValueType:
     value: int = 1
     symbol: int = 2
+
 
 class ValueChecker:
     def __init__(self, values: str) -> None:
@@ -16,6 +18,7 @@ class ValueChecker:
             if not v in self.values:
                 return False
         return True
+
 
 class Interpreter:
     def __init__(self, context: Context, values: ValueChecker) -> None:

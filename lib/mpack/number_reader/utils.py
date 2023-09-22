@@ -1,6 +1,8 @@
-from typing_extensions import Self
 from itertools import zip_longest
-from typing import Iterable, Any
+from typing import Any, Iterable
+
+from typing_extensions import Self
+
 
 class groupinto:
     def __init__(self: Self, iterable: Iterable, size: int = 1) -> None:

@@ -1,7 +1,9 @@
-from aiohttp import web, hdrs
-from strawberry.aiohttp.handlers import GraphQLTransportWSHandler, GraphQLWSHandler
-from strawberry.aiohttp.views import GraphQLView
+from aiohttp import hdrs, web
 from schema import Query, schema
+from strawberry.aiohttp.handlers import (GraphQLTransportWSHandler,
+                                         GraphQLWSHandler)
+from strawberry.aiohttp.views import GraphQLView
+
 
 class DebuggableGraphQLTransportWSHandler(GraphQLTransportWSHandler):
     def get_tasks(self) -> list:
@@ -35,5 +37,8 @@ class MyGraphQLView(GraphQLView):
         await super().get_root_value(request)  # for coverage
         return Query()
 
+
 def setup(app: web.Application, **kwargs):
-    app.router.add_route(hdrs.METH_ANY, '/graphql', MyGraphQLView(schema=schema, **kwargs))
+    app.router.add_route(
+        hdrs.METH_ANY, "/graphql", MyGraphQLView(schema=schema, **kwargs)
+    )

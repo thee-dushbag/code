@@ -1,7 +1,10 @@
-from pathlib import Path
-from mpack.bsize import Bytes
+import dataclasses as dt
+import typing as ty
 from functools import reduce
-import typing as ty, dataclasses as dt, click
+from pathlib import Path
+
+import click
+from mpack.bsize import Bytes
 
 _identity = lambda _, __: None
 _add = lambda x, y: x + y
@@ -23,24 +26,29 @@ class PathSize:
 
     def _dir_size(self, path: Path) -> Bytes:
         blk_size = path.stat().st_blksize if self.block_size else 0
+
         def _size(sub_path: Path) -> Bytes:
             getsize = self._dir_size if sub_path.is_dir() else self._file_size
             size = getsize(sub_path)
             self.operate(sub_path, size)
             return size
+
         sizes = [_size(p) for p in path.iterdir()]
-        if not sizes: return Bytes() + blk_size
+        if not sizes:
+            return Bytes() + blk_size
         return reduce(_add, sizes) + blk_size
 
     def __call__(self, path: Path | str, *, operate: bool = False) -> Bytes:
-        if isinstance(path, str): path = Path(path)
+        if isinstance(path, str):
+            path = Path(path)
         assert path.exists(), f"File Not Found: {path!r}"
         return self.getsize(path, operate=operate)
 
     def getsize(self, path: Path, *, operate: bool = True) -> Bytes:
         getsize = self._dir_size if path.is_dir() else self._file_size
         size = getsize(path)
-        if operate: self.operate(path, size)
+        if operate:
+            self.operate(path, size)
         return size
 
 
@@ -53,6 +61,7 @@ def log_operate(format_spec: str, *, log: bool):
         click.echo(format(size, string))
 
     return operate if log else _identity
+
 
 @click.command
 @click.argument("spath", type=click.Path(exists=True))

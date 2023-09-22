@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Any
 
+
 class mAuto:
     def __set_name__(self, _, name: str):
         self.name = name

@@ -1,11 +1,14 @@
-from ._base import DebuggableGraphQLTransportWSHandler, DebuggableGraphQLWSHandler
+from aiohttp import hdrs, web
 from strawberry.aiohttp.views import GraphQLView
-from .subsription import Subscription
+
+from ._base import (DebuggableGraphQLTransportWSHandler,
+                    DebuggableGraphQLWSHandler)
+from ._schema import Schema
 from .db import setup as db_setup
 from .mutation import Mutation
-from aiohttp import web, hdrs
-from ._schema import Schema
 from .query import Query
+from .subsription import Subscription
+
 
 class MyGraphQLView(GraphQLView):
     graphql_transport_ws_handler_class = DebuggableGraphQLTransportWSHandler
@@ -15,13 +18,11 @@ class MyGraphQLView(GraphQLView):
         await super().get_root_value(request)  # for coverage
         return Query()
 
-_schema = Schema(
-    query=Query,
-    mutation=Mutation,
-    subscription=Subscription
-)
 
-def setup(app: web.Application,* , prefix: str = '/azdev/api', **kwargs):
+_schema = Schema(query=Query, mutation=Mutation, subscription=Subscription)
+
+
+def setup(app: web.Application, *, prefix: str = "/azdev/api", **kwargs):
     endpoint = MyGraphQLView(_schema, **kwargs)
     app.router.add_route(hdrs.METH_ANY, prefix, endpoint)
     return db_setup(app)

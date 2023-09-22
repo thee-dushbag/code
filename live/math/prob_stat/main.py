@@ -1,13 +1,11 @@
-from typing import Sequence
 from random import randint
-import numpy as np
+from typing import Sequence
+
 import matplotlib.pyplot as plt
-from bivariate_data import (
-    pearsons_product_correlation_r1,
-    pearsons_product_correlation_r2,
-    spearman_rank_correlation,
-    linear_regression
-)
+import numpy as np
+from bivariate_data import (linear_regression, pearsons_product_correlation_r1,
+                            pearsons_product_correlation_r2,
+                            spearman_rank_correlation)
 
 weight = 78, 86, 72, 82, 80, 86, 84, 89, 68, 71
 blood_pressure = 140, 160, 134, 144, 180, 176, 174, 178, 128, 132
@@ -29,10 +27,11 @@ xs, ys = grd_pnt_avg, exm_scr
 xs, ys = weight, blood_pressure
 xs, ys = rand_x, rand_y
 xs, ys = sqrs_x, sqrs_y
-xlabel, ylabel = 'Weight', 'Blood Pressure'
-xlabel, ylabel = 'x', 'y'
-xlabel, ylabel = 'Random X value', 'Random Y Value'
-xlabel, ylabel = 'x', 'Sqr(x)'
+xlabel, ylabel = "Weight", "Blood Pressure"
+xlabel, ylabel = "x", "y"
+xlabel, ylabel = "Random X value", "Random Y Value"
+xlabel, ylabel = "x", "Sqr(x)"
+
 
 def compute_correlation_s(lxs, lys):
     plt.scatter(xs, ys)
@@ -62,6 +61,7 @@ def main(argv: Sequence[str]) -> None:
     print(f"Predicter: {y_pred.str}")
     ys_pred = tuple(map(y_pred, xs_tests))
     compute_correlation_s(xs_tests, ys_pred)
+
 
 if __name__ == "__main__":
     from sys import argv

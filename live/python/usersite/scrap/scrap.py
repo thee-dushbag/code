@@ -1,11 +1,12 @@
-import atexit
 import asyncio as aio
-from typing import Sequence
+import atexit
 from dataclasses import asdict
-from faker import Faker
+from typing import Sequence
+
 from createctx import CreateContext
-from utils import get_welcome, save_all, create_user, load_users
-from usersiteclient import UserSiteClient, UserSiteConfig, User
+from faker import Faker
+from usersiteclient import User, UserSiteClient, UserSiteConfig
+from utils import create_user, get_welcome, load_users, save_all
 
 USERS_FILENAME = "users.json"
 users: list[dict] = load_users(USERS_FILENAME)
@@ -64,7 +65,7 @@ async def main(argv: Sequence[str]) -> None:
             async with CreateContext(uclient.login, uclient.logout) as page:
                 print(await get_welcome(page.content.decode()))
                 await delete_user(uclient)
-    #for i in range(10):
+    # for i in range(10):
     #    async with await add_user() as uclient:
     #        async with CreateContext(uclient.login, uclient.logout) as page:
     #                print(await get_welcome(page.content.decode()))

@@ -1,11 +1,14 @@
-from ._nameep import load_json_config, load_yaml_config, run, Context
-from typing import cast
 from pathlib import Path
+from typing import cast
+
 import click
+
+from ._nameep import Context, load_json_config, load_yaml_config, run
 
 _loaders = dict(yaml=load_yaml_config, json=load_json_config)
 _working_dir = Path(__file__).resolve().parent
-_template_dir = _working_dir / 'template'
+_template_dir = _working_dir / "template"
+
 
 class SnEpParam(click.ParamType):
     name = "SnEpParam"
@@ -28,7 +31,7 @@ class SnEpParam(click.ParamType):
 
 @click.group
 def _cli():
-    'Application for renaming unordered episodes in a folder or filelist.'
+    "Application for renaming unordered episodes in a folder or filelist."
 
 
 @_cli.command
@@ -68,24 +71,27 @@ def config(config: click.File, type: str):
     loader = _loaders[type]
     run(loader(cast(str, config)))
 
+
 def _get_template(type: str, bare: bool = False) -> Path:
-    sbare = 'bare.' if bare else ''
-    template = sbare + f'template.{type}'
+    sbare = "bare." if bare else ""
+    template = sbare + f"template.{type}"
     return _template_dir / template
 
+
 @_cli.command
-@click.argument('output', type=click.Path(dir_okay=False))
-@click.option('--type', '-t', type=click.Choice(['json', 'yaml']), default=None)
-@click.option('--bare', '-b', is_flag=True)
+@click.argument("output", type=click.Path(dir_okay=False))
+@click.option("--type", "-t", type=click.Choice(["json", "yaml"]), default=None)
+@click.option("--bare", "-b", is_flag=True)
 def template(output: str, type: str, bare: bool):
     path = Path(output)
     if type is None:
-        if path.suffix == '.json':
-            type = 'json'
-        elif path.suffix in ['.yaml', '.yml']:
-            type = 'yaml'
+        if path.suffix == ".json":
+            type = "json"
+        elif path.suffix in [".yaml", ".yml"]:
+            type = "yaml"
         else:
-            type = 'yaml'
+            type = "yaml"
     file = _get_template(type, bare)
-    if not path.exists(): path.touch()
+    if not path.exists():
+        path.touch()
     path.write_text(file.read_text())

@@ -1,5 +1,5 @@
 from collections import deque
-from typing import Callable, Deque, Awaitable
+from typing import Awaitable, Callable, Deque
 
 
 class MessageStore:

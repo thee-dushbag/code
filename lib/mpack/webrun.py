@@ -1,4 +1,4 @@
-'''
+"""
 Module exports a terminal command that can be used a below.
 Example:
     >>> ls
@@ -21,16 +21,17 @@ Example:
     Serving on http://localhost:9080.
     (Press Ctrl-C to exit)
     ...
-'''
+"""
 
-from uvloop import install as install_uvloop
-from click.core import Context, Parameter
-from typing import Callable, Coroutine
-from importlib import import_module
 from dataclasses import dataclass
+from importlib import import_module
 from types import ModuleType
-from aiohttp import web
+from typing import Callable, Coroutine
+
 import click
+from aiohttp import web
+from click.core import Context, Parameter
+from uvloop import install as install_uvloop
 
 
 @dataclass
@@ -74,7 +75,7 @@ class TargetParam(click.ParamType):
 
     @property
     def help(self) -> str:
-        return self.__doc__ or ''
+        return self.__doc__ or ""
 
     def convert(
         self, value: str, param: Parameter | None, ctx: Context | None
@@ -88,7 +89,8 @@ class TargetParam(click.ParamType):
         if ":" not in value:
             module, factory = value, "application"
         module, _, factory, *_ = value.partition(":")
-        if not factory: factory = 'application'
+        if not factory:
+            factory = "application"
         module, _, package = module.partition(".")
         module = import_module(module, package=package or None)
         factory = getattr(module, factory)
@@ -96,11 +98,16 @@ class TargetParam(click.ParamType):
 
 
 @click.command
-@click.option("--bind", "-b", type=BindParam(), help=BindParam.__doc__, default=BindArg('localhost', 8080))
+@click.option(
+    "--bind",
+    "-b",
+    type=BindParam(),
+    help=BindParam.__doc__,
+    default=BindArg("localhost", 8080),
+)
 @click.argument("target", type=TargetParam())
 def main(bind: BindArg, target: TargetArg):
-    '''Serve an aiohttp application {TARGET} <[package.]module>:<app_factory> on {BIND} <host>:<port>
-    '''
+    """Serve an aiohttp application {TARGET} <[package.]module>:<app_factory> on {BIND} <host>:<port>"""
     try:
         install_uvloop()
         web.run_app(target.target(), host=bind.host, port=bind.port)
@@ -109,5 +116,6 @@ def main(bind: BindArg, target: TargetArg):
     except Exception as e:
         click.echo(str(e), err=True)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

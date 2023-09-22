@@ -1,5 +1,6 @@
-import numpy as np
 import time
+
+import numpy as np
 
 data_points = 4000000000
 rows = 50

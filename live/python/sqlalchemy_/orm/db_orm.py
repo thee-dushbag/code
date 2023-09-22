@@ -1,11 +1,11 @@
 from dataclasses import asdict
+
 import db_orm_data as dat
 import orm_model as tbl
 import sqlalchemy as sa
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
-
 
 console = Console()
 session = tbl.Session()

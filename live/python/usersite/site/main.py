@@ -1,13 +1,13 @@
-from aiohttp import web
-import aiohttp_jinja2 as aji
 from pathlib import Path
-from jinja2 import FileSystemLoader
-from usite import UserSite, USERSITE
-from usermanager import UserManager
-from model import init_db
-from views import routes
-from sqlalchemy.orm import Session as _Session
 
+import aiohttp_jinja2 as aji
+from aiohttp import web
+from jinja2 import FileSystemLoader
+from model import init_db
+from sqlalchemy.orm import Session as _Session
+from usermanager import UserManager
+from usite import USERSITE, UserSite
+from views import routes
 
 FORMAT = "utf-8"
 TMP_PATH = Path.cwd() / "templates"

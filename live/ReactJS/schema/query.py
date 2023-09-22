@@ -1,6 +1,12 @@
-import strawberry as straw, typing as ty, asyncio as aio, base64
+import asyncio as aio
+import base64
+import typing as ty
+
 import schema._defs as defs
+import strawberry as straw
+
 # from ._trash import Query as QueryOne
+
 
 @straw.type
 class Query:

@@ -1,14 +1,15 @@
+import json as js
 from itertools import chain
 from pprint import pprint
 from random import choice, randint
 from typing import Sequence
+
 import sqlalchemy as sa
-from sqlalchemy.orm import declarative_base, sessionmaker
 from pydantic import BaseModel, EmailStr, Field
-import json as js
+from rich.console import Console
 from rich.table import Table
 from rich.text import Text
-from rich.console import Console
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 console = Console()
 
@@ -67,6 +68,7 @@ class users(Base):
 
     def __str__(self):
         return f"users(uid={self.uid}, name={self.name!r} password={self.password!r} email={self.email!r}, phone={self.phone!r})"
+
 
 class products(Base):
     __tablename__ = "products"
@@ -135,7 +137,7 @@ def main(argv: Sequence[str]) -> None:
         table.add_row(*rrow)
     console.print(table)
 
-    total_sum = sa.func.sum(total).label('Total Price')
+    total_sum = sa.func.sum(total).label("Total Price")
 
     cols = uname, item_fq, order_fq, total_sum
     q = session.query(*cols)

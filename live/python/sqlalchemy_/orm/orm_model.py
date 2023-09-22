@@ -1,6 +1,5 @@
-from sqlalchemy.orm import declarative_base, sessionmaker
 import sqlalchemy as sa
-
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 metadata = sa.MetaData()
 Base = declarative_base(metadata=metadata)

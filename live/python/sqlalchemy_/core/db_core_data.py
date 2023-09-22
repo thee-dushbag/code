@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
-from random import choice, randint
 from math import floor
+from random import choice, randint
 
 
 def mrange_id(start: int = 0, step: int = 1):

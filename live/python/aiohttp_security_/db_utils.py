@@ -1,9 +1,13 @@
-from typing import NamedTuple, Optional
-import attrs, db, exc
-from more_itertools import flatten
 from itertools import count
+from typing import NamedTuple, Optional
+
+import attrs
+import db
+import exc
+from more_itertools import flatten
 
 START_UID = 1
+
 
 @attrs.define(slots=True)
 class UserBundle:
@@ -26,12 +30,12 @@ class UserBundle:
     @property
     def private_resources(self):
         return self._get_perm_resources(db.Permission.PRIVATE)
-    
+
     def leave_group(self, gid):
         groups = set(self.user.groups)
         groups.remove(gid)
         self.user.groups = list(groups)
-    
+
     def member_of(self, gid):
         self.manager.get_group(gid)
         return gid in self.user.groups
@@ -53,7 +57,10 @@ class GroupBundle:
 
     def _get_group_resources(self):
         userbuns = [self.manager.get_user_bundle(u) for u in self.group.members]
-        resrcs = [self.UserResource(u.protected_resources, u.public_resources) for u in userbuns]
+        resrcs = [
+            self.UserResource(u.protected_resources, u.public_resources)
+            for u in userbuns
+        ]
         return resrcs
 
     def members(self):
@@ -71,33 +78,35 @@ class GroupBundle:
     def public_resources(self):
         r = [f.public for f in self._get_group_resources()]
         return list(flatten(r))
-    
+
     @property
     def protected_resources(self):
         r = [f.protected for f in self._get_group_resources()]
         return list(flatten(r))
-    
+
     def remove_user(self, uid):
-        if not self.is_member(uid): return
+        if not self.is_member(uid):
+            return
         self.group.members.remove(uid)
-    
+
     @property
     def resources(self):
         return list(flatten([self.protected_resources, self.public_resources]))
 
+
 @attrs.define(slots=True)
 class UserGroupBundle:
-    'Do not instantiate this yourself, use the content manager'
-    manager: 'DatabaseContentManager'
+    "Do not instantiate this yourself, use the content manager"
+    manager: "DatabaseContentManager"
     user_bundle: UserBundle
     group_bundles: list[GroupBundle]
-    
+
     def delete_resource(self, rid: int):
         resrc = self.manager.get_resource(rid)
         if resrc.owner != self.user_bundle.user.uid:
             raise exc.DBResourceNotYours(resrc)
         self.manager.delete_resource(rid)
-    
+
     def update_resource(self, rid: int, resource: str, perm=None):
         p = perm or db.Permission.PROTECTED
         resrc = self.manager.get_resource(rid)
@@ -105,7 +114,7 @@ class UserGroupBundle:
             raise exc.DBResourceNotYours(resrc)
         resrc.resource = resource
         resrc.permission = p
-    
+
     def add_resource(self, resource: str, perm=None):
         p = perm or db.Permission.PROTECTED
         owner = self.user_bundle.user.uid
@@ -124,18 +133,26 @@ class UserGroupBundle:
         return self._filter_block_my_resources(grp_resrcs)
 
     def get_other_public_resources(self):
-        return [r for r in self.get_other_resources() if r.permission == db.Permission.PUBLIC]
+        return [
+            r
+            for r in self.get_other_resources()
+            if r.permission == db.Permission.PUBLIC
+        ]
 
     def get_other_protected_resources(self):
-        return [r for r in self.get_other_resources() if r.permission == db.Permission.PROTECTED]
-    
+        return [
+            r
+            for r in self.get_other_resources()
+            if r.permission == db.Permission.PROTECTED
+        ]
+
     def get_my_resources(self):
         return self.user_bundle.resources
 
     def create_group(self, groupname=None, groupdesc=None):
         username = self.user_bundle.user.name
-        name = groupname or f'{username}\'s Group'
-        desc = groupdesc or f'Group created by {username}'
+        name = groupname or f"{username}'s Group"
+        desc = groupdesc or f"Group created by {username}"
         grp = db.Group(groupname=name, groupdesc=desc)
         self.manager.add_group(grp)
         grpb = self.manager.get_group_bundle(grp.gid)
@@ -148,7 +165,7 @@ class UserGroupBundle:
         if target in self.group_bundles:
             target.remove_user(self.user_bundle.user.uid)
         self.user_bundle.leave_group(gid)
-    
+
     def join_group(self, gid: int):
         group = self.manager.get_group_bundle(gid)
         group.add_member(self.user_bundle.user.uid)
@@ -162,10 +179,12 @@ class UserGroupBundle:
     def resources(self):
         return list(flatten([self.get_my_resources(), self.get_other_resources()]))
 
+
 def _get_ids(iterable):
     l = list(iterable)
     l.append(START_UID)
     return l
+
 
 class DatabaseManager:
     def __init__(self, database: db.Database) -> None:
@@ -216,12 +235,13 @@ class DatabaseContentManager(DatabaseManager):
         self.db.resources.append(resrc)
 
     def _get_item(self, getter, item):
-        if r := getter(item): return r
+        if r := getter(item):
+            return r
         raise exc.DBSearchNotFound(item)
 
     def get_resource(self, rid: int):
         return self._get_item(self._get_resource, rid)
-    
+
     def get_user(self, uid: int):
         return self._get_item(self._get_user, uid)
 
@@ -231,11 +251,12 @@ class DatabaseContentManager(DatabaseManager):
     def delete_resource(self, rid: int):
         resrc = self.get_resource(rid)
         self.db.resources.remove(resrc)
-    
+
     def delete_user(self, uid: int):
         user = self.get_user_bundle(uid)
         rids = [r.rid for r in user.resources]
-        for rid in rids: self.delete_resource(rid)
+        for rid in rids:
+            self.delete_resource(rid)
         self.db.users.remove(user.user)
 
     def delete_group(self, gid: int):

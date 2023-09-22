@@ -1,4 +1,5 @@
-from strawberry.aiohttp.handlers import GraphQLTransportWSHandler, GraphQLWSHandler
+from strawberry.aiohttp.handlers import (GraphQLTransportWSHandler,
+                                         GraphQLWSHandler)
 
 
 class DebuggableGraphQLTransportWSHandler(GraphQLTransportWSHandler):

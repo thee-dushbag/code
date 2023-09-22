@@ -1,26 +1,25 @@
-from aiohttp import web
-from typing import cast
 from pathlib import Path
-from aiohttp.multipart import BodyPartReader, MultipartReader
-from aiofiles import open as aopen
-from mpack import timer
 from random import randint
-from mpack.aiohttp_helpers.mako_ import (
-    setup, template
-)
+from typing import cast
 
-timer.FUNCTION_CALL_STR = '[{function_name}]'
+from aiofiles import open as aopen
+from aiohttp import web
+from aiohttp.multipart import BodyPartReader, MultipartReader
+from mpack import timer
+from mpack.aiohttp_helpers.mako_ import setup, template
+
+timer.FUNCTION_CALL_STR = "[{function_name}]"
 
 files = [
-    'File One',
-    'File Two',
+    "File One",
+    "File Two",
 ]
 
 values = [
     # ("Name", "text"),
     # ("Email", "email"),
     # ("Password", "password"),
-    *((file, 'file') for file in files)
+    *((file, "file") for file in files)
 ]
 
 WORKING_DIR = Path.cwd()
@@ -54,16 +53,16 @@ class FormData(web.View):
 
     @timer.timer_async
     async def _deal_value(self, obj: BodyPartReader):
-            if obj.name in files:
-                d = str(randint(1, 1000)) + '__' + cast(str, obj.filename)
-                if not d:
-                    return
-                r = await self._multipart_file(d, obj)
-                print(r)
-                # await self._multipart_file(obj)
-            else:
-                d = await obj.text()
-            # print(f"\t{obj.name} = {d!r}")
+        if obj.name in files:
+            d = str(randint(1, 1000)) + "__" + cast(str, obj.filename)
+            if not d:
+                return
+            r = await self._multipart_file(d, obj)
+            print(r)
+            # await self._multipart_file(obj)
+        else:
+            d = await obj.text()
+        # print(f"\t{obj.name} = {d!r}")
 
     @timer.timer_async
     async def deal_values(self, data: MultipartReader):

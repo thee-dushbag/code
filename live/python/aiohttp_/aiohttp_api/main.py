@@ -1,10 +1,11 @@
 from aiohttp import web
-from views import setup as views_setup
 from model import setup as model_setup
 from security import setup as security_setup
 from uvloop import install as install_uvloop
+from views import setup as views_setup
 
-DB_DNS = 'sqlite:///api_database.db'
+DB_DNS = "sqlite:///api_database.db"
+
 
 async def app_factory() -> web.Application:
     install_uvloop()

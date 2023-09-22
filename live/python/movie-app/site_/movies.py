@@ -1,10 +1,12 @@
-from typing import Optional
-from attrs import define, field
 from pathlib import Path
+from typing import Optional
+
 import config as cfg
 from aiohttp import web
+from attrs import define, field
 
-APP_KEY = 'movies.setup.app.classes'
+APP_KEY = "movies.setup.app.classes"
+
 
 @define(slots=True)
 class Movie:
@@ -12,19 +14,30 @@ class Movie:
     preview_path: Path = field(converter=Path, eq=False)
     thumbnail_path: Path = field(converter=Path, eq=False)
     _float: float = field(init=False, eq=True)
-    
+
     def __attrs_post_init__(self):
         self._float = self.movie_path.stat().st_mtime
 
     def __hash__(self) -> int:
         return int(self._float * 1000000)
-    
-    def __eq__(self, mov: 'Movie') -> bool: return float(self) == float(mov)
-    def __le__(self, mov: 'Movie') -> bool: return float(self) <= float(mov)
-    def __ge__(self, mov: 'Movie') -> bool: return float(self) >= float(mov)
-    def __lt__(self, mov: 'Movie') -> bool: return float(self) < float(mov)
-    def __gt__(self, mov: 'Movie') -> bool: return float(self) > float(mov)
-    def __ne__(self, mov: 'Movie') -> bool: return float(self) != float(mov)
+
+    def __eq__(self, mov: "Movie") -> bool:
+        return float(self) == float(mov)
+
+    def __le__(self, mov: "Movie") -> bool:
+        return float(self) <= float(mov)
+
+    def __ge__(self, mov: "Movie") -> bool:
+        return float(self) >= float(mov)
+
+    def __lt__(self, mov: "Movie") -> bool:
+        return float(self) < float(mov)
+
+    def __gt__(self, mov: "Movie") -> bool:
+        return float(self) > float(mov)
+
+    def __ne__(self, mov: "Movie") -> bool:
+        return float(self) != float(mov)
 
     def json(self):
         return dict(
@@ -32,11 +45,12 @@ class Movie:
             preview=self.preview,
             thumbnail=self.thumbnail,
         )
-        
+
     def json_min(self):
         return self.movie_path.stem
 
-    def __float__(self): return self._float
+    def __float__(self):
+        return self._float
 
     @property
     def movie(self):
@@ -90,9 +104,10 @@ class Movies:
         thumbnail_path = {p.stem: p for p in self.thumbnail_path.iterdir()}
         movies = {p.stem: p for p in self.movie_path.iterdir()}
         return _ResourceMaps(movies, preview_path, thumbnail_path)
-    
+
     def _load_movies(self):
         self.movies = self._load_resource_map().create_movies()
+
 
 def get_app_movies(app: web.Application) -> Movies:
     movies: Optional[Movies] = app.get(APP_KEY, None)
@@ -100,8 +115,10 @@ def get_app_movies(app: web.Application) -> Movies:
         raise KeyError("Movies was not installed into the application.")
     return movies
 
+
 def get_movies(req: web.Request) -> Movies:
     return get_app_movies(req.app)
+
 
 def setup(app: web.Application):
     movies = Movies(cfg.MOVIE_DIR, cfg.PREVIEW_DIR, cfg.THUMBNAIL_DIR)

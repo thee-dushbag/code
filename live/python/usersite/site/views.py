@@ -1,11 +1,12 @@
 import pprint
+from pathlib import Path
 from typing import cast
+
 import aiohttp_jinja2 as aji
 from aiohttp import web
-from pathlib import Path
 from exc import State
-from utils import get_user_site as gus, logged_in
-
+from utils import get_user_site as gus
+from utils import logged_in
 
 STATIC_PATH = Path.cwd() / "static"
 routes = web.RouteTableDef()
@@ -98,16 +99,16 @@ async def user(req: web.Request):
         raise web.HTTPSeeOther(req.app.router["index"].url_for())
     site = gus(req)
     user = site.manager.get_user(uid)
-    return {"page": "user", 'data' :{"uid": uid, "name": user.result.name.title()}}
+    return {"page": "user", "data": {"uid": uid, "name": user.result.name.title()}}
 
 
-@routes.get(r'/logout/{uid:\d+}', name='logout')
+@routes.get(r"/logout/{uid:\d+}", name="logout")
 async def logout(req: web.Request):
-    uid = int(req.match_info.get('uid', -1))
+    uid = int(req.match_info.get("uid", -1))
     if not logged_in(req, uid):
-        raise redirect(req, 'index')
+        raise redirect(req, "index")
     site = gus(req)
     user = site.manager.get_user(uid).result.name
     if user in site.logged_in:
         site.logged_in.pop(user)
-    raise redirect(req, 'index')
+    raise redirect(req, "index")

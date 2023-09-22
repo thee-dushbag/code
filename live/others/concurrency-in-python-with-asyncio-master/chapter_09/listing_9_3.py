@@ -7,17 +7,16 @@ from asyncpg import Record
 from asyncpg.pool import Pool
 
 routes = web.RouteTableDef()
-DB_KEY = 'database'
+DB_KEY = "database"
 
 
-@routes.get('/products/{id}')
+@routes.get("/products/{id}")
 async def get_product(request: Request) -> Response:
     try:
-        str_id = request.match_info['id'] #A
+        str_id = request.match_info["id"]  # A
         product_id = int(str_id)
 
-        query = \
-            """
+        query = """
             SELECT
             product_id,
             product_name,
@@ -27,9 +26,9 @@ async def get_product(request: Request) -> Response:
             """
 
         connection: Pool = request.app[DB_KEY]
-        result: Record = await connection.fetchrow(query, product_id) #B
+        result: Record = await connection.fetchrow(query, product_id)  # B
 
-        if result is not None: #C
+        if result is not None:  # C
             return web.json_response(dict(result))
         else:
             raise web.HTTPNotFound()
@@ -38,19 +37,21 @@ async def get_product(request: Request) -> Response:
 
 
 async def create_database_pool(app: Application):
-    print('Creating database pool.')
-    pool: Pool = await asyncpg.create_pool(host='127.0.0.1',
-                                           port=5432,
-                                           user='postgres',
-                                           password='password',
-                                           database='products',
-                                           min_size=6,
-                                           max_size=6)
+    print("Creating database pool.")
+    pool: Pool = await asyncpg.create_pool(
+        host="127.0.0.1",
+        port=5432,
+        user="postgres",
+        password="password",
+        database="products",
+        min_size=6,
+        max_size=6,
+    )
     app[DB_KEY] = pool
 
 
 async def destroy_database_pool(app: Application):
-    print('Destroying database pool.')
+    print("Destroying database pool.")
     pool: Pool = app[DB_KEY]
     await pool.close()
 

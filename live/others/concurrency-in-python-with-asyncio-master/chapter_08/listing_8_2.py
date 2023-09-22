@@ -1,5 +1,6 @@
 import asyncio
 from asyncio import AbstractEventLoop
+
 from chapter_08.listing_8_1 import HTTPGetClientProtocol
 
 
@@ -14,7 +15,7 @@ async def make_request(host: str, port: int, loop: AbstractEventLoop) -> str:
 
 async def main():
     loop = asyncio.get_running_loop()
-    result = await make_request('www.example.com', 80, loop)
+    result = await make_request("www.example.com", 80, loop)
     print(result)
 
 

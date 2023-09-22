@@ -1,4 +1,4 @@
-from .ilocale import DefaultContext, ILocale, IContext
+from .ilocale import DefaultContext, IContext, ILocale
 
 BASIC_NUMBERS = {
     0: "sufuri",
@@ -10,11 +10,11 @@ BASIC_NUMBERS = {
     6: "sita",
     7: "saba",
     8: "nane",
-    9: "tisa"
+    9: "tisa",
 }
 
 COMB = {
-    10: 'kumi',
+    10: "kumi",
     20: "ishirini",
     30: "thelathini",
     40: "arobaini",
@@ -25,18 +25,9 @@ COMB = {
     90: "tisini",
 }
 
-GROUPS = {
-    -1: 'mia',
-    0: '',
-    1: 'elfu',
-    2: 'milioni',
-    3: 'bilioni'
-}
+GROUPS = {-1: "mia", 0: "", 1: "elfu", 2: "milioni", 3: "bilioni"}
 
-SPECIALS = {
-    '.': 'pointi',
-    'conj': 'na'
-}
+SPECIALS = {".": "pointi", "conj": "na"}
 
 context = DefaultContext({**COMB, **BASIC_NUMBERS}, {**GROUPS})
 context.addspecial(**SPECIALS)

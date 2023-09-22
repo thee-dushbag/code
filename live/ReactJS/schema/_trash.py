@@ -1,8 +1,11 @@
-import strawberry as straw, typing as ty, asyncio as aio
-import schema._schema as scheme
-from strawberry.types import Info
-from aiohttp import web
+import asyncio as aio
+import typing as ty
+
 import schema._defs as defs
+import schema._schema as scheme
+import strawberry as straw
+from aiohttp import web
+from strawberry.types import Info
 
 
 @straw.type

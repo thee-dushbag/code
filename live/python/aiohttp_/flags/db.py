@@ -1,10 +1,11 @@
-from dataclasses import dataclass
 import enum as _enum
+from dataclasses import dataclass
 from typing import cast
-from mpack import flags as _flg
-from aiohttp import web
+
 import bcrypt as _bc
 import model as _md
+from aiohttp import web
+from mpack import flags as _flg
 
 APP_KEY = "application.db.model.testing.permissions"
 
@@ -24,6 +25,7 @@ class Perm(_enum.IntFlag):
             for name, value in cls.__members__.items()
             if value != cls.NONE
         }
+
     @classmethod
     def get(cls, value: str):
         for name, _value in cls.__members__.items():

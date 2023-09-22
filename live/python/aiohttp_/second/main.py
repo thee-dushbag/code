@@ -1,6 +1,7 @@
 from aiohttp import web
-from views import setup as views_setup
 from store import setup as store_setup
+from views import setup as views_setup
+
 
 async def app_factory() -> web.Application:
     app = web.Application()

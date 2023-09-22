@@ -1,7 +1,7 @@
 from functools import partial, reduce
-from attrs import define, field
-
 from typing import Callable, Union, cast
+
+from attrs import define, field
 
 
 class AError(Exception):
@@ -20,6 +20,7 @@ class AClientError(AError):
 class ANotAuthorized(AClientError):
     status = 409
     message = "Please provide username and password"
+
 
 class APartialContent(AClientError):
     status = 403
@@ -63,20 +64,21 @@ class Response(dict):
 
     @property
     def content(self):
-        return self.get('content', '')
-    
+        return self.get("content", "")
+
     @status.setter
     def status(self, value):
-        self['status'] = value
+        self["status"] = value
 
     @content.setter
     def content(self, value):
-        self['content'] = value
+        self["content"] = value
+
 
 class Request(dict):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.app: Union['Application', None] = None
+        self.app: Union["Application", None] = None
         self.path
 
     def resolve(self):
@@ -87,10 +89,10 @@ class Request(dict):
     @property
     def path(self) -> str:
         return self.get("path", None)
-    
+
     @path.setter
     def path(self, value):
-        self['path'] = value
+        self["path"] = value
 
 
 _Handler = Callable[[Request], Response]
@@ -110,6 +112,7 @@ class MiddlewareChain(list[_Middleware]):
 
     def handle(self, handler: _Handler) -> _Handler:
         return self._chain(handler)
+
 
 class RouteTableDef(dict[str, _Handler]):
     def add_route(self, key: str):

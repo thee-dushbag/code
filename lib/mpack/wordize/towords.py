@@ -1,6 +1,7 @@
-from typing import Any, Iterable
-from typing_extensions import Self
 from itertools import zip_longest
+from typing import Any, Iterable
+
+from typing_extensions import Self
 
 
 class groupinto:

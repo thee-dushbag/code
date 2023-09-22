@@ -1,4 +1,5 @@
 import enum as _enum
+
 import attrs as _attrs
 
 
@@ -30,6 +31,7 @@ class perm(_enum.IntFlag):
             for name, flag in cls.__members__.items()
         }
 
+
 @_attrs.define
 class Person:
     name: str
@@ -43,24 +45,25 @@ class Person:
                 granted.append(p)
             else:
                 denied.append(p)
-        print('-' * 50)
+        print("-" * 50)
         print(f"Name: {self.name}")
         print("Permissions:")
         print(f"\tGranted: {', '.join(granted)}")
         print(f"\tDenied: {', '.join(denied)}")
-        print('-' * 50)
+        print("-" * 50)
 
     def grant(self, _perm: int):
         self.perm = flag_on(self.perm, _perm)
 
     def deny(self, _perm: int):
         self.perm = flag_off(self.perm, _perm)
-    
+
     def can(self, _perm: int):
         return flag_enabled(self.perm, _perm)
 
     def cannot(self, _perm: int):
         return flag_disabled(self.perm, _perm)
+
 
 me = Person("Simon Nganga", 6)
 me.status()
@@ -68,8 +71,10 @@ me.grant(perm.read | perm.execute)
 me.status()
 me.deny(perm.write | perm.read)
 me.status()
-print(f'Can I read: {me.can(perm.read)}')
-print(f'Can I execute: {me.can(perm.execute)}')
-print(f'I can\'t read: {me.cannot(perm.read)}')
-print(f'I can\'t read and write: {me.cannot(perm.read | perm.write)}')
-print(f'I can\'t read and write and execute: {me.cannot(perm.read | perm.write | perm.execute)}')
+print(f"Can I read: {me.can(perm.read)}")
+print(f"Can I execute: {me.can(perm.execute)}")
+print(f"I can't read: {me.cannot(perm.read)}")
+print(f"I can't read and write: {me.cannot(perm.read | perm.write)}")
+print(
+    f"I can't read and write and execute: {me.cannot(perm.read | perm.write | perm.execute)}"
+)

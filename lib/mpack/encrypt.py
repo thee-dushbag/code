@@ -1,12 +1,12 @@
 import copy  # deepcopy
-import typing  # Any
 import random  # shuffle
+import typing  # Any
 
 __all__ = ["Encrypter"]
 
 
 class Encrypter:
-    def __init__(self, maps: dict|None = None, charlen: int = 255) -> None:
+    def __init__(self, maps: dict | None = None, charlen: int = 255) -> None:
         if maps:
             self.set_mappings(maps)
             return
@@ -15,11 +15,11 @@ class Encrypter:
         self.__decrypt_maps = str.maketrans(self.flip_dict_kv(self.__encrypt_maps))
 
     def get_mappings(self) -> dict[dict[int, str], dict[int, str]]:
-        return dict(encrypt_map=self.__encrypt_maps, decrypt_map=self.__decrypt_maps) # type: ignore
+        return dict(encrypt_map=self.__encrypt_maps, decrypt_map=self.__decrypt_maps)  # type: ignore
 
     def set_mappings(self, mappings: dict[dict[int, str], dict[int, str]]) -> None:
-        self.__decrypt_maps = mappings["decrypt_map"] # type: ignore
-        self.__encrypt_maps = mappings["encrypt_map"] # type: ignore
+        self.__decrypt_maps = mappings["decrypt_map"]  # type: ignore
+        self.__encrypt_maps = mappings["encrypt_map"]  # type: ignore
 
     def encrypt(self, string: str) -> str:
         return string.translate(self.__encrypt_maps)
@@ -31,7 +31,7 @@ class Encrypter:
         return {value: key for key, value in mapping.items()}
 
     @staticmethod
-    def get_random_mappings(values: list[typing.Any]) -> dict[typing.Any : typing.Any]: # type: ignore
+    def get_random_mappings(values: list[typing.Any]) -> dict[typing.Any : typing.Any]:  # type: ignore
         mappings = copy.deepcopy(values)
         random.shuffle(mappings)
         return {value: mapping for value, mapping in zip(values, mappings)}

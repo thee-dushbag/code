@@ -1,20 +1,12 @@
 from dataclasses import asdict
-from typing import Sequence
+from typing import Sequence, Type
+
 import sqlalchemy as sa
-from typing import Type
-from sqlalchemy.orm import (
-    declarative_base,
-    sessionmaker,
-    DeclarativeBase,
-)
-from sqlalchemy.ext.hybrid import (
-    hybrid_method,
-    hybrid_property
-)
 from db_orm_data import product_, sample_products
+from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
+from sqlalchemy.orm import DeclarativeBase, declarative_base, sessionmaker
 
-
-ENGINE_PATH = 'sqlite:///cookbook.sqlite3'
+ENGINE_PATH = "sqlite:///cookbook.sqlite3"
 metadata = sa.MetaData()
 Base: Type[DeclarativeBase] = declarative_base(metadata=metadata)
 engine = sa.create_engine(ENGINE_PATH)
@@ -62,6 +54,7 @@ def main(argv: Sequence[str]) -> None:
     print(prod.add_more(4))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from sys import argv
+
     main(argv[1:])

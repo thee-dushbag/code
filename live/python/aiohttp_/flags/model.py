@@ -1,7 +1,9 @@
-from typing import Type
-import sqlalchemy as sa
-from sqlalchemy.orm import declarative_base, Session as _Session, sessionmaker
 from dataclasses import dataclass
+from typing import Type
+
+import sqlalchemy as sa
+from sqlalchemy.orm import Session as _Session
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 Base: Type = declarative_base()
 

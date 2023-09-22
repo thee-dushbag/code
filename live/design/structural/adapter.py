@@ -13,6 +13,7 @@ The client code demonstrates how the Adapter
 allows the client to use the Adaptee through
 the Target interface."""
 
+
 class Target:
     def request(self):
         pass

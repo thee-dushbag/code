@@ -1,10 +1,14 @@
+import enum
+import typing as ty
+
+import strawberry as straw
 from faker import Faker
-import strawberry as straw, enum, typing as ty
 from strawberry.file_uploads import Upload
 
 fake = Faker()
 NAME = "Stranger"
 TEMPLATE = "Hello $name, how was your day?"
+
 
 @straw.interface
 class Named:
@@ -15,10 +19,12 @@ class Named:
         print(f"Resolving: {type}")
         return True
 
+
 @straw.enum
 class Gender(enum.StrEnum):
     F = enum.auto()
     M = enum.auto()
+
 
 @straw.enum
 class Flavor(enum.StrEnum):
@@ -26,14 +32,17 @@ class Flavor(enum.StrEnum):
     STRAWBERRY = "strawberry"
     CHOCOLATE = "chocolate"
 
+
 @straw.enum
 class NamedEnum(enum.StrEnum):
     PERSON = enum.auto()
     COMPANY = enum.auto()
 
+
 @straw.input
 class FolderInput:
     files: ty.List[Upload]
+
 
 @straw.input
 class GreetBundle:

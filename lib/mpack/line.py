@@ -1,7 +1,9 @@
-from attrs import define, field
-import asyncio as aio, janus
-from functools import wraps
+import asyncio as aio
 import typing as ty
+from functools import wraps
+
+import janus
+from attrs import define, field
 
 
 def make_async(func):
@@ -145,7 +147,8 @@ class Line(ty.Generic[T, K]):
         await callback(self, line)  # type: ignore
 
     async def _line(self, line: T):
-        try: await self.on_line(line)
+        try:
+            await self.on_line(line)
         except Exception as e:
             await self.on_error(line, e)
 
@@ -160,6 +163,7 @@ class Line(ty.Generic[T, K]):
                 task.create_task(self._dispatch_line(line))
 
     async def _runner(self):
-        try: await aio.create_task(self._run())
+        try:
+            await aio.create_task(self._run())
         except (StopRunner, aio.CancelledError) as e:
             ...

@@ -1,11 +1,12 @@
-from uvloop import install as install_uvloop
-from security import setup as security_setup
-from views import setup as views_setup
-from db import setup as db_setup
 from aiohttp import web
+from db import setup as db_setup
+from security import setup as security_setup
+from uvloop import install as install_uvloop
+from views import setup as views_setup
 
-DNS = 'sqlite:///users.db'
+DNS = "sqlite:///users.db"
 MAX_AGE = 100
+
 
 async def application() -> web.Application:
     install_uvloop()

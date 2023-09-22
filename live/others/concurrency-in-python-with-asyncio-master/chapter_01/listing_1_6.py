@@ -11,7 +11,7 @@ def print_fib(number: int) -> None:
         else:
             return fib(n - 1) + fib(n - 2)
 
-    print(f'fib({number}) is {fib(number)}')
+    print(f"fib({number}) is {fib(number)}")
 
 
 def fibs_with_threads():
@@ -31,4 +31,4 @@ fibs_with_threads()
 
 end_threads = time.time()
 
-print(f'Threads took {end_threads - start_threads:.4f} seconds.')
+print(f"Threads took {end_threads - start_threads:.4f} seconds.")

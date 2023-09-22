@@ -2,15 +2,16 @@ import asyncio
 import functools
 import hashlib
 import os
-from concurrent.futures.thread import ThreadPoolExecutor
 import random
 import string
+from concurrent.futures.thread import ThreadPoolExecutor
+
 from util import async_timed
 
 
 def random_password(length: int) -> bytes:
     ascii_lowercase = string.ascii_lowercase.encode()
-    return b''.join(bytes(random.choice(ascii_lowercase)) for _ in range(length))
+    return b"".join(bytes(random.choice(ascii_lowercase)) for _ in range(length))
 
 
 passwords = [random_password(10) for _ in range(10000)]

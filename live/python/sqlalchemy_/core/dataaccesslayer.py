@@ -1,7 +1,8 @@
 from pprint import pprint
+
 import sqlalchemy as sa
 
-engine = sa.create_engine('sqlite:///db_core.sqlite3')
+engine = sa.create_engine("sqlite:///db_core.sqlite3")
 metadata = sa.MetaData()
 
 # users = sa.Table('users', metadata, autoload_with=engine)
@@ -9,7 +10,7 @@ metadata = sa.MetaData()
 # orders = sa.Table('orders', metadata, autoload_with=engine)
 
 metadata.reflect(engine)
-users = metadata.tables['users']
+users = metadata.tables["users"]
 
 q = sa.select(users)
 conn = engine.connect()

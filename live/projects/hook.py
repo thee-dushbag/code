@@ -1,8 +1,9 @@
-from typing import Any, Callable, TypeVar, Generic, Optional
 from concurrent.futures import ThreadPoolExecutor, wait
-from attrs import define, field
 from itertools import count
 from threading import Lock
+from typing import Any, Callable, Generic, Optional, TypeVar
+
+from attrs import define, field
 
 
 def _create_key_keeper():

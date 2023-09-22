@@ -1,10 +1,14 @@
+from typing import Any, Protocol
+
 import basicauth
 from aiohttp import web
-from typing import Any, Protocol
 from aiohttp.hdrs import AUTHORIZATION
 
+
 class UserStore(Protocol):
-    def auth_user(self, username: str, password: str) -> Any:...
+    def auth_user(self, username: str, password: str) -> Any:
+        ...
+
 
 def try_bsdecode(basic_auth_str: str):
     try:
@@ -24,4 +28,5 @@ def create_check_basic_auth(db: UserStore):
                     return name, passwd
             raise web.HTTPUnauthorized(reason="Authentication Failure")
         raise web.HTTPUnauthorized(reason="Use BasicAuth Please")
+
     return check_basicauth

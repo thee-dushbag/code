@@ -1,15 +1,15 @@
-from aiohttp import web
 from pathlib import Path
-from views import setup as views_setup
+
+from aiohttp import web
 from aiohttp_mako import setup as mako_setup
 from model import setup as database_setup
 from uvloop import install as install_uvloop
-
+from views import setup as views_setup
 
 CUR_DIR = Path.cwd()
-TEMPLATES_PATH = CUR_DIR / 'templates'
-STATIC_PATH = CUR_DIR / 'static'
-DNS = 'sqlite:///people.db'
+TEMPLATES_PATH = CUR_DIR / "templates"
+STATIC_PATH = CUR_DIR / "static"
+DNS = "sqlite:///people.db"
 install_uvloop()
 
 

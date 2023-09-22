@@ -1,10 +1,10 @@
-from random import randrange
 import time
+from random import randrange
 
-user_input = ''
+user_input = ""
 
-while user_input != 'quit':
-    user_input = input('Enter text to echo: ')
+while user_input != "quit":
+    user_input = input("Enter text to echo: ")
     for i in range(randrange(10)):
-        time.sleep(.5)
+        time.sleep(0.5)
         print(user_input)

@@ -1,11 +1,11 @@
-from typing import TYPE_CHECKING
-from exc import OperationStatus, OpType, State
-import bcrypt
-from typing import cast
-from usermanager import UserManager
-from model import User
+from typing import TYPE_CHECKING, cast
 
-USERSITE = 'USERSITE'
+import bcrypt
+from exc import OperationStatus, OpType, State
+from model import User
+from usermanager import UserManager
+
+USERSITE = "USERSITE"
 
 
 class UserSite:

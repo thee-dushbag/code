@@ -1,22 +1,22 @@
 from dataclasses import dataclass
 from typing import Any, Type
-from aiohttp import web
-import sqlalchemy as sa
-from sqlalchemy.orm import (
-    declarative_base,
-    sessionmaker,
-    Session as _Session
-)
 
-APP_KEY = 'api.model.programming.aiohttp'
+import sqlalchemy as sa
+from aiohttp import web
+from sqlalchemy.orm import Session as _Session
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+APP_KEY = "api.model.programming.aiohttp"
 Base: Any = declarative_base()
+
 
 # Actual Models Below
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
     user_id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, nullable=False, unique=True)
     password = sa.Column(sa.String, nullable=False)
+
 
 # Database Pack
 @dataclass
@@ -32,16 +32,18 @@ class Database:
 # Some Utility Functions
 def get_app_database(app: web.Application) -> Database:
     db: Database | None = app.get(APP_KEY)
-    assert isinstance(db, Database), \
-        f'Expected a Database pack but found: {type(db)}'
+    assert isinstance(db, Database), f"Expected a Database pack but found: {type(db)}"
     return db
+
 
 def get_database(req: web.Request):
     return get_app_database(req.app)
 
+
 def new_db_session(req: web.Request) -> _Session:
     db = get_database(req)
     return db.new_session()
+
 
 # Setting up the database
 def setup(app: web.Application, dns: str):

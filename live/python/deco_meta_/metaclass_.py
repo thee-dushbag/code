@@ -1,6 +1,8 @@
-from typing import Any, Type
-from attrs import define
 from inspect import isclass
+from typing import Any, Type
+
+from attrs import define
+
 
 class MyFirstMeta(type):
     def __new__(cls, class_name: str, bases: tuple, attrs: dict):
@@ -8,7 +10,7 @@ class MyFirstMeta(type):
         for k, v in attrs.items():
             print(f"  {k:>18} = {v}")
         attrs["say_hi"] = cls.say_hi_meta
-        attrs['metaclass'] = cls
+        attrs["metaclass"] = cls
         return type(class_name, bases, attrs)
 
     def say_hi_meta(self):
@@ -19,28 +21,32 @@ class SimplestMetaclass(type):
     def __new__(cls, class_name, bases, attrs):
         print(f"In SimplestMetaclass[__new__]: {class_name}")
         return type.__new__(cls, class_name, bases, attrs)
-    
+
     def __init__(self, class_name, bases, attrs):
         print(f"In SimplestMetaclass[__init__]: {class_name}")
         self.class_name = class_name
         self.method = self.METHOD
-        state = ' ' if isclass(self) else ' not a '
+        state = " " if isclass(self) else " not a "
         print(f"self: -> {self}: is{state}class")
 
     def METHOD(self):
         print("This method is from SimplestMetaclass")
+
 
 def _is_type(func: Any) -> Type[Any]:
     return func
 
 
 @_is_type
-def MetaFunc(class_name: str, bases: tuple[Type, ...], attrs: dict[str, Any]) -> Type[Any]:
+def MetaFunc(
+    class_name: str, bases: tuple[Type, ...], attrs: dict[str, Any]
+) -> Type[Any]:
     print(f"Creating class: {class_name} from MetaFunc")
     clas = type(class_name, bases, attrs)
     clas.class_name = class_name
     clas.method = lambda self: print(f"MetaFunc method attached: {self}")
     return clas
+
 
 # @define(slots=True)
 # class Person(metaclass=MyFirstMeta):
@@ -59,7 +65,7 @@ def MetaFunc(class_name: str, bases: tuple[Type, ...], attrs: dict[str, Any]) ->
 
 #     def __call__(cls: Type, class_name, bases, attrs) -> Type[Any]:
 #         print(f'MetaClassCall.__call__[{class_name}]')
-        # return type.__new__(cls, class_name, bases, attrs)
+# return type.__new__(cls, class_name, bases, attrs)
 
 # class SubMetaClassCall(type, metaclass=MetaClassCall):
 #     def __call__(cls, class_name, bases, attrs) -> Type:
@@ -71,17 +77,17 @@ def MetaFunc(class_name: str, bases: tuple[Type, ...], attrs: dict[str, Any]) ->
 #         print(f'MetaclassInheritance.__new__[{class_name}]')
 #         cls.__init_subclass__ = cls._init_subclass
 #         return type.__new__(cls, class_name, bases, attrs)
-    
+
 #     def __init__(self, class_name, bases, attrs):
 #         self.__init_subclass__ = self._init_subclass
-    
+
 #     def _init_subclass(self, *args, **kwargs):
 #         raise Exception(f"Cannot inherit from: {self}")
 
 # class WrapperMetaclass(metaclass=MetaclassInheritance):
 #     def __init__(self) -> None:
 #         print("Wrapper class init")
-    
+
 #     def __init_subclass__(cls) -> None:
 #         print(f"{cls} is inheriting from WrapperMetaclass")
 
@@ -95,16 +101,19 @@ def Tracer(aClass):
     class Wrapper:
         def __init__(self, *a, **k) -> None:
             self.wrapped = aClass(*a, **k)
-        
+
         def __getattr__(self, __name: str) -> Any:
             print(f"Trace: {__name}")
             return getattr(self.wrapped, __name)
+
     return Wrapper
+
 
 @_is_type
 def MetaTracer(classname: str, bases: tuple[Type, ...], attrs: dict[str, Any]) -> Type:
     aClass = type(classname, bases, attrs)
     return Tracer(aClass)
+
 
 # @Tracer
 class Person(metaclass=MetaTracer):

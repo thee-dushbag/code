@@ -1,12 +1,13 @@
-from pprint import pprint
-from attrs import define, asdict
-from typing import Type, TypeVar
-from aiohttp import web
-from mpack.aiohttp_helpers import cors_setup, dev_setup
-from hi import hi as say_hi
-from data import _DataView
 import asyncio as aio
+from pprint import pprint
 from random import randint
+from typing import Type, TypeVar
+
+from aiohttp import web
+from attrs import asdict, define
+from data import _DataView
+from hi import hi as say_hi
+from mpack.aiohttp_helpers import cors_setup, dev_setup
 
 T = TypeVar("T")
 
@@ -124,12 +125,14 @@ routes = [
     web.view("/data", DataView),
 ]
 
+
 @web.middleware
 async def log_req(req: web.Request, handler):
     info = dict(req.headers)
     info.update(method=req.method)
     pprint(info)
     return await handler(req)
+
 
 def setup(app: web.Application):
     app.middlewares.append(log_req)

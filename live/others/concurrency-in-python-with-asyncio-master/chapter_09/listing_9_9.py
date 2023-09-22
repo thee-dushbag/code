@@ -1,11 +1,12 @@
 import asyncio
+
 from starlette.applications import Starlette
 from starlette.endpoints import WebSocketEndpoint
 from starlette.routing import WebSocketRoute
 
 
 class UserCounter(WebSocketEndpoint):
-    encoding = 'text'
+    encoding = "text"
     sockets = []
 
     async def on_connect(self, websocket):  # A
@@ -23,9 +24,10 @@ class UserCounter(WebSocketEndpoint):
     async def _send_count(self):  # C
         if len(UserCounter.sockets) > 0:
             count_str = str(len(UserCounter.sockets))
-            task_to_socket = {asyncio.create_task(websocket.send_text(count_str)): websocket
-                              for websocket
-                              in UserCounter.sockets}
+            task_to_socket = {
+                asyncio.create_task(websocket.send_text(count_str)): websocket
+                for websocket in UserCounter.sockets
+            }
 
             done, pending = await asyncio.wait(task_to_socket)
 
@@ -35,4 +37,4 @@ class UserCounter(WebSocketEndpoint):
                         UserCounter.sockets.remove(task_to_socket[task])
 
 
-app = Starlette(routes=[WebSocketRoute('/counter', UserCounter)])
+app = Starlette(routes=[WebSocketRoute("/counter", UserCounter)])

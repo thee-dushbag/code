@@ -1,7 +1,8 @@
-from sqlalchemy.orm import Session as _Session
-from model import User
 from exc import OperationStatus, OpType, State
+from model import User
 from sqlalchemy.exc import IntegrityError, MultipleResultsFound, NoResultFound
+from sqlalchemy.orm import Session as _Session
+
 
 class UserManager:
     def __init__(self, session: _Session) -> None:
@@ -34,7 +35,8 @@ class UserManager:
         try:
             user = self.session.query(User).where(User.uid == uid).one()
             for key, val in (("name", name), ("email", email), ("password", password)):
-                if val: setattr(user, key, val)
+                if val:
+                    setattr(user, key, val)
             self.session.add(user)
             self.session.commit()
         except (MultipleResultsFound, NoResultFound, IntegrityError) as e:
@@ -78,4 +80,3 @@ class UserManager:
             state = State.SUCCESS
             message = "Found UserID"
         return OperationStatus(optype, state, message, result=userid)
-

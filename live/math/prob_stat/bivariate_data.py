@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
-from math import sqrt
-from typing import Sequence, cast
-from statistics import mean
 from itertools import tee
+from math import sqrt
+from statistics import mean
+from typing import Sequence, cast
+
 from more_itertools import bucket
 
 _prod = lambda i, j: i * j
@@ -97,12 +98,17 @@ def spearman_rank_correlation(x: Sequence[float], y: Sequence[float]):
     den, num = freq * (freq**2 - 1), 6 * sum_sqr_diff
     return 1 - (num / den)
 
+
 def _linear_regression_predicter(a: float, b: float, xstr=None):
-    xstr = str(xstr or '').replace(' ', '_').lower() or 'x'
-    def predict(x: float): return a + b * x
+    xstr = str(xstr or "").replace(" ", "_").lower() or "x"
+
+    def predict(x: float):
+        return a + b * x
+
     ra, rb = round(a, 3), round(b, 3)
-    predict.str = f'predict({rb} * {xstr} + {ra})'
+    predict.str = f"predict({rb} * {xstr} + {ra})"
     return predict
+
 
 def _linear_regression_compute_a(b: float, x: Sequence[float], y: Sequence[float]):
     assert (freq := len(x)) == len(y), "xs must be pairable to ys"
@@ -110,14 +116,16 @@ def _linear_regression_compute_a(b: float, x: Sequence[float], y: Sequence[float
     num = sum_y - b * sum_x
     return num / freq
 
+
 def _linear_regression_compute_b(x: Sequence[float], y: Sequence[float]):
     assert (freq := len(x)) == len(y), "xs must be pairable to ys"
     sum_xy = sum(map(_prod, x, y))
     sum_x, sum_y = sum(x), sum(y)
     sum_xx = sum(map(_prod, x, x))
     num = freq * sum_xy - sum_x * sum_y
-    den = freq * sum_xx - sum_x ** 2
+    den = freq * sum_xx - sum_x**2
     return num / den
+
 
 def linear_regression(x: Sequence[float], y: Sequence[float], xstr=None):
     b = _linear_regression_compute_b(x, y)

@@ -1,4 +1,6 @@
 import strawberry as straw
 
+
 @straw.type
-class Subscription: ...
+class Subscription:
+    ...

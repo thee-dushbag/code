@@ -1,13 +1,14 @@
+from typing import cast
+
+import db as _db
+from aiohttp import web
+from aiohttp_security import setup as security_setup
 from aiohttp_security.abc import AbstractAuthorizationPolicy
 from aiohttp_security.session_identity import SessionIdentityPolicy
-from aiohttp_session.redis_storage import RedisStorage
 from aiohttp_session import setup as session_setup
-from aiohttp_security import setup as security_setup
-from redis.asyncio import Redis
-from typing import cast
-from aiohttp import web
+from aiohttp_session.redis_storage import RedisStorage
 from mpack import flags
-import db as _db
+from redis.asyncio import Redis
 
 
 async def create_key(user: _db._md.Users):

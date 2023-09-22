@@ -1,37 +1,44 @@
+from datetime import datetime as dtime
 from typing import Any, Callable, Type
+
 import sqlalchemy as sa
 from aiohttp import web
-from config import get_config
 from attrs import define
-from datetime import datetime as dtime
-from sqlalchemy.orm import declarative_base, sessionmaker, Session as _Session, relationship, backref
+from config import get_config
+from sqlalchemy.orm import Session as _Session
+from sqlalchemy.orm import (backref, declarative_base, relationship,
+                            sessionmaker)
 
 CONFIG_KEY = "database.models.key"
 
 _Base: Type = declarative_base()
 
+
 class User(_Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
     user_id = sa.Column(sa.Integer, primary_key=True)
     username = sa.Column(sa.String(20), index=True, unique=True)
     password = sa.Column(sa.String, nullable=False)
     email = sa.Column(sa.String, unique=True, index=True)
-    vperm_id = sa.Column(sa.Integer, sa.ForeignKey('permissions.vperm_id'))
+    vperm_id = sa.Column(sa.Integer, sa.ForeignKey("permissions.vperm_id"))
+
 
 class Note(_Base):
-    __tablename__ = 'notes'
+    __tablename__ = "notes"
     note_id = sa.Column(sa.Integer, primary_key=True)
-    user_id = sa.Column(sa.Integer, sa.ForeignKey('users.user_id'))
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.user_id"))
     title = sa.Column(sa.String, index=True)
     body = sa.Column(sa.String(255), default=str())
-    notes = relationship(User, backref=backref('notes'))
+    notes = relationship(User, backref=backref("notes"))
     created_on = sa.Column(sa.DateTime(), default=dtime.now)
     last_modified = sa.Column(sa.DateTime(), default=dtime.now, onupdate=dtime.now)
 
+
 class VPerm(_Base):
-    __tablename__ = 'permissions'
+    __tablename__ = "permissions"
     vperm_id = sa.Column(sa.Integer, primary_key=True)
     perm_name = sa.Column(sa.String, nullable=False)
+
 
 @define
 class _DatabasePack:

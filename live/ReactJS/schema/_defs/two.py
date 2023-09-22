@@ -1,7 +1,12 @@
-import strawberry as straw, typing as ty, asyncio as aio, time as ti
-from .globals import Gender, TEMPLATE
-from .one import Name
+import asyncio as aio
+import time as ti
+import typing as ty
 from string import Template
+
+import strawberry as straw
+
+from .globals import TEMPLATE, Gender
+from .one import Name
 
 
 @straw.type

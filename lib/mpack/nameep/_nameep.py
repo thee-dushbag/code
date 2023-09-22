@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Callable, NamedTuple
-from string import Template
 from itertools import count
-from yaml import safe_load as yaml_loader
 from json import load as json_loader
+from pathlib import Path
+from string import Template
+from typing import Callable, NamedTuple
+
+from yaml import safe_load as yaml_loader
 
 SCEHAME_FILE_NAME = "_context_schema.json"
 
@@ -22,8 +23,9 @@ class Context:
         self._prepare()
         if not self.output_dir.exists():
             self.output_dir.mkdir()
-        assert self.output_dir.is_dir(), \
-            'Expected output_dir to be a path to an existing directory.'
+        assert (
+            self.output_dir.is_dir()
+        ), "Expected output_dir to be a path to an existing directory."
 
     def _prepare(self):
         if isinstance(self.filelist, str):
@@ -91,9 +93,10 @@ def _resolve_episodes(episodes: list[int] | int) -> list[SnEp]:
 
 
 def _validate_config(config: dict):
-    from pathlib import Path
-    from jsonschema.validators import validator_for
     from json import loads
+    from pathlib import Path
+
+    from jsonschema.validators import validator_for
 
     schema_file = Path(__file__).resolve().parent / SCEHAME_FILE_NAME
     schema = loads(schema_file.read_text())

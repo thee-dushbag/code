@@ -1,9 +1,11 @@
-from unittest import mock, TestCase
+from unittest import TestCase, mock
+
 from bigchain import BigChain
-from mpack.number_reader.reader import NumberReader
 from mpack.number_reader.locales import english_locale as locale
+from mpack.number_reader.reader import NumberReader
 
 reader = NumberReader(locale)
+
 
 def stepper(chain: BigChain, *steps: str):
     for step in steps:
@@ -33,7 +35,7 @@ class ChainTest(TestCase):
         bresult = stepper(self.big, *str_steps).str_steps
         self._print_result(str_steps, result, bresult)
         self.assertEqual(result, bresult, f"{result!r} != {bresult!r}")
-    
+
     def _print_result(self, str_steps, result, bresult):
         print(f"Found:\n\t{str_steps=}\n\t{result=}\n\t{bresult=}\n")
 

@@ -1,13 +1,15 @@
 from typing import Sequence
-import sym, sympy as sy
+
+import sym
+import sympy as sy
 from mpack import print
 
-sy.init_printing(use_unicode=True, latex_mode='equation*')
+sy.init_printing(use_unicode=True, latex_mode="equation*")
 pri = sy.pretty_print
 
 
 def main(argv: Sequence[str]) -> None:
-    func = sym.x ** 2
+    func = sym.x**2
     pri(func)
     arcl = sym.arc_length(func)
     pri(arcl)
@@ -20,6 +22,7 @@ def main(argv: Sequence[str]) -> None:
     print(f"Vol: func{a,b} => {sym.fsubrange(vol, sym.x, a, b)}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from sys import argv
+
     main(argv[1:])

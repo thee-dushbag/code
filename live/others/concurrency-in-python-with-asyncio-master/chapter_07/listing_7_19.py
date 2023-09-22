@@ -1,7 +1,8 @@
+import asyncio
 import functools
 from concurrent.futures.thread import ThreadPoolExecutor
+
 import numpy as np
-import asyncio
 from util import async_timed
 
 

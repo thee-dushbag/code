@@ -1,9 +1,11 @@
 from typing import Callable, Optional
-from .locales import locales, Locale
+
+from .locales import Locale, locales
 from .reader import NumberReader
 
 Reader = Callable[[float], str]
 ReaderB = Callable[[float, Optional[bool]], str]
+
 
 def get_reader(locale: Locale | str) -> Reader:
     if not isinstance(locale, Locale):
