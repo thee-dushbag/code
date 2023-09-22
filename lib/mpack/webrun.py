@@ -33,7 +33,6 @@ from aiohttp import web
 import click
 
 
-
 @dataclass
 class BindArg:
     host: str
@@ -97,18 +96,18 @@ class TargetParam(click.ParamType):
 
 
 @click.command
-@click.option("--bind", "-b", type=BindParam(), help=BindParam.__doc__)
+@click.option("--bind", "-b", type=BindParam(), help=BindParam.__doc__, default=BindArg('localhost', 8080))
 @click.argument("target", type=TargetParam())
 def main(bind: BindArg, target: TargetArg):
     '''Serve an aiohttp application {TARGET} <[package.]module>:<app_factory> on {BIND} <host>:<port>
-    Example:
     '''
     try:
         install_uvloop()
-        if bind is None: bind = BindArg('localhost', 8080)
         web.run_app(target.target(), host=bind.host, port=bind.port)
     except KeyboardInterrupt:
         ...
+    except Exception as e:
+        click.echo(str(e), err=True)
 
 if __name__ == '__main__':
     main()
