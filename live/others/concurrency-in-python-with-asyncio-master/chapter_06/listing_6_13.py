@@ -1,5 +1,5 @@
-from concurrent.futures import ProcessPoolExecutor
 import asyncio
+from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import Value
 
 shared_counter: Value
@@ -16,9 +16,8 @@ def increment():
 
 
 async def main():
-    counter = Value('d', 0)
-    with ProcessPoolExecutor(initializer=init,
-                             initargs=(counter,)) as pool:
+    counter = Value("d", 0)
+    with ProcessPoolExecutor(initializer=init, initargs=(counter,)) as pool:
         await asyncio.get_running_loop().run_in_executor(pool, increment)
         print(counter.value)
 

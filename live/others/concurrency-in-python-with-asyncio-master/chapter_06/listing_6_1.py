@@ -8,7 +8,7 @@ def count(count_to: int) -> int:
     while counter < count_to:
         counter = counter + 1
     end = time.time()
-    print(f'Finished counting to {count_to} in {end-start}')
+    print(f"Finished counting to {count_to} in {end-start}seconds")
     return counter
 
 
@@ -25,4 +25,4 @@ if __name__ == "__main__":
     to_two_hundred_million.join()
 
     end_time = time.time()
-    print(f'Completed in {end_time-start_time}')
+    print(f"Completed in {end_time-start_time}seconds")

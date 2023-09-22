@@ -1,33 +1,29 @@
 import functools
+from collections import defaultdict
 from typing import Dict
 
 
 def map_frequency(text: str) -> Dict[str, int]:
-    words = text.split(' ')
-    frequencies = {}
+    words = text.split(" ")
+    frequencies: dict[str, int] = defaultdict(lambda: 0)
     for word in words:
-        if word in frequencies:
-            frequencies[word] = frequencies[word] + 1
-        else:
-            frequencies[word] = 1
-    return frequencies
+        frequencies[word] += 1
+    return dict(frequencies)
 
 
-def merge_dictionaries(first: Dict[str, int],
-                       second: Dict[str, int]) -> Dict[str, int]:
-    merged = first
+def merge_dictionaries(first: Dict[str, int], second: Dict[str, int]) -> Dict[str, int]:
+    merged = defaultdict(lambda: 0, first)
     for key in second:
-        if key in merged:
-            merged[key] = merged[key] + second[key]
-        else:
-            merged[key] = second[key]
-    return merged
+        merged[key] += second[key]
+    return dict(merged)
 
 
-lines = ["I know what I know",
-         "I know that I know",
-         "I don't know much",
-         "They don't know much"]
+lines = [
+    "I know what I know",
+    "I know that I know",
+    "I don't know much",
+    "They don't know much",
+]
 
 mapped_results = [map_frequency(line) for line in lines]
 
