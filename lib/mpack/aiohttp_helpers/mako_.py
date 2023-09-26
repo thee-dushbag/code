@@ -79,9 +79,12 @@ _ViewHandler = Callable[[Any], Awaitable[Mapping[str, Any]]]
 mako_template = cast(TemplateHandler, _template)
 
 
-def template_handler(page_name: str, **context: Any):
+def template_handler(
+    page_name: str, get_context=lambda r: {"request": r}, **context: Any
+):
     @template(page_name)
     async def handler(req: web.Request):
+        context.update(get_context(req))
         return context
 
     return handler
@@ -103,7 +106,7 @@ def template(page_name: str) -> Callable[..., Handler]:
     def _handler(func: _ViewHandler) -> Handler:
         async def _get_resp(req: web.Request) -> web.Response:
             context = await func(req)
-            resp = render_template(page_name, req, context)
+            resp = render_template(page_name, req, context, app_key=APP_KEY)
             if resp.text:
                 resp.text = html_minify(resp.text)
             return resp
