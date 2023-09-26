@@ -10,11 +10,11 @@ function vscode_settings() {
         target=.
     fi
     if [[ ! -d "$target"  ]]; then
-        echo Expected an existing directory path, found: $target
+        echo Expected an existing directory path, found: $target >&2
         return 127
     fi
     if [[ ! -e "$MAIN_VSCODE_SETTINGS_SYMLINK" ]]; then
-        echo Main .vscode symlink/link was not found: $MAIN_VSCODE_SETTINGS_SYMLINK
+        echo Main .vscode symlink/link was not found: $MAIN_VSCODE_SETTINGS_SYMLINK >&2
         return 1
     fi
     if [[ ! -L "$MAIN_VSCODE_SETTINGS_SYMLINK" ]]; then
@@ -25,7 +25,7 @@ function vscode_settings() {
         fi
     fi
     if [[ -e "$target/.vscode" ]]; then
-        echo There exists a .vscode settings in the $target folder.
+        echo There exists a .vscode settings in the $target folder. >&2
         return 1
     else
         local vscode_path=$(realpath "$MAIN_VSCODE_SETTINGS_SYMLINK"  --strip --relative-to "$target")
@@ -123,9 +123,29 @@ function _add_dir_to_path() {
         if [[ -d "$dir" ]]; then
             export PATH="$dir":$PATH
         else
-            echo "Your BIN: '$BIN' was not found."
+            echo "Your BIN: '$BIN' was not found." >&2
         fi
     done
+}
+
+# Jobs Operation
+# Get the Process IDs (PIDs) of runnig jobs
+function pjobs() {
+  value=$(jobs -l | awk '{print \$2}')
+  if [[ -z "$value" ]]; then
+    return 2;
+  fi
+  echo "$value"
+}
+
+# Get the number oof running jobs
+function njobs() {
+  value=$(jobs -l | wc -l)
+  if [[ "$value" -eq "0" ]]; then
+    echo "$value" >&2
+    return 1
+  fi
+  echo "$value"
 }
 
 # activate my virtualenv
@@ -134,7 +154,7 @@ function _activate_virtual_env() {
     if [[ -f $PYTHON_ENV/bin/activate ]]; then
         . $PYTHON_ENV/bin/activate
     else
-        echo "Failed to activate virtual environment py-env: $PYTHON_ENV"
+        echo "Failed to activate virtual environment py-env: $PYTHON_ENV" >&2
     fi
 }
 

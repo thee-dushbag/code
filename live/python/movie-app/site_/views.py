@@ -2,7 +2,6 @@ import asyncio as aio
 import re
 
 import config as cfg
-import sh
 from aiohttp import web
 from aiohttp_mako import setup as mako_setup
 from movies import Movies
