@@ -1,5 +1,5 @@
 import dataclasses as dt
-import sys
+import sys, os
 import typing as ty
 
 __all__ = (
@@ -82,7 +82,7 @@ _original_sys_files: StreamFiles = get_current_stream()
 # TODO: Use match or if blocks to set correct
 #       Null file target depending on the host
 #       Operating System. (*_*)
-_null_system_file: str = "/dev/null"
+_null_system_file: str = os.devnull # "/dev/null"
 # Dont mind this. Will be set later when needed.
 _null_stream: StreamFiles = None  # type: ignore
 
