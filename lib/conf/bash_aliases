@@ -16,6 +16,7 @@ alias ipython=ipython3
 alias ali="nv $CONTENT_CONF/bash_aliases"
 alias alim="nv $CONTENT_CONF/bash_methods"
 alias alil="nv $CONTENT_CONF/bash_login"
+alias mwifi-load="py /home/simon/Content/code/live/python/movie-app-2/preload.py"
 
 alias agcorn="gunicorn --worker-class aiohttp.worker.GunicornWebWorker --reload"
 alias clr=clear
@@ -34,8 +35,7 @@ alias phttpx="fhttpx -m post"
 alias sql="sqlite3 --box"
 alias wifi_movie="origins_router && no_watch"
 alias wifi_load_movie="origins_router && watch_movie load"
-alias stream_movies="run -C \"$CONTENT_CODE/live/python/movie-app-2\""
-alias mwifi="origins_router && stream_movies"
+alias mwifi="origins_router && movie-app"
 
 alias nameep="py -m mpack.nameep"
 alias webrun="py -m mpack.webrun"

@@ -1,6 +1,8 @@
+import contextlib
 from css_html_js_minify.minify import process_multiple_files
 import typing as ty, dataclasses as dt, tempfile as tmp
 from concurrent.futures import ThreadPoolExecutor, wait
+
 from mpack.previews import Preview, _DEFAULT
 from pathlib import Path
 from aiohttp import web
@@ -61,27 +63,24 @@ def generate_thumbnails(config: Config):
             )
             clip.save_frame(str(image_file), frame_t)
 
-    _thumbnails = lambda: filter(
-        lambda path: not path.exists(),
-        (THUMBNAIL_DIR / f"{video.stem}.png" for video in VIDEO_DIR.iterdir()),
-    )
+    _thumbnails = lambda: (path for path in VIDEO_DIR.iterdir() if not (THUMBNAIL_DIR / f'{path.stem}.png').exists())
+    _thumbnails_paths = lambda: ((THUMBNAIL_DIR / f'{path.stem}.png') for path in _thumbnails())
 
     wait(config.executor.submit(save_frame, video) for video in _thumbnails())
 
-    for preview in _thumbnails():
-        preview.symlink_to(DEFAULT_THUMBNAIL)
+    for thumbnail in _thumbnails_paths():
+        thumbnail.symlink_to(DEFAULT_THUMBNAIL)
 
 
 def generate_previews(config: Config):
     from mpack.previews import PreviewsSeq
 
-    _previews = lambda: filter(
-        lambda path: not path.exists(),
-        (PREVIEW_DIR / video.name for video in VIDEO_DIR.iterdir()),
-    )
+    _previews = lambda: (path for path in VIDEO_DIR.iterdir() if not (PREVIEW_DIR / path.name).exists())
+    _previews_paths = lambda: ((PREVIEW_DIR / path.name) for path in _previews())
+
     PreviewsSeq(video_seq=_previews(), previews_dir=PREVIEW_DIR).create()
 
-    for preview in _previews():
+    for preview in _previews_paths():
         preview.symlink_to(DEFAULT_PREVIEW)
 
 
@@ -90,10 +89,11 @@ def delete_symlinks(config: Config):
         paths = [
             path
             for path in directory.iterdir()
-            if path.resolve().samefile(default_path)
+            if path.is_symlink() and path.samefile(default_path)
         ]
         if confirm:
-            print(f"To be deleted(symlinks): {paths}")
+            print(f"To be deleted(symlinks):")
+            for cnt, path in enumerate(paths): print(f'\t{cnt}: {str(path)}')
             value = input("Are you sure you want to continue?[y/n] ")
             if value.lower() != "y":
                 return
@@ -106,26 +106,36 @@ def delete_symlinks(config: Config):
 
 def cleanup_junk(config: Config):
     def _cleanup(directory: Path, todelete: ty.Callable[[Path], bool]):
-        paths = [path for path in directory.iterdir() if not todelete(path)]
+        paths = [path for path in directory.iterdir() if todelete(path)]
         if config.confirm_junk_cleanup:
-            print(f"To be deleted(symlinks): {paths}")
+            print(f"To be deleted(Junk Files):")
+            for cnt, path in enumerate(paths): print(f'\t{cnt}: {str(path)}')
             value = input("Are you sure you want to continue?[y/n] ")
             if value.lower() != "y":
                 return
         for path in paths:
             path.unlink()
 
-    _cleanup(THUMBNAIL_DIR, lambda p: (VIDEO_DIR / f"{p.stem}.png").exists())
-    _cleanup(PREVIEW_DIR, lambda p: (VIDEO_DIR / p.name).exists())
+    _cleanup(THUMBNAIL_DIR, lambda p: not (VIDEO_DIR / f"{p.stem}.mp4").exists())
+    _cleanup(PREVIEW_DIR, lambda p: not (VIDEO_DIR / p.name).exists())
 
-
+@contextlib.contextmanager
 def assert_correctness(config: Config):
-    assert STATIC_DIR.exists(), f"Static directory missing: {STATIC_DIR!r}"
-    assert PUBLIC_DIR.exists(), f"Public directory missing: {PUBLIC_DIR!r}"
-    assert RESOURCE_DIR.exists(), f"Resources directory missing: {RESOURCE_DIR!r}"
-    assert VIDEO_DIR.exists(), f"Video directory missing: {VIDEO_DIR!r}"
-    assert THUMBNAIL_DIR.exists(), f"Thumbnail directory missing: {THUMBNAIL_DIR!r}"
-    assert PREVIEW_DIR.exists(), f"Preview directory missing: {PREVIEW_DIR!r}"
+    try:
+        assert STATIC_DIR.exists(), f"Static directory missing: {STATIC_DIR!r}"
+        assert PUBLIC_DIR.exists(), f"Public directory missing: {PUBLIC_DIR!r}"
+        assert RESOURCE_DIR.exists(), f"Resources directory missing: {RESOURCE_DIR!r}"
+        assert VIDEO_DIR.exists(), f"Video directory missing: {VIDEO_DIR!r}"
+        assert THUMBNAIL_DIR.exists(), f"Thumbnail directory missing: {THUMBNAIL_DIR!r}"
+        assert PREVIEW_DIR.exists(), f"Preview directory missing: {PREVIEW_DIR!r}"
+        yield
+        assert DEFAULT_THUMBNAIL.exists(), f'Default thumbnail missing: {DEFAULT_THUMBNAIL!r}'
+        assert DEFAULT_PREVIEW.exists(), f'Default preview missing: {DEFAULT_PREVIEW!r}'
+        assert DEFAULT_THUMBNAIL.is_file(), f'Default thumbnail is not a file: {DEFAULT_THUMBNAIL!r}'
+        assert DEFAULT_PREVIEW.is_file(), f'Default preview is not a file: {DEFAULT_PREVIEW!r}'
+    except AssertionError as e:
+        print(f"Error: {str(e)}")
+        exit(1)
 
 
 def generate_defaults(config: Config):
@@ -182,7 +192,7 @@ config: ty.Callable[[web.Request], Config] = lambda req: get_config(req.app)
 
 def setup(app: web.Application, config: ty.Optional[Config] = None):
     config = config or Config()
-    assert_correctness(config)
+    with assert_correctness(config):
+        prepare(config)
     app[APP_KEY] = config
-    prepare(config)
     return config
