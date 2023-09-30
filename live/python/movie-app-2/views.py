@@ -1,4 +1,3 @@
-import random
 from mpack.aiohttp_helpers.mako_ import template_handler
 import config as cfg, movies as mov
 from aiohttp import web
@@ -35,7 +34,6 @@ async def movie(req: web.Request):
 
 
 async def refresh(req: web.Request):
-    print("Update OKAY")
     movies = mov.movies(req)
     try:
         sortorder = req.query["sortby"]
