@@ -5,8 +5,8 @@ from pathlib import Path
 APP_KEY = "movies.app.key.moviesite"
 
 T = ty.TypeVar("T")
-Sorter = ty.Callable[[T], ty.Iterable[T]]
-PathSortT = Sorter[Path]
+Sorter = ty.Callable[[ty.Sequence[T]], ty.Iterable[T]]
+PathSortT = Sorter['Movie']
 
 
 class MovieSorter:
@@ -32,13 +32,21 @@ class MovieSorter:
         random.shuffle(tmp)
         return tmp
 
+    @staticmethod
+    def identity(items: ty.Sequence["Movie"]):
+        return items
+
+@dt.dataclass
+class _Order(str):
+    _value: str
+    _sorter: PathSortT = MovieSorter.identity
 
 @enum._simple_enum(enum.StrEnum)  # type: ignore
 class Order:
-    def __new__(cls, order: str, strategy: PathSortT):
-        value = str.__new__(cls, order)
-        value._value = order  # type: ignore
-        value._sorter = strategy  # type: ignore
+    def __new__(cls, order: str, strategy: PathSortT = MovieSorter.identity) -> _Order:
+        value = _Order.__new__(cls, order)
+        value._value = order
+        value._sorter = strategy
         return value
 
     NEW = "new", MovieSorter.sort_by_time_newest
@@ -122,7 +130,7 @@ class Movies:
 
     def sort_movies(self, order: ty.Optional[Order] = None):
         order = self.order if order is None else order
-        self.movies = MovieList(order._sorter(self.movies))  # type: ignore
+        self.movies = MovieList(order._sorter(self.movies)) # type: ignore
         self.set_movie_ids()
 
     def set_movie_ids(self):
@@ -130,8 +138,7 @@ class Movies:
             movie.movie_id = mid
 
     def set_movies(self, order: Order | None = None):
-        self.movies = MovieList(
-            Movie(path) for path in self.path.iterdir())
+        self.movies = MovieList(Movie(path) for path in self.path.iterdir())
         self.sort_movies(order)
 
     def partition(self, offset: int = 0, limit: int = 5):

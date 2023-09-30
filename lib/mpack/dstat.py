@@ -6,8 +6,8 @@ from pathlib import Path
 import click
 from mpack.bsize import Bytes
 
-_identity = lambda _, __: None
-_add = lambda x, y: x + y
+_identity = lambda *_, **__: None
+_add: ty.Callable[[ty.Any, ty.Any], ty.Any] = lambda x, y: x + y
 OperateType = ty.Callable[[Path, Bytes], None]
 
 __all__ = "PathSize", "OperateType", "cli"
@@ -25,6 +25,8 @@ class PathSize:
         return Bytes(stat.st_size) + blk_size
 
     def _dir_size(self, path: Path) -> Bytes:
+        if not self.follow_symlinks and path.is_symlink():
+            return Bytes()
         blk_size = path.stat().st_blksize if self.block_size else 0
 
         def _size(sub_path: Path) -> Bytes:
