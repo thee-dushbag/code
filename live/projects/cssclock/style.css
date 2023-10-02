@@ -1,0 +1,249 @@
+* {
+  box-sizing: border-box;
+  outline-width: 0px;
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+}
+
+body {
+  background-color: rebeccapurple;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  display: flex;
+}
+
+.container {
+  background-image: linear-gradient(45deg, crimson, transparent, teal);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 5px rgba(255, 255, 255, 0.2),
+    inset -5px -5px 5px rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: all 1s;
+  top: 0;
+  left: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  height: 400px;
+  width: 400px;
+  z-index: 0;
+}
+
+.container::after,
+.container::before {
+  position: relative;
+  border-radius: 50%;
+  position: absolute;
+  transition: all 1s;
+  content: "";
+  height: 70%;
+  width: 70%;
+  z-index: 1;
+}
+
+.container::after {
+  background-image: radial-gradient(rgba(220, 20, 60, 0.4), crimson);
+  bottom: -25%;
+  right: -25%;
+}
+.container::before {
+  background-image: radial-gradient(rgba(0, 128, 128, 0.4), teal);
+  left: -25%;
+  top: -25%;
+}
+
+.container:hover {
+  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.5),
+    inset 5px 5px 5px rgba(255, 255, 255, 0.3),
+    inset -5px -5px 5px rgba(0, 0, 0, 0.3);
+  top: -5px;
+  left: -5px;
+}
+
+.container:hover::after,
+.container:hover::before {
+  width: 85%;
+  height: 85%;
+}
+
+.container .circle {
+  box-shadow: inset 0px 0px 5px #0099ff79, 0px 0px 5px #0099ff;
+  background-color: rgba(31, 122, 201, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  position: relative;
+  transition: all 1s;
+  height: 80%;
+  z-index: 5;
+  width: 80%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container:hover .circle {
+  box-shadow: inset 0px 0px 5px #0099ff79, 0px 0px 20px #0099ff;
+  background-color: rgba(31, 122, 201, 0.3);
+  scale: 1.1;
+}
+
+.container:hover .circle,
+.container:hover .circle .track {
+  border: 2px solid rgba(178, 255, 55, 0.8);
+}
+
+.container .circle,
+.container .circle .track {
+  border: 2px solid rgba(255, 213, 77, 0.2);
+}
+
+.container .circle::after,
+.container .circle::before {
+  content: "";
+  z-index: 6;
+  position: absolute;
+  height: 100%;
+  width: 150px;
+  transition: all 0.5s ease-in-out;
+}
+
+.container .circle::after {
+  background-color: #ffffffb7;
+  transform: skew(40deg);
+  left: -260px;
+}
+
+.container .circle::before {
+  background-color: #ffffffaa;
+  transition-delay: 0.3s;
+  transform: skew(-40deg);
+  right: -260px;
+}
+
+.container:hover .circle::after {
+  left: calc(100% + 110px);
+}
+
+.container:hover .circle::before {
+  right: calc(100% + 110px);
+}
+
+.container .circle span {
+  transform: rotate(calc(calc(calc(360deg / 12) * var(--number)) - 90deg));
+  background-color: transparent;
+  transform-origin: center;
+  display: inline-block;
+  position: absolute;
+  text-align: end;
+  width: 90%;
+  background-image: linear-gradient(
+    to left,
+    #00bbaa99,
+    transparent,
+    transparent,
+    transparent,
+    transparent
+  );
+  padding: 10px;
+  border-radius: 50px;
+}
+
+.container .circle span b {
+  transform: rotate(calc(calc(calc(-360deg / 12) * var(--number)) + 90deg));
+  display: inline-block;
+  font-family: monospace;
+  font-weight: 300;
+  color: #ffae00cc;
+  transition: all 1s;
+  font-size: 15pt;
+}
+
+.container:hover .circle span b {
+  text-shadow: 0 0 3px #ffae00;
+  color: #ffae00;
+}
+
+.container .circle .track .hand,
+.container .circle .center {
+  position: absolute;
+}
+
+.container .circle .center {
+  transform: translate(-25%, -25%);
+  transform-origin: center;
+  background-color: lime;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+}
+
+.container .circle .track .hand {
+  transform-origin: bottom;
+  background-color: wheat;
+  height: 20%;
+  width: 3px;
+  bottom: 50%;
+  animation-name: rotate-hand;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  transition: all 1s;
+}
+
+.container:hover .circle .track .hand {
+  box-shadow:  0 0 50px inherit;
+}
+
+.container .circle .hand::after {
+  content: "";
+  position: absolute;
+  top: -168%;
+  left: -5px;
+  aspect-ratio: 1/1;
+  width: 10px;
+  border-radius: 50%;
+  background-color: inherit;
+}
+
+.container:hover .circle .hand::after {
+  box-shadow:  0px 0px 50px lime;
+}
+
+.container .circle .track .hand.seconds {
+  animation-duration: 60s;
+  background-color: crimson;
+}
+
+.container .circle .track .hand.minutes {
+  animation-duration: calc(60s * 60);
+  background-color: rgb(255, 145, 0);
+}
+
+.container .circle .track .hand.hours {
+  animation-duration: calc(60s * 3600);
+  background-color: rgb(255, 230, 0);
+}
+
+.container .circle .track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  aspect-ratio: 1/1;
+  width: calc(30% + 10% * var(--track));
+  border-radius: 50%;
+  transition: all 1s;
+}
+
+@keyframes rotate-hand {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
