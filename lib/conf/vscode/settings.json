@@ -110,7 +110,10 @@
   "C_Cpp.default.cppStandard": "c++23",
   "python.languageServer": "Pylance",
   "python.formatting.provider": "black",
+  "editor.tabSize": 4,
   "editor.defaultFormatter": "vscode.html-language-features",
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
   "[mako]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
