@@ -38,8 +38,8 @@ async def refresh(req: web.Request):
     try:
         sortorder = req.query["sortby"]
         order = mov.Order(sortorder)  # type: ignore
-        movies.sort_movies(order)
-        movies.order = order
+        movies.sort_movies(order) # type: ignore
+        movies.order = order # type: ignore
     except KeyError:
         pass
     try:
