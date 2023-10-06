@@ -53,53 +53,53 @@ class Size(_e.IntEnum):
 
 # Converters
 ## From * to bytes...
-def b_bytes(b: int) -> float:
-    return b / Size.BITS
+def b_bytes(b: ty.SupportsFloat) -> float:
+    return float(b) / Size.BITS
 
 
-def kb_bytes(kb: float) -> float:
-    return kb * Size.KILO_BYTES
+def kb_bytes(kb: ty.SupportsFloat) -> float:
+    return float(kb) * Size.KILO_BYTES
 
 
-def mb_bytes(mb: float) -> float:
-    return mb * Size.MEGA_BYTES
+def mb_bytes(mb: ty.SupportsFloat) -> float:
+    return float(mb) * Size.MEGA_BYTES
 
 
-def gb_bytes(gb: float) -> float:
-    return gb * Size.GIGA_BYTES
+def gb_bytes(gb: ty.SupportsFloat) -> float:
+    return float(gb) * Size.GIGA_BYTES
 
 
-def tb_bytes(tb: float) -> float:
-    return tb * Size.TERRA_BYTES
+def tb_bytes(tb: ty.SupportsFloat) -> float:
+    return float(tb) * Size.TERRA_BYTES
 
 
-def pb_bytes(pb: float) -> float:
-    return pb * Size.PETA_BYTES
+def pb_bytes(pb: ty.SupportsFloat) -> float:
+    return float(pb) * Size.PETA_BYTES
 
 
 ## From bytes to *...
-def bytes_b(by: int) -> float:
-    return by * Size.BITS
+def bytes_b(by: ty.SupportsFloat) -> float:
+    return float(by) * Size.BITS
 
 
-def bytes_kb(by: float) -> float:
-    return by / Size.KILO_BYTES
+def bytes_kb(by: ty.SupportsFloat) -> float:
+    return float(by) / Size.KILO_BYTES
 
 
-def bytes_mb(by: float) -> float:
-    return by / Size.MEGA_BYTES
+def bytes_mb(by: ty.SupportsFloat) -> float:
+    return float(by) / Size.MEGA_BYTES
 
 
-def bytes_gb(by: float) -> float:
-    return by / Size.GIGA_BYTES
+def bytes_gb(by: ty.SupportsFloat) -> float:
+    return float(by) / Size.GIGA_BYTES
 
 
-def bytes_tb(by: float) -> float:
-    return by / Size.TERRA_BYTES
+def bytes_tb(by: ty.SupportsFloat) -> float:
+    return float(by) / Size.TERRA_BYTES
 
 
-def bytes_pb(by: float) -> float:
-    return by / Size.PETA_BYTES
+def bytes_pb(by: ty.SupportsFloat) -> float:
+    return float(by) / Size.PETA_BYTES
 
 
 # Base Class For representing size...
