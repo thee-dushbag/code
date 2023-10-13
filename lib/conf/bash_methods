@@ -1,106 +1,103 @@
 # Command behaviors set here...
 
 function _install_jspack() {
-    npm i $CONTENT_LIB/jspack
+  npm i $CONTENT_LIB/jspack
 }
 
 function vscode_settings() {
-    local target=$1
-    if [[ "$target" == '' ]]; then
-        target=.
+  local target=$1
+  if [ -z "$target" ]; then
+    target=.
+  fi
+  if [ ! -d "$target" ]; then
+    echo Expected an existing directory path, found: $target >&2
+    return 127
+  fi
+  if [ ! -e "$MAIN_VSCODE_SETTINGS_SYMLINK" ]; then
+    echo Main .vscode symlink/link was not found: $MAIN_VSCODE_SETTINGS_SYMLINK >&2
+    return 1
+  fi
+  if [ ! -L "$MAIN_VSCODE_SETTINGS_SYMLINK" ]; then
+    echo Main .vscode \($MAIN_VSCODE_SETTINGS_SYMLINK\) is not a symlink?
+    read -p 'Continue Linking? [y/n] ' cont
+    if [ 'y' != "$cont" ]; then
+      return 127
     fi
-    if [[ ! -d "$target"  ]]; then
-        echo Expected an existing directory path, found: $target >&2
-        return 127
-    fi
-    if [[ ! -e "$MAIN_VSCODE_SETTINGS_SYMLINK" ]]; then
-        echo Main .vscode symlink/link was not found: $MAIN_VSCODE_SETTINGS_SYMLINK >&2
-        return 1
-    fi
-    if [[ ! -L "$MAIN_VSCODE_SETTINGS_SYMLINK" ]]; then
-        echo Main .vscode \($MAIN_VSCODE_SETTINGS_SYMLINK\) is not a symlink?
-        read -p 'Continue Linking? [y/n] ' cont
-        if [[ 'y' != "$cont" ]]; then
-            return 127
-        fi
-    fi
-    if [[ -e "$target/.vscode" ]]; then
-        echo There exists a .vscode settings in the $target folder. >&2
-        return 1
-    else
-        local vscode_path=$(realpath "$MAIN_VSCODE_SETTINGS_SYMLINK"  --strip --relative-to "$target")
-        ln -s "$vscode_path" "$target/.vscode"
-    fi
+  fi
+  if [ -e "$target/.vscode" ]; then
+    echo There exists a .vscode settings in the $target folder. >&2
+    return 1
+  else
+    local vscode_path=$(realpath "$MAIN_VSCODE_SETTINGS_SYMLINK" --strip --relative-to "$target")
+    ln -s "$vscode_path" "$target/.vscode"
+  fi
 }
 
 function _set_host_port() {
-    export $1_HOST=$2
-    export $1_PORT=$3
+  export $1_HOST=$2
+  export $1_PORT=$3
 }
 
 function _get_origins() {
-    echo "MOVIE_ORIGIN   = $MOVIE_HOST:$MOVIE_PORT"
-    echo "STATICS_ORIGIN = $STATICS_HOST:$STATICS_PORT"
+  echo "MOVIE_ORIGIN   = $MOVIE_HOST:$MOVIE_PORT"
+  echo "STATICS_ORIGIN = $STATICS_HOST:$STATICS_PORT"
 }
 
 function _set_movie() {
-    _set_host_port MOVIE $1 $2
+  _set_host_port MOVIE $1 $2
 }
 
 function _set_statics() {
-    _set_host_port STATICS $1 $2
+  _set_host_port STATICS $1 $2
 }
 
 function _set_origins_host() {
-    _set_movie $1 $MOVIE_PORT
-    _set_statics $1 $STATICS_PORT
+  _set_movie $1 $MOVIE_PORT
+  _set_statics $1 $STATICS_PORT
 }
 
 function _set_origins_router_host() {
-    _set_origins_host "192.168.0.100"
+  _set_origins_host "192.168.0.100"
 }
 
 function _set_origins_local_host() {
-    _set_origins_host "localhost"
+  _set_origins_host "localhost"
 }
 
-. /etc/bash.bashrc
-. /etc/bash_completion
-
 function shlvl_() {
-    echo "Shell LEVEL: $SHLVL"
+  echo "Shell LEVEL: $SHLVL"
 }
 
 function _get_virtual_env() {
-	if [[ -d "$VIRTUAL_ENV" ]]; then
-		echo -n "$(basename "$VIRTUAL_ENV") "
-	else
-		echo -n ""
-	fi
+  if [[ -d "$VIRTUAL_ENV" ]]; then
+    echo -n "$(basename "$VIRTUAL_ENV") "
+  else
+    echo -n ""
+  fi
 }
 
 function _get_state_char() {
-	# symbols="✓×"
+  # symbols="✓×"
   if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
-		echo -n ' ✓'
-	else
-		echo -n ' ×'
-	fi
+    echo -n ' ✓'
+  else
+    echo -n ' ×'
+  fi
 }
 
 function _get_state_color() {
-	local OK_COLOR='\e[92;3m'
-	local ERR_COLOR='\e[91;3m'
-	# symbols="✓×"
+  local OK_COLOR='\e[92;3m'
+  local ERR_COLOR='\e[91;3m'
+  # symbols="✓×"
   if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
-		echo -en "$OK_COLOR"
-	else
-		echo -en "$ERR_COLOR"
-	fi
+    echo -en "$OK_COLOR"
+  else
+    echo -en "$ERR_COLOR"
+  fi
 }
 
 function _set_last_command_state() {
-	_LAST_COMMAND_STATE=$?
+  _LAST_COMMAND_STATE=$?
   return $_LAST_COMMAND_STATE
 }
 
@@ -110,22 +107,22 @@ PS1=$'\[\e[0m\]\[$(_get_state_color)\]$(_get_state_char) \[\e[0m\]\[\e[97;1m\]$(
 
 # import my functions if they exist
 if [[ -f ~/.bash_utils ]]; then
-    . ~/.bash_utils
-#else
-#	echo "Bash Utils Not Found."
+  . ~/.bash_utils
+  #else
+  #	echo "Bash Utils Not Found."
 fi
 
 # other conditionals
 # add my path to PATH
 
 function _add_dir_to_path() {
-    for dir; do
-        if [[ -d "$dir" ]]; then
-            export PATH="$dir":$PATH
-        else
-            echo "Your BIN: '$BIN' was not found." >&2
-        fi
-    done
+  for dir; do
+    if [[ -d "$dir" ]]; then
+      export PATH="$dir":$PATH
+    else
+      echo "Your BIN: '$BIN' was not found or is not a directory." >&2
+    fi
+  done
 }
 
 # Jobs Operation
@@ -133,7 +130,7 @@ function _add_dir_to_path() {
 function pjobs() {
   value=$(jobs -l | awk '{print \$2}')
   if [[ -z "$value" ]]; then
-    return 2;
+    return 2
   fi
   echo "$value"
 }
@@ -150,13 +147,87 @@ function njobs() {
 
 # activate my virtualenv
 
-function _activate_virtual_env() {
-    if [[ -f $PYTHON_ENV/bin/activate ]]; then
-        . $PYTHON_ENV/bin/activate
-    else
-        echo "Failed to activate virtual environment py-env: $PYTHON_ENV" >&2
-    fi
+# function _activate_virtual_env() {
+#     if [[ -f $DEF_PYTHON_ENV/bin/activate ]]; then
+#         . $DEF_PYTHON_ENV/bin/activate
+#     else
+#         echo "Failed to activate virtual environment py-env: $DEF_PYTHON_ENV" >&2
+#     fi
+# }
+
+function _activate_venv() {
+  local venv_path=
+  if [ -z "$1" ]; then
+    venv_path=$DEF_PYTHON_ENV
+  else
+    venv_path="$CONTENT_VENVS/$1"
+  fi
+  if [ ! -d "$venv_path" ]; then
+    echo Invalid Venv: $(basename $venv_path) >/dev/stderr
+    return 2
+  fi
+  source "$venv_path/bin/activate"
 }
 
-_activate_virtual_env
+function _create_venv() {
+  if [ -z "$1" ]; then
+    echo Must Provide Venv Name. >/dev/stderr
+    return 1
+  fi
+  local venv_path="$CONTENT_VENVS/$1"
+  if [ -e "$venv_path" ]; then
+    echo Venv Already exists: $venv_path >/dev/stderr
+    return 1
+  fi
+  virtualenv "$venv_path"
+}
+
+function _list_venvs() {
+  ls "$CONTENT_VENVS"
+}
+
+function _load_venv_requrements() {
+  local outputdir="$1"
+  if [ -z "$outputdir" ]; then
+    outputdir=./requirements
+  fi
+  if [ ! -e "$outputdir" ]; then
+    mkdir "$outputdir"
+  elif [ ! -d "$outputdir" ]; then
+    echo Invalid OutputPath: $outputdir >/dev/stderr
+    return 2
+  fi
+  local current_venv="$(basename "$VIRTUAL_ENV")"
+  while read venv; do
+    _activate_venv "$venv"
+    pip list --format=freeze >"$outputdir/$venv"
+  done <<<$(ls "$CONTENT_VENVS")
+  if [ ! -z "$current_venv" ]; then
+    _activate_venv "$current_venv"
+  fi
+}
+
+function _drop_venv() {
+  local venv_path=
+  for venv; do
+    venv_path="$CONTENT_VENVS/$venv"
+    if [ -e "$venv_path" ]; then
+      read -p "Delete Venv: '$venv'?[Y/n] " confirmation
+      if [ "$confirmation" == 'y' ] || [ "$confirmation" == 'Y' ]; then
+        if [ "$venv" == "$(basename "$DEF_PYTHON_ENV")" ]; then
+          read -p "This is the default venv, confirm delete?[Y/n] " confirmation
+          if [ "$confirmation" != 'y' ] || [ "$confirmation" != 'Y' ]; then
+            continue
+          fi
+        fi
+        rm -rf "$venv_path"
+      fi
+    else
+      echo VenvNotFound: $venv_path >/dev/stderr
+      return 2
+    fi
+  done
+}
+
+# _activate_virtual_env
 _add_dir_to_path "$CORE_BIN" "$EXE_BIN"

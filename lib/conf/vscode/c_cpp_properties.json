@@ -4,7 +4,7 @@
       "name": "Linux",
       "includePath": ["${workspaceFolder}/**", "~/Content/code/lib/include"],
       "defines": ["AUTHOR=Simon Nganga"],
-      "compilerPath": "/usr/bin/clang-15",
+      "compilerPath": "/usr/bin/g++",
       "configurationProvider": "ms-vscode.makefile-tools"
     }
   ],
