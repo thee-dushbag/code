@@ -21,27 +21,26 @@ alias mwifi-load="py /home/simon/Content/code/live/python/movie-app-2/preload.py
 alias agcorn="gunicorn --worker-class aiohttp.worker.GunicornWebWorker --reload"
 alias clr=clear
 alias python=python3
-alias opip=`which pip`
+alias opip=$(which pip)
 # alias pip="opip --require-virtualenv"
 alias make_q="make --quiet"
 alias rune="make_q exe"
 alias run="make_q -B"
-alias react_app="cp -rv ~/Content/code/live/javascript/react_"
 alias statics="run -C ~/Content/code/live/python/statics"
 alias fhttpx="httpx --follow-redirects"
+alias phttpx="fhttpx -m post"
 alias shut="shutdown --poweroff now"
 alias boot="shutdown --reboot now"
-alias phttpx="fhttpx -m post"
 alias sql="sqlite3 --box"
-alias wifi_movie="origins_router && no_watch"
-alias wifi_load_movie="origins_router && watch_movie load"
+# alias wifi_movie="origins_router && no_watch"
+# alias wifi_load_movie="origins_router && watch_movie load"
 alias mwifi="origins_router && movie-app"
 
 alias nameep="py -m mpack.nameep"
 alias webrun="py -m mpack.webrun"
 alias psize="py -m mpack.dstat"
 alias toxspf="py -m mpack.toxspf"
-alias onpm=npm
+alias onpm=$(which npm)
 alias npm="npm --no-fund --no-audit --no-install-links"
 alias mtools="py -m mpack.cmd_tools"
 
@@ -49,8 +48,11 @@ alias ..="cd .."
 alias '_'="cd -"
 alias ...="cd .. && cd .."
 alias ....="cd .. && cd .. && cd .."
-alias activate=_activate_virtual_env
-
+alias activate=_activate_venv
+alias createvenv=_create_venv
+alias lsvenv=_list_venvs
+alias loadvenvrq=_load_venv_requrements
+alias dropvenv=_drop_venv
 # xclip copy paste aliases
 # alias pbcopy='xclip -selection clipboard'
 # alias pbpaste='xclip -selection clipboard -o'
