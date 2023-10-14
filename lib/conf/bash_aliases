@@ -54,9 +54,9 @@ alias lsvenv=_list_venvs
 alias loadvenvrq=_load_venv_requrements
 alias dropvenv=_drop_venv
 
-alias vault-setup=_setup_encfs_vault
-alias vault-mount=_mount_encfs_vault
-alias vault-unmount=_unmount_encfs_vault
+alias vstp=_setup_encfs_vault
+alias vmnt=_mount_encfs_vault
+alias vumnt=_unmount_encfs_vault
 # xclip copy paste aliases
 # alias pbcopy='xclip -selection clipboard'
 # alias pbpaste='xclip -selection clipboard -o'

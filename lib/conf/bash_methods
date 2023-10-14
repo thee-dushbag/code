@@ -229,19 +229,41 @@ function _drop_venv() {
   done
 }
 
+function _encfs_vault_mounted() {
+  local vfs=$(df "$VAULT_MOUNT_POINT" | sed 1d | awk '{ print $1 }')
+  if [ "$vfs" != 'encfs' ]; then
+    return 1
+  fi
+}
+
 function _setup_encfs_vault() {
-  encfs --standard "$ENCRYPTED_VAULT_DIR" "$VAULT_MOUNT_POINT"
+  encfs "$ENCRYPTED_VAULT_DIR" "$VAULT_MOUNT_POINT"
 }
 
 function _mount_encfs_vault() {
-  encfs "$ENCRYPTED_VAULT_DIR" "$VAULT_MOUNT_POINT" -o auto_unmount
+  if _encfs_vault_mounted; then
+    echo Vault Already Mounted >/dev/stderr
+    return 1
+  else
+    encfs "$ENCRYPTED_VAULT_DIR" "$VAULT_MOUNT_POINT" -o auto_unmount
+  fi
 }
 
 function _unmount_encfs_vault() {
-  if [ "$1" == '-f' ]; then
-    umount -l "$VAULT_MOUNT_POINT"
+  if [ "$1" == '-h' ]; then
+    echo '-h print this help and exit'
+    echo '-f force unmount'
+    return 0
+  fi
+  if _encfs_vault_mounted; then
+    if [ "$1" == '-f' ]; then
+      umount -l "$VAULT_MOUNT_POINT"
+    else
+      fusermount3 -u "$VAULT_MOUNT_POINT"
+    fi
   else
-    fusermount3 -u "$VAULT_MOUNT_POINT"
+    echo Vault Not Mounted >/dev/stderr
+    return 1
   fi
 }
 
