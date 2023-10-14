@@ -17,6 +17,8 @@ export MOVIE_PORT=9080
 export MOVIE_HOST=localhost
 export EDITOR=nvim
 export CONTENT_CONF=$CONTENT_LIB/conf
+export VAULT_MOUNT_POINT=$CONTENT_DIR/vault
+export ENCRYPTED_VAULT_DIR=$CONTENT_BIN/evault
 
 # Save working dir.
 _cur_dir=$(pwd)

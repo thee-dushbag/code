@@ -17,5 +17,5 @@ cred = Credential(
     port=5432,
     user="simon",
     password=password,
-    database="",
+    database="learnasyncio",
 )

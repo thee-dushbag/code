@@ -151,7 +151,7 @@ function njobs() {
 #     if [[ -f $DEF_PYTHON_ENV/bin/activate ]]; then
 #         . $DEF_PYTHON_ENV/bin/activate
 #     else
-#         echo "Failed to activate virtual environment py-env: $DEF_PYTHON_ENV" >&2
+#         echo "Failed to activate virtual environment: $DEF_PYTHON_ENV" >&2
 #     fi
 # }
 
@@ -227,6 +227,22 @@ function _drop_venv() {
       return 2
     fi
   done
+}
+
+function _setup_encfs_vault() {
+  encfs --standard "$ENCRYPTED_VAULT_DIR" "$VAULT_MOUNT_POINT"
+}
+
+function _mount_encfs_vault() {
+  encfs "$ENCRYPTED_VAULT_DIR" "$VAULT_MOUNT_POINT" -o auto_unmount
+}
+
+function _unmount_encfs_vault() {
+  if [ "$1" == '-f' ]; then
+    umount -l "$VAULT_MOUNT_POINT"
+  else
+    fusermount3 -u "$VAULT_MOUNT_POINT"
+  fi
 }
 
 # _activate_virtual_env

@@ -7,6 +7,7 @@ app = ty.cast(web.Application, {})
 
 
 @click.command
+@click.help_option('--help', '-h')
 @click.option(
     "--data-directory", type=click.Path(exists=True, file_okay=False, path_type=Path)
 )
