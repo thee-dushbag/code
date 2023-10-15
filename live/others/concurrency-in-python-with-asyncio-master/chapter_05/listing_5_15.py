@@ -11,7 +11,7 @@ async def main():
     query = "SELECT product_id, product_name FROM product"
     async with connection.transaction():
         async for product in connection.cursor(query):
-            print(product)
+            print(f"id: {product['product_id']} | name: {product['product_name']!r}")
 
     await connection.close()
 

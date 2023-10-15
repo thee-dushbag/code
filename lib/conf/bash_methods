@@ -267,5 +267,19 @@ function _unmount_encfs_vault() {
   fi
 }
 
+function _start_ssh_agent_daemon() {
+  eval $(ssh-agent -s)
+}
+
+function _ssh_add_key() {
+  local key="$1"
+  local keypath="$HOME/.ssh/keys/$key"
+  if [ ! -f "$keypath" ]; then
+    echo Key Not Found: $keypath >/dev/stderr
+    return 2
+  fi
+  ssh-add "$keypath"
+}
+
 # _activate_virtual_env
 _add_dir_to_path "$CORE_BIN" "$EXE_BIN"
