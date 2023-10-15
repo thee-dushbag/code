@@ -39,7 +39,7 @@ async def main():
     connection = await asyncpg.connect(**cred)
 
     product_tuples = gen_products(
-        common_words, brand_id_start=1, brand_id_end=100, products_to_create=1000
+        common_words, brand_id_start=1, brand_id_end=102, products_to_create=1000
     )
     await connection.executemany(
         "INSERT INTO product VALUES(DEFAULT, $1, $2)", product_tuples
@@ -54,5 +54,5 @@ async def main():
 
     await connection.close()
 
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

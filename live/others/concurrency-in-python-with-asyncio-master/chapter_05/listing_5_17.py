@@ -6,11 +6,10 @@ from __init__ import cred
 
 
 async def take(generator, to_take: int):
-    item_count = 0
+    item_count = 1
     async for item in generator:
-        if item_count > to_take - 1:
-            return
-        item_count = item_count + 1
+        if item_count > to_take: return
+        item_count += 1
         yield item
 
 
@@ -27,5 +26,5 @@ async def main():
 
     await connection.close()
 
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

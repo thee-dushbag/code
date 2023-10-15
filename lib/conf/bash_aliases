@@ -64,3 +64,6 @@ alias vumnt=_unmount_encfs_vault
 # xsel copy paste aliases
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
+
+alias lssh-add=_ssh_add_key
+alias lssh-agent=_start_ssh_agent_daemon

@@ -28,5 +28,5 @@ async def main():
     async with asyncpg.create_pool(**cred, min_size=6, max_size=6) as pool:  # A
         await asyncio.gather(query_product(pool), query_product(pool))  # B
 
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())
