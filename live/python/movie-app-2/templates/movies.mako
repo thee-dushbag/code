@@ -5,9 +5,9 @@
 <%def name="paginate_block()">
   <div id="paginate" class="paginate py-1 px-0">
     <div id="page-buttons" class="d-flex text-light justify-content-center column-gap-2">
-      <div id="page-prev" class="page-btn btn btn-primary flex-shrink">&lt;&lt;</div>
+      <div id="page-prev" class="page-btn btn btn-primary flex-shrink">&laquo;</div>
       <div class="btn-group flex-fill" id="page-row"></div>
-      <div id="page-next" class="page-btn btn btn-primary flex-shrink">&gt;&gt;</div>
+      <div id="page-next" class="page-btn btn btn-primary flex-shrink">&raquo;</div>
     </div>
   </div>
 </%def>

@@ -43,7 +43,7 @@ async def refresh(req: web.Request):
     except KeyError:
         pass
     try:
-        if req.query["load"].lower() in ["y", "yes"]:
+        if req.query["load"].lower() in ("y", "yes"):
             movies.set_movies()
             cfg.generate_previews(cfg.config(req))
             cfg.generate_thumbnails(cfg.config(req))
@@ -59,10 +59,10 @@ async def media_not_found_fallback(req: web.Request, handler):
     except web.HTTPNotFound:
         if req.url.path.startswith("/source/thumbnails"):
             raise web.HTTPTemporaryRedirect(
-                f"/source/thumbnails/{cfg.DEFAULT_THUMBNAIL.name}"
+                f"/source/{cfg.DEFAULT_THUMBNAIL.name}"
             )
         if req.url.path.startswith("/source/previews"):
-            raise web.HTTPTemporaryRedirect(f"/source/previews/{cfg.DEFAULT_PREVIEW.name}")
+            raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_PREVIEW.name}")
         raise
 
 

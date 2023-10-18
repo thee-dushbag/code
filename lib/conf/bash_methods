@@ -268,7 +268,13 @@ function _unmount_encfs_vault() {
 }
 
 function _start_ssh_agent_daemon() {
-  eval $(ssh-agent -s)
+  local ssh_agent_pid=$(pgrep ssh-agent)
+  if [ -z "$ssh_agent_pid" ] || [ "-f" == "$1" ]; then
+    eval $(ssh-agent -s)
+  else
+    echo ssh-agent already running on PID: $ssh_agent_pid >&2
+    return 1
+  fi
 }
 
 function _ssh_add_key() {
