@@ -1,5 +1,5 @@
-PORT=9080
-HOST=${STATICS_HOST}
+PORT=${MOVIE_PORT}
+HOST=${MOVIE_HOST}
 WCLS=aiohttp.worker.GunicornUVLoopWebWorker
 WORKER_CLASS=--worker-class ${WCLS}
 BIND=--bind ${HOST}:${PORT}
