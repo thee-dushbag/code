@@ -87,7 +87,8 @@
     "charconv": "cpp",
     "unordered_set": "cpp",
     "stdbool.h": "c",
-    "iso646.h": "c"
+    "iso646.h": "c",
+    "*.mako": "mako"
   },
 
   "emmet.includeLanguages": {
@@ -109,7 +110,7 @@
   "C_Cpp.default.cStandard": "c23",
   "C_Cpp.default.cppStandard": "c++23",
   "python.languageServer": "Pylance",
-  "python.formatting.provider": "black",
+  "python.formatting.provider": "autopep8",
   "editor.defaultFormatter": "vscode.html-language-features",
   "prettier.tabWidth": 2,
   "prettier.useTabs": false,
