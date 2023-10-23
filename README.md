@@ -1,6 +1,6 @@
 # Hello World.
 
-![What a Good Day.](./whatyoudoing.jpg )
+![What a Good Day.](./lib/conf/whatyoudoing.jpg )
 
 In this **package**, I record my **coding progress** on the different technologies and programming languages out there.
 
@@ -26,19 +26,19 @@ print(read(34)) # thirty four
 This is a brief overview of the structure of this **repository**.
 
 - **_Languages_**
-  +  python
-  +  lua
-  +  c++/c
-  +  javascript
+  +  **Python** - general scripting and the amazing simplicity.
+  +  **Lua** - general scripting and the ability to be integrated into other languages as a simple config script.
+  +  **C/C++** - amazingly complex and a mistery to solve and learn the beautiful world of low level programming.
+  +  **Javascript** - the web is here to stay, a little of this goes a long way.
 
 - ***Technologies***
-  + markdown - for documentation.
-  + json/yaml - for data serialization.
-  + docker/nginx - for containerization and general work.
+  + **markdown/reStructuredText** - for documentation.
+  + **json/yaml** - for data serialization.
+  + **docker/nginx** - for containerization and general work.
 
 This is the worst **README** in all history, no worries, improvements are on the way.
 
-Did you see what I did there, I made README bold. (\*v\*).
+Did you see what I did there, I made README bold. **(\*** v **\*)**.
 
 ## Updates.
 In this section, I blog about my new advancements and long time choices like one below, Tech Stack.
@@ -46,8 +46,8 @@ In this section, I blog about my new advancements and long time choices like one
 ### Tech Stack.
 My former tech-stack was composed of: ***<u><del>RAMB</del></u>***
 
-- [AioHTTP](https://docs.aiohttp.org/en/stable 'A Simple light weight python package for building backends.') for my backend.
 - [React](https://react.dev 'A javascript frontent framework.') for my frontend.
+- [AioHTTP](https://docs.aiohttp.org/en/stable 'A Simple light weight python package for building backends.') for my backend.
 - [Mysql](https://www.mysql.com 'A relational database.') for storing app data.
 - [Bootstrap](https://getbootstrap.com 'A CSS Framework for styling webpages.') styling my frontend.
 
@@ -55,13 +55,16 @@ Lately, I have found out that [React](https://react.dev) is a very massive frame
 I was considering dropping javascript altogether for simple backend rendering using libraries like [Jinja](https://jinja.palletsprojects.com/en/3.1.x) but with a little research I have found simpler libraries that I can pick up easily as a to be backend developer.
 
 The new Almighty Tech Stack: ***<u>BAHM</u>***
-- [AioHTTP](https://docs.aiohttp.org/en/stable 'A Simple light weight python package for building backends.') for my backend.
-- [HTMX](https://htmx.org 'A javascript frontent framework.') for my frontend logic (and a tiny bit of javascript where needed). This can be combined with [Hyperscript](https://hyperscript.org 'Simple HTMX like library that uses javascript underneath to get things done.') for greater functionality (I mean, it can replace basic javascript to some extent).
-- [Mysql](https://www.mysql.com 'A relational database.') for storing app data.
 - [Bootstrap](https://getbootstrap.com 'A CSS Framework for styling webpages.') styling my frontend.
+- [AioHTTP](https://docs.aiohttp.org/en/stable 'A Simple light weight python package for building backends.') for my backend.
+- [HTMX](https://htmx.org 'A javascript frontent framework.') **/** [Hyperscript](https://hyperscript.org 'Simple HTMX like library that uses javascript underneath to get things done.') for my frontend logic (and a tiny bit of javascript where needed).
+- [Mysql](https://www.mysql.com 'A relational database.') for storing app data.
 
 [HTMX](https://htmx.org) is a light weight javascript library that really simplifies frontend development for backend developers, it hides the underneath javascript for small basic **hx-** directives. [Hyperscript](https://hyperscript.org) brings logic into [HTMX](https://htmx.org) which greatly simplifies working in the frontend.
 
 [HTMX](https://htmx.org) expects HTML responses from the server on query while React expects JSON, though other kinds of data can be configured like HTML or markdown using [react-markdown](https://www.npmjs.com/package/react-markdown) library. The HTML responses can be achived using templating libraries like [Mako](https://www.makotemplates.org) and [Jinja](https://jinja.palletsprojects.com/en/3.1.x), I personally prefer [Mako](https://www.makotemplates.org)  to Jinja due to its python like syntax and integratable nature with python as part of the template.
 This new stack drops complexity by over 70% based on my judgement. With this, I hereon declare my decline in the learning of the overly complex React library.
 I can now focus mainly to one language, python, and a little of other languages like javascript, lua and c++, my hobby languages.
+
+### Officially dropped React
+I have deleted all the [React](https://react.dev) code in this repository. In this drop, I am considering to add some other minor Javascript libraries like [AlpineJS](https://alpinejs.dev) and [JQuery](https://jquery.com) as they are light weight and easy to learn and maintain. [JQuery](https://jquery.com) is old and stable, while [AlpineJS](https://alpinejs.dev) is migrating to the hypermedia realm in which it supports [HTMX](https://htmx.org).
