@@ -111,16 +111,13 @@ function contbr() {
   done
 }
 
-function usaflag() {
-  local width=30
-  local height=8
-  if [ -n "$1" ]; then width=$1; fi
-  if [ -n "$2" ]; then height=$2; fi
-  if python -c "exit('${height}${width}'.isnumeric())" &>/dev/null; then
-    echo Expected integers. Syntax:
-    echo '   usaflag <width> <height>'
-    return 1
-  fi
+function _ispint_impl() {
+  for arg; do [[ $arg =~ ^[0-9]+$ ]] || return 1; done
+}
+
+function _usaflag_impl() {
+  local width="$1"
+  local height="$2"
   local h=$(expr $height / 2)
   local w=$(expr $width / 2)
 
@@ -134,6 +131,48 @@ function usaflag() {
     done
     echo
   done
+}
+
+function usaflag() {
+  local _h=8 _w=30 # Default Values
+  while [ $# -ne 0 ]; do
+    case "$1" in
+    --help | -H)
+      echo Usage for: $FUNCNAME
+      echo Options:
+      echo "  --help   -H             print this message and exit."
+      echo "  --width  -w <number>    Width of the flag."
+      echo "  --height -h <number>    Height of the flag."
+      echo "Example: $FUNCNAME -w 40 -h 20"
+      return 0
+      ;;
+    --height | -h)
+      if [ -z "$2" ]; then
+        echo >&2 'Expected a number for height. In -h/--height flag.'
+        return 1
+      fi
+      _h="$2"
+      ;;
+    --width | -w)
+      if [ -z "$2" ]; then
+        echo >&2 'Expected a number for width. In -w/--width flag.'
+        return 1
+      fi
+      _w="$2"
+      ;;
+    *)
+      echo >&2 Unexpected Parameter: \'$1\'
+      return 1
+      ;;
+    esac
+    shift 2
+  done
+  if ! _ispint_impl "$_h" "$_w" &>/dev/null; then
+    echo >&2 Expected integers for width and height. Need help:
+    echo >&2 "  $FUNCNAME --help"
+    return 1
+  fi
+  _usaflag_impl "$_w" "$_h"
 }
 
 function octrlstruct() {
@@ -229,10 +268,10 @@ function argloop() {
   for arg; do echo "  - $arg"; done
 }
 
-function _trap2() {
-  echo -e \nBreaking Loop.
-}
-trap _trap2 SIGINT
+# function _trap2() {
+#   echo -e \nBreaking Loop.
+# }
+# trap _trap2 SIGINT
 
 function tfcolon() {
   # The colon is a special builtin command that
