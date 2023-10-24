@@ -116,10 +116,9 @@ function _ispint_impl() {
 }
 
 function _usaflag_impl() {
-  local width="$1"
-  local height="$2"
-  local h=$(expr $height / 2)
-  local w=$(expr $width / 2)
+  # Make sure width, height, h and w variables hold integers
+  declare -i width="$1" height="$2"
+  declare -i h="$(expr $height / 2)" w="$(expr $width / 2)"
 
   for i in $(seq $height); do
     for j in $(seq $width); do
@@ -201,11 +200,13 @@ function octrlstruct() {
 }
 
 function opts() {
-  local name=()
-  local bye=()
-  local greet=()
-  local hosts=()
-  local ports=()
+  # Another shorter way to declare integer-indexed associative arrays
+  declare -a name bye greet hosts ports
+  # local name=()
+  # local bye=()
+  # local greet=()
+  # local hosts=()
+  # local ports=()
   while [ $# -ne 0 ]; do
     case $1 in
     --help | -h)
