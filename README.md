@@ -1,6 +1,11 @@
+<center>
+
 # Hello World.
+<small><b>Coding is FUN!!!</b></small>
 
 ![What a Good Day.](./lib/conf/whatyoudoing.jpg )
+
+</center>
 
 In this **package**, I record my **coding progress** on the different technologies and programming languages out there.
 
