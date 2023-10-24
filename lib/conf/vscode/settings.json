@@ -110,7 +110,7 @@
   "C_Cpp.default.cStandard": "c23",
   "C_Cpp.default.cppStandard": "c++23",
   "python.languageServer": "Pylance",
-  "python.formatting.provider": "autopep8",
+  "python.formatting.provider": "none",
   "editor.defaultFormatter": "vscode.html-language-features",
   "prettier.tabWidth": 2,
   "prettier.useTabs": false,
@@ -131,7 +131,7 @@
     "editor.indentSize": "tabSize"
   },
   "[python]": {
-    "editor.defaultFormatter": "ms-python.python",
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.tabSize": 4,
     "editor.indentSize": "tabSize"
   },
