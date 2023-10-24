@@ -197,5 +197,8 @@
     "editor.defaultFormatter": "mkhl.shfmt",
     "editor.tabSize": 2,
     "editor.indentSize": "tabSize"
+  },
+  "[proto3]": {
+    "editor.defaultFormatter": "zxh404.vscode-proto3"
   }
 }
