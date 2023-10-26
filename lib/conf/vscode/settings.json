@@ -95,7 +95,8 @@
     "mako": "html",
     "jinja-html": "html",
     "jinja": "html",
-    "pyscript": "html"
+    "pyscript": "html",
+    "markdown": "md"
   },
   "C_Cpp.errorSquiggles": "enabled",
   "python.testing.unittestEnabled": false,
