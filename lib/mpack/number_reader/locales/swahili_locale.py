@@ -25,9 +25,9 @@ COMB = {
     90: "tisini",
 }
 
-GROUPS = {-1: "mia", 0: "", 1: "elfu", 2: "milioni", 3: "bilioni"}
+GROUPS = {-1: "mia", 0: "", 1: "elfu", 2: "milioni", 3: "bilioni", 4: "trilioni"}
 
 SPECIALS = {".": "pointi", "conj": "na"}
 
-context = DefaultContext({**COMB, **BASIC_NUMBERS}, {**GROUPS})
+context = DefaultContext({**COMB, **BASIC_NUMBERS}, GROUPS)
 context.addspecial(**SPECIALS)

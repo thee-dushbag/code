@@ -36,9 +36,9 @@ TENS = {
 
 SPECIALS = {"conj": "et", "tens_conj": "-", ".": "virgule"}
 
-OTHERS = {-1: "cent", 0: "", 1: "mille", 2: "million", 3: "milliard"}
+GROUPS = {-1: "cent", 0: "", 1: "mille", 2: "million", 3: "milliard"}
 
 context = DefaultContext(
-    numbers={**BASIC_NUMBERS, **TENS_UNIQUE, **TENS}, grpmaps={**OTHERS}
+    numbers={**BASIC_NUMBERS, **TENS_UNIQUE, **TENS}, grpmaps=GROUPS
 )
 context.addspecial(**SPECIALS)
