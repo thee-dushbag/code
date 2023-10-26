@@ -39,7 +39,7 @@ TENS = {
 
 SPECIALS = {".": "point", "conj": "and"}
 
-GROUPS = {-1: "hundred", 0: "", 1: "thousand", 2: "million", 3: "billion"}
+GROUPS = {-1: "hundred", 0: "", 1: "thousand", 2: "million", 3: "billion", 4: "trillion"}
 
-context = DefaultContext({**TENS, **BASIC_NUMBERS, **TENS_UNIQUE}, {**GROUPS})
+context = DefaultContext({**TENS, **BASIC_NUMBERS, **TENS_UNIQUE}, GROUPS)
 context.addspecial(**SPECIALS)
