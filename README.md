@@ -1,3 +1,29 @@
+<style>
+  @font-face {
+    font-family: ArchitectsDaughter;
+    src: url('./lib/conf/fonts/ArchitectsDaughter-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: CaskaydiaCove;
+    src: url('./lib/conf/fonts/CaskaydiaCoveNerdFontMono-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: ComicShanns;
+    src: url('./lib/conf/fonts/ComicShannsMonoNerdFont-Regular.otf');
+  }
+
+  @font-face {
+    font-family: HurmitFont;
+    src: url('./lib/conf/fonts/HurmitNerdFont-Regular.otf');
+  }
+
+  * {
+    font-family: HurmitFont, ComicShanns, CaskaydiaCove, ArchitectsDaughter, monospace;
+  }
+</style>
+
 <center>
 
 # Hello World.
