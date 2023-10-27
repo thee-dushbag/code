@@ -106,6 +106,7 @@ class TargetParam(click.ParamType):
     default=BindArg("localhost", 8080),
 )
 @click.argument("target", type=TargetParam())
+@click.help_option('--help', '-h')
 def main(bind: BindArg, target: TargetArg):
     """Serve an aiohttp application {TARGET} <[package.]module>:<app_factory> on {BIND} <host>:<port>"""
     try:

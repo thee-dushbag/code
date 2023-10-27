@@ -14,7 +14,12 @@ function str.lower() {
 }
 
 function _title_word_impl() {
-  echo "$(str.upper "${1:0:1}")$(str.lower "${1:1}")"
+  local word="${*,,}"
+  echo "${word^}"
+}
+
+function str.cap() {
+  echo "$(_title_word_impl "$@")"
 }
 
 function str.title() {
