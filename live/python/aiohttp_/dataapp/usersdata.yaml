@@ -1,0 +1,5 @@
+data: null
+users:
+- name: admin
+  password: AdminHere
+  permission: 63

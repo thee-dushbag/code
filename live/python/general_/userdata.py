@@ -194,7 +194,7 @@ routes = [web.view("/data", DataView), web.view("/user", UsersView)]
 async def application():
     app = web.Application()
     app.on_response_prepare.append(logreq)
-    app.cleanup_ctx.append(sldata(Path("usersdata.json")))
+    app.cleanup_ctx.append(sldata(Path("usersdata.ignore.json")))
     app.middlewares.append(_entrypoint)
     security_setup(app, UserDataIdentityPolicy(), UserDataAuthPolicy())
     app.add_routes(routes)
