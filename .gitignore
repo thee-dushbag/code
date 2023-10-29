@@ -12,3 +12,4 @@ Ignore*
 *.ignore.*
 *.IGNORE.*
 .next/
+*/rust/target/

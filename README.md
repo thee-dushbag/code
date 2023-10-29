@@ -35,11 +35,14 @@ This is a brief overview of the structure of this **repository**.
   +  **Lua** - general scripting and the ability to be integrated into other languages as a simple config script.
   +  **C/C++** - amazingly complex and a mistery to solve and learn the beautiful world of low level programming.
   +  **Javascript** - the web is here to stay, a little of this goes a long way.
+  + **Bash** - terminal scripting and tool chaining.
+  + **Rust** - wouldn't hurt to learn a bit of this beauty.
 
 - ***Technologies***
   + **markdown/reStructuredText** - for documentation.
   + **json/yaml** - for data serialization.
   + **docker/nginx** - for containerization and general work.
+  + **graphql** - using python [strawberry](https://strawberry.rocks) package, api design becomes a whole lot easier.
 
 This is the worst **README** in all history, no worries, improvements are on the way.
 
@@ -73,3 +76,6 @@ I can now focus mainly to one language, python, and a little of other languages 
 
 ### Officially dropped React
 I have deleted all the [React](https://react.dev) code in this repository. In this drop, I am considering to add some other minor Javascript libraries like [AlpineJS](https://alpinejs.dev) and [JQuery](https://jquery.com) as they are light weight and easy to learn and maintain. [JQuery](https://jquery.com) is old and stable, while [AlpineJS](https://alpinejs.dev) is migrating to the hypermedia realm in which it supports [HTMX](https://htmx.org).
+
+### Complex Hobby.
+I do love C++ and C and they really are complex languages, but rust is appealing in that is is easy to think about and compile manage, you know, safety. I am considering to set my main language to be javascript and python, development languages be lua(configurations like vim) and bash(terminal scripting and tool chaining), learning about machines and their inner workings seems intuitive using languages with low level support, C/C++ and Rust seem to be the best candidates for this. C/C++ being the main and rust, just to know how it looks like and its minor features, C++ templates rule.
