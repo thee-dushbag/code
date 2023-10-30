@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+NET_COUNT_STOP_TOKEN=0
+OKAY_COLOR=$'\033[92;1m'
+ERROR_COLOR=$'\033[91;1m'
+DEFAULT_COLOR=$'\033[0m'
+WHITE_COLOR=$'\033[97;1m'
+
+function _cnthosts_impl() {
+  declare baseip="$1" holder="$2" cur_ip
+  declare -i timeout="$3" start="$4" stop="$5" packetcnt="$6"
+  for current in $(seq $start $stop); do
+    if [ "$NET_COUNT_STOP_TOKEN" -eq 1 ]; then return 1; fi
+    cur_ip="${baseip/$holder/$current}"
+    if ping -c "$packetcnt" -w "$timeout" "$cur_ip" &>/dev/null; then
+      echo >&1 "$OKAY_COLOR$cur_ip$DEFAULT_COLOR"
+    else
+      echo >&2 "$ERROR_COLOR$cur_ip$DEFAULT_COLOR"
+    fi
+  done
+}
+
+function cnthosts() {
+  declare -a baseips
+  declare iprange="1:256" holder="IP"
+  declare -i timeout pcnt="1"
+  while [ $# -ne 0 ]; do
+    case "$1" in
+    --help | -h)
+      echo Usage:
+      echo -e "\t$(basename $0) [OPTIONS] [BASEIPS...]"
+      echo Options:
+      echo -e "\t--help          -h  Show this help and exit."
+      echo -e "\t--range         -r  Range to test host ips. Default 1:256"
+      echo -e "\t--timeout       -t  Time taken to test a host."
+      echo -e "\t--holder        -H  Holder VAR for the current VALUE in the ip. Default 'IP', eg 192.172.IP.34"
+      echo -e "\t--packet-count  -p  How many pings to a hosts."
+      echo 'A lower timeout and high packet count could lead to a True-Negative'
+      return 0
+      ;;
+    --range | -r)
+      iprange="$2"
+      shift 2
+      ;;
+    --timeout | -t)
+      timeout="$2"
+      shift 2
+      ;;
+    --holder | -H)
+      holder="$2"
+      shift 2
+      ;;
+    --packet-count | -p)
+      pcnt="$2"
+      shift 2
+      ;;
+    *)
+      baseips+=("$1")
+      shift 1
+      ;;
+    esac
+  done
+  if [[ ! "$iprange" =~ ^[0-9]+:[0-9]+$ ]]; then
+    echo >&2 "Invalid Range, expected <start:int>:<stop:int>, got $iprange"
+    return 1
+  fi
+
+  for cur_ip in ${baseips[@]}; do
+    _cnthosts_impl "$cur_ip" "$holder" "$timeout" "${iprange%:*}" "${iprange#*:}" "${timeout:-$(expr $pcnt \* 2)}"
+  done
+}
+
+function _flip_stop_token() {
+  NET_COUNT_STOP_TOKEN=1
+}
+
+trap _flip_stop_token 2
+cnthosts "$@"

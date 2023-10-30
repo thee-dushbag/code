@@ -1,0 +1,13 @@
+#! /usr/bin/env python3
+
+from functools import partial
+from pathlib import Path
+from sys import argv
+
+path = Path.home() / 'Desktop' / 'toinstall.txt'
+if not path.exists():
+    path.touch()
+
+with path.open('a') as file:
+    p = partial(print, file=file)
+    for line in argv[1:]: p(line)
