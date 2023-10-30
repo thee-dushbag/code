@@ -21,7 +21,7 @@ And by the way, there is a very powerful, though very buggy, number reader. It c
 This is the pride of my amatuer work and some other simple projects scattered around this repository including a local movie **website** hoster found in **live/python/movie-app** there is the first version, very poorly designed and a second version which is better in terms of usability.
 ```python
 from mpack.number_reader import get_reader
-read = get_reader('english)
+read = get_reader('english')
 print(read(34)) # thirty four
 # There is also support for swahili and french.
 ```

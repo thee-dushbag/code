@@ -1,0 +1,6 @@
+#!/home/simon/Content/bin/py-env/bin/python3.11
+
+from mpack.webrun import main
+
+if __name__ == '__main__':
+    main()

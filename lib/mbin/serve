@@ -1,0 +1,11 @@
+#! /home/simon/Content/bin/py-env/bin/python3.11
+
+from pathlib import Path
+from subprocess import run
+
+movie_app_dir = Path.home() / 'Content' / 'code' / 'live' / 'python' / 'movie-app'
+
+try:
+    run(f'make -C {str(movie_app_dir)}', shell=True)
+except BaseException as e:
+    print(str(e))
