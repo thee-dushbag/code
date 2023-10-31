@@ -3,7 +3,7 @@ from typing import Sequence
 
 from aiohttp.client import ClientSession
 from httpx import AsyncClient
-from mpack import print
+from rich import print
 from mpack import timer as _t
 from mpack.timer import TimeitResult, timer
 from requests import Session

@@ -8,7 +8,7 @@ from typing import Sequence, cast
 
 import attrs
 from moviepy.editor import AudioFileClip
-from mpack import print as _rprint
+from rich import print as _rprint
 from mpack.timable import Time
 
 lock = Lock()
