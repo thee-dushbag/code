@@ -58,12 +58,6 @@
       "from rich import print"
     ]
   },
-  "mpack_rich_print_python": {
-    "prefix": "mrprt",
-    "scope": "python",
-    "description": "Switch builtin print for rich.console.Console().print which is prettier",
-    "body": "from mpack import print"
-  },
   "init_c": {
     "prefix": "init",
     "scope": "c",

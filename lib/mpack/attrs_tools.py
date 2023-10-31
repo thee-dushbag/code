@@ -1,7 +1,7 @@
 from typing import Any, Callable
 
 from attrs import Attribute, AttrsInstance, define, field
-from mpack import print
+from rich import print
 
 _Validator = Callable[[AttrsInstance, Attribute, Any], Any]
 _SelfValidator = Callable[[Any, AttrsInstance, Attribute, Any], Any]

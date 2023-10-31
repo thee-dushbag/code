@@ -2,7 +2,7 @@ from typing import Sequence
 
 import sym
 import sympy as sy
-from mpack import print
+from rich import print
 
 sy.init_printing(use_unicode=True, latex_mode="equation*")
 pri = sy.pretty_print

@@ -81,7 +81,7 @@ class DefaultContext(IContext):
 
     def getgrp(self, grpcnt: str | int) -> str:
         count = int(grpcnt)
-        if gname := self.groups.get(count):
+        if (gname := self.groups.get(count)) is not None:
             return gname
         known = sorted(self.groups.keys(), reverse=True)
         nouns = list()
