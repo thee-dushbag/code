@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+from sys import set_int_max_str_digits
+from mpack.number_reader import get_reader, locales
+import click
+
+set_int_max_str_digits(1000)
+DEFAULT_LOCALE = "english"
+
+
+@click.command
+@click.help_option("--help", "-h")
+@click.option(
+    "--lang",
+    "-l",
+    type=click.Choice([str(l) for l in locales], case_sensitive=False),
+    default=DEFAULT_LOCALE,
+)
+@click.argument("number")
+def main(lang: str, number: float):
+    reader = get_reader(lang)
+    number_name = reader(number)
+    click.echo(number_name)
+
+
+if __name__ == "__main__":
+    main()

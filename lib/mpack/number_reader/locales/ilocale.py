@@ -79,8 +79,17 @@ class DefaultContext(IContext):
     def gethuns(self, number: str) -> str | None:
         return self.huns.get(number, None) or self._special(number)
 
-    def getgrp(self, grpcnt: str | int) -> str | None:
-        return self.groups.get(int(grpcnt), None)
+    def getgrp(self, grpcnt: str | int) -> str:
+        count = int(grpcnt)
+        if gname := self.groups.get(count):
+            return gname
+        known = sorted(self.groups.keys(), reverse=True)
+        nouns = list()
+        for k in known:
+            grpcnt, count = divmod(count, k)
+            nouns.extend(self.groups[k] for _ in range(grpcnt))
+            if not count: break
+        return ' '.join(reversed(nouns))
 
     def addgrp(self, **groups: str) -> None:
         self.groups = {

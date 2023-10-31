@@ -36,7 +36,31 @@ TENS = {
 
 SPECIALS = {"conj": "et", "tens_conj": "-", ".": "virgule"}
 
-GROUPS = {-1: "cent", 0: "", 1: "mille", 2: "million", 3: "milliard"}
+GROUPS = {
+    -1: "cent",
+    0: "",
+    1: "mille",
+    2: "million",
+    3: "milliard",
+    4: "mille milliards",
+    5: "quadrillion",
+    6: "quintillion",
+    7: "sextillion",
+    8: "septillion",
+    9: "octillion",
+    10: "nonillion",
+    11: "décillion",
+    12: "undécillion",
+    13: "duodécillion",
+    14: "tredécillion",
+    15: "quatre décillions",
+    16: "quindécillion",
+    17: "sexedécillion",
+    18: "septendécillion",
+    19: "octodécillion",
+    20: "novembredécillion",
+    21: "vingt milliards",
+}
 
 context = DefaultContext(
     numbers={**BASIC_NUMBERS, **TENS_UNIQUE, **TENS}, grpmaps=GROUPS
