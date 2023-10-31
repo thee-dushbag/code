@@ -25,7 +25,31 @@ COMB = {
     90: "tisini",
 }
 
-GROUPS = {-1: "mia", 0: "", 1: "elfu", 2: "milioni", 3: "bilioni", 4: "trilioni"}
+GROUPS = {
+    -1: "mia",
+    0: "",
+    1: "elfu",
+    2: "milioni",
+    3: "bilioni",
+    4: "trilioni",
+    5: "quadrilioni",
+    6: "quintilioni",
+    7: "sextilioni",
+    8: "septilioni",
+    9: "octilioni",
+    10: "nonilioni",
+    11: "decilioni",
+    12: "undecilioni",
+    13: "duodecilioni",
+    14: "tredecilioni",
+    15: "quattuordecilioni",
+    16: "quindecilioni",
+    17: "sexdecilioni",
+    18: "septendecilioni",
+    19: "octodecilioni",
+    20: "novemdecilioni",
+    21: "vigintilioni",
+}
 
 SPECIALS = {".": "pointi", "conj": "na"}
 

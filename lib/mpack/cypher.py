@@ -31,9 +31,10 @@ def shiftletters(text: str, length: int):
 
 
 @click.command
-@click.argument("text", type=str)
-@click.option("--length", "-l", default=3, type=int)
+@click.argument("text", type=str, default=None)
+@click.option("--length", "-l", default=3, type=int, help="Length to shift chars by.")
 def cli(text: str, length: int):
+    if text is None: text = input()
     ntext = shiftletters(text, length)
     click.echo(ntext)
 
