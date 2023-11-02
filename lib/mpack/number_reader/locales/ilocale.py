@@ -160,12 +160,13 @@ class DefaultLocale(ILocale):
                 if self.hundred_name_side == side.left
                 else f"{hunds} {hund_name}"
             )
-        tens = self._read_bidigit_number(number[1:])
+        bdigit = number[1:]
+        tens = self._read_bidigit_number(bdigit)
         tens = "" if self.context.getones("0") == tens else tens
         conj = self.context.getspecial("conj")
         if (f"{self.space}{conj}{self.space}" not in tens) and hunds and tens:
             tens = f"{conj}{self.space}{tens}"
-        return " ".join((hunds, tens)).strip()  # type: ignore
+        return " ".join((hunds, tens)).strip() if int(bdigit) != 0 else hunds # type: ignore
 
     def _read_bidigit_number(self, number: str) -> str:  # type: ignore
         if tens := self.context.gettens(number):

@@ -2,7 +2,6 @@
 
 from concurrent.futures import ThreadPoolExecutor as Executor
 from subprocess import run
-from mpack import main
 
 MAKE = 'make -C '
 BASE_PATH = '~/Content/code/live/python'
@@ -31,7 +30,7 @@ def _main():
         fut = r.submit(runtask, MOVIE_CMD, 'Serving movies', True)
         fut.add_done_callback(lambda *_: shutdown(r))
 
-@main(__name__)
-def _():
+
+if __name__ == '__main__':
     try: _main()
     except KeyboardInterrupt: ...

@@ -24,8 +24,8 @@ class NumberSpliter:
         self.isep = isep
         self.grpcnt = grpcnt
 
-    def split(self, number: int) -> str:
-        _var: Any = reversed(str(int(number)))
+    def split(self, number: str | int) -> str:
+        _var: Any = reversed(str(number))
         _var = list(
             reversed([list(reversed(var)) for var in groupinto(_var, self.grpcnt)])
         )

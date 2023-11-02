@@ -8,17 +8,22 @@ class NumberReader:
         self.ns = NumberSpliter()
 
     def read(self, number: float, ignore_pz: bool = True) -> str:
-        snum = str(number).split(".")
-        wnum = snum[0]
-        if len(snum) == 2:
-            dnum = snum[1]
-        else:
-            dnum = "0"
-        groups = self.ns.split(int(wnum))
-        grpnames = [self.locale.read_tridigit_number(group) for group in groups]
+        snum = f'{number:f}'.split(".")
+        assert float(number), f"Expected a number, got {number}"
+        if len(snum) == 1:
+            snum.append("0")
+        elif not int(snum[1]):
+            snum[1] = '0'
+        wnum, dnum = snum
+        groups = self.ns.split(wnum)
+        grpnames = [
+            self.locale.read_tridigit_number(group) if int(group) else ""
+            for group in groups
+        ]
         grpnames = reversed(grpnames)
         namedgroups = [
-            self.locale.group(group, index) for index, group in enumerate(grpnames)
+            self.locale.group(group, index) if group else ""
+            for index, group in enumerate(grpnames)
         ]
         namedgroups = list(reversed(namedgroups))
         dname = (

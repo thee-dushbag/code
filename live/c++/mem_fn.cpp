@@ -1,6 +1,9 @@
 #ifndef __HEADER_UNIQUE_MACRO
 #define __HEADER_UNIQUE_MACRO
 
+#include <concepts>
+#include <type_traits>
+
 namespace snn::functional {
     namespace __detail {
         class _IncompleteType;
