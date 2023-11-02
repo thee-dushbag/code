@@ -1,6 +1,7 @@
 {
   "python.analysis.extraPaths": ["./lib"],
   "files.associations": {
+    "*.mako": "mako",
     "*.html": "html",
     "ostream": "cpp",
     "iosfwd": "cpp",
@@ -88,7 +89,8 @@
     "unordered_set": "cpp",
     "stdbool.h": "c",
     "iso646.h": "c",
-    "*.mako": "mako"
+    "source_location": "cpp",
+    "stdfloat": "cpp"
   },
 
   "emmet.includeLanguages": {

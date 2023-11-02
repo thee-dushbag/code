@@ -1,11 +1,24 @@
 #!/usr/bin/env python3
 from sys import set_int_max_str_digits
+import typing as t
+
+from click.core import Context, Parameter
 from mpack.number_reader import get_reader, locales
 import click
 
 set_int_max_str_digits(1000)
 DEFAULT_LOCALE = "english"
 
+class ReadNumberParam(click.ParamType):
+    name = 'number_read'
+    
+    def convert(self, value: t.Any, param: Parameter | None, ctx: Context | None) -> float:
+        if value == '-': value = input()
+        try:
+            return float(value)
+            # return value
+        except ValueError:
+            self.fail(f"Invalid Integer: {value}", param, ctx)
 
 @click.command
 @click.help_option("--help", "-h")
@@ -15,8 +28,8 @@ DEFAULT_LOCALE = "english"
     type=click.Choice([str(l) for l in locales], case_sensitive=False),
     default=DEFAULT_LOCALE,
 )
-@click.argument("number")
-def main(lang: str, number: float):
+@click.argument("number", type=ReadNumberParam())
+def main(lang: str, number: str):
     reader = get_reader(lang)
     number_name = reader(number)
     click.echo(number_name)
