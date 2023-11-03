@@ -7,7 +7,7 @@
             data-movie="/source/movies/$movie"
             data-preview="/source/previews/$preview"
             data-thumbnail="/source/thumbnails/$thumbnail"
-            data-movie-id="$movie-id"
+            data-movie-id="$id-movie"
             poster="/source/thumbnails/$thumbnail"
           >
         </video>

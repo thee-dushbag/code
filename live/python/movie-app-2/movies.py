@@ -126,7 +126,6 @@ class Movies:
 
     def __post_init__(self):
         self.set_movies()
-        self.total = len(self.movies)
 
     def sort_movies(self, order: ty.Optional[Order] = None):
         order = self.order if order is None else order
@@ -140,6 +139,7 @@ class Movies:
     def set_movies(self, order: Order | None = None):
         self.movies = MovieList(Movie(path) for path in self.path.iterdir())
         self.sort_movies(order)
+        self.total = len(self.movies)
 
     def partition(self, offset: int = 0, limit: int = 5):
         return MovieList(self.movies[offset : limit + offset])

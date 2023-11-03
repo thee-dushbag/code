@@ -12,18 +12,25 @@ $(async function () {
     NOSRC = "#",
     RL_CNT = Math.floor((PAGE_NUMBER_SIZE - 1) / 2),
     MID = RL_CNT + 1,
-    PREV_KEYS = ["arrowleft", "arrowup", "p"],
-    NEXT_KEYS = ["arrowright", "arrowdown", "n"];
+    PREV_KEYS = ["p"],
+    NEXT_KEYS = ["n"],
+    MOVIE_SOURCE_URL = "/source/movies/$name",
+    PREVIEW_SOURCE_URL = "/source/previews/$name",
+    THUMBNAIL_SOURCE_URL = "/source/thumbnail/$name";
 
   let currentPreview = null,
     CURRENT_PAGE_NUMBER = 0,
     currentPlaying = null,
     TOTAL_SIZE = await _loadMovies(0);
 
-    adjustPageNumbers(CURRENT_PAGE_NUMBER);
+  adjustPageNumbers(CURRENT_PAGE_NUMBER);
 
   async function getMovies(offset, limit = CONTENT_SIZE) {
     return await $.ajax(`/api/movies?offset=${offset}&limit=${limit}`);
+  }
+
+  async function getMovie(movie_id) {
+    return await $.ajax(`/api/movie/${movie_id}`);
   }
 
   function adjustPageNumbers(pageNumber) {
@@ -61,7 +68,7 @@ $(async function () {
       .replaceAll("$movie", movie)
       .replaceAll("$preview", preview)
       .replaceAll("$thumbnail", thumbnail)
-      .replaceAll("$movie-id", movie_id);
+      .replaceAll("$id-movie", movie_id);
     elem = $(elem.children[0]);
     if (movie_id == player.attr("data-movie-id")) elem.addClass("current");
     return elem;
@@ -90,47 +97,50 @@ $(async function () {
     return await _loadMovies(CURRENT_PAGE_NUMBER);
   }
 
-  async function setPlayer({ movie, preview, movieId, thumbnail }) {
+  function subNameURL(mobj) {
+    mobj.movie = MOVIE_SOURCE_URL.replace("$name", mobj.movie);
+    mobj.thumbnail = THUMBNAIL_SOURCE_URL.replace("$name", mobj.thumbnail);
+    mobj.preview = PREVIEW_SOURCE_URL.replace("$name", mobj.preview);
+    return mobj;
+  }
+
+  async function setPlayer({ movie, preview, movie_id, thumbnail }) {
     player.attr("src", movie);
-    player.attr("data-movie-id", movieId);
+    player.attr("data-movie-id", movie_id);
     player.attr("data-thumbnail", thumbnail);
     player.attr("data-preview", preview);
   }
 
   async function setNewCurrentPlaying(video) {
-    setPlayer({
+    await setPlayer({
       movie: video.attr("data-movie"),
       thumbnail: video.attr("data-thumbnail"),
       preview: video.attr("data-preview"),
-      movieId: video.attr("data-movie-id"),
+      movie_id: video.attr("data-movie-id"),
     });
     if (currentPlaying) currentPlaying.parent().removeClass("current");
     currentPlaying = video;
   }
   async function setNextMovie() {
     let nextToPlay = Number.parseInt(player.attr("data-movie-id")) + 1;
-    let movies = await getMovies(nextToPlay, 1);
-    if (movies.movies.length == 0) movies = await getMovies(0, 0);
-    setPlayer(movies.movies[0]);
+    if (nextToPlay >= TOTAL_SIZE) nextToPlay = 0;
+    let movie = await getMovie(nextToPlay);
+    await setPlayer(subNameURL(movie));
   }
   async function setPrevMovie() {
     let nextToPlay = Number.parseInt(player.attr("data-movie-id")) - 1;
-    if (nextToPlay < 0) nextToPlay = 0;
-    let movies = await getMovies(nextToPlay, 1);
-    if (movies.movies.length == 0)
-      movies = await getMovies(movies.total - 1, 0);
-    setPlayer(movies.movies[0]);
+    if (nextToPlay < 0) nextToPlay = TOTAL_SIZE - 1;
+    let movie = await getMovie(nextToPlay);
+    await setPlayer(subNameURL(movie));
   }
   const clicked = (keys, key) => keys.includes(key.toLowerCase());
 
   $(document.body).on("keyup", (event) => {
     let boxes = $(".movie-box");
-    if (!currentPlaying && clicked([...NEXT_KEYS, ...PREV_KEYS], event.key)) {
-      if (boxes.length > 0) setNewCurrentPlaying($(boxes[0]).children());
-    } else {
-      if (clicked(NEXT_KEYS, event.key)) setPrevMovie();
-      else if (clicked(PREV_KEYS, event.key)) setNextMovie();
-    }
+    if (boxes.length > 0 && !currentPlaying)
+      return setNewCurrentPlaying($(boxes[0]).children());
+    if (clicked(PREV_KEYS, event.key)) setPrevMovie();
+    else if (clicked(NEXT_KEYS, event.key)) setNextMovie();
   });
 
   movie_row.delegate(".movie-box", "mouseenter", function (event) {
