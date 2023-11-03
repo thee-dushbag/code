@@ -24,9 +24,10 @@ def main(args: list[str]) -> None:
             if (mod := Path(file + EXT)).exists():
                 file = str(mod)
 
-        sargs = '"' + '" "'.join(args) + '"'
+        sargs = ('"' + '" "'.join(args) + '"') if args else ''
     try:
-        out = run(f"python {file} {sargs}", shell=True).returncode
+        cmd_args = f'{file} {sargs}' if sargs else file
+        out = run(f"python {cmd_args}", shell=True).returncode
     except BaseException:
         sys.exit(-1 if file == "" else 0)
     else:

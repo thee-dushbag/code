@@ -3,7 +3,6 @@ from pathlib import Path
 from string import Template
 from mpack.stream import Stream
 
-
 reader = get_reader('english')
 line_template = Template('This is line $word.')
 filename = Path.cwd() / 'text.txt'
