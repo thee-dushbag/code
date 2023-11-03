@@ -117,8 +117,8 @@ function substr() {
   echo Delete to the first space: ${var#* }
   echo Delete to the last space: ${var##* }
   echo Delete last seven chars: ${var%???????}
-  echo Delete to the first space from end: ${var% *}
-  echo Delete to the last space from end: ${var%% *}
+  echo Delete to the last space: ${var% *}
+  echo Delete from the first space: ${var%% *}
 }
 
 function pind() {
