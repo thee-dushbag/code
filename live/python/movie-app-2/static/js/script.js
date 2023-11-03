@@ -16,7 +16,9 @@ $(async function () {
     NEXT_KEYS = ["n"],
     MOVIE_SOURCE_URL = "/source/movies/$name",
     PREVIEW_SOURCE_URL = "/source/previews/$name",
-    THUMBNAIL_SOURCE_URL = "/source/thumbnail/$name";
+    THUMBNAIL_SOURCE_URL = "/source/thumbnail/$name",
+    VOLUME_CHANGE_STEP = 0.05,
+    VIDEO_PLAYBACK_STEP = 5;
 
   let currentPreview = null,
     CURRENT_PAGE_NUMBER = 0,
@@ -88,6 +90,7 @@ $(async function () {
     movies.forEach((movie, index) => {
       movie_row.append(createMovieBox(index, movie));
     });
+    $(document.body).scrollTop(0);
     return total;
   }
 
@@ -109,6 +112,7 @@ $(async function () {
     player.attr("data-movie-id", movie_id);
     player.attr("data-thumbnail", thumbnail);
     player.attr("data-preview", preview);
+    player.focus();
   }
 
   async function setNewCurrentPlaying(video) {
@@ -133,16 +137,32 @@ $(async function () {
     let movie = await getMovie(nextToPlay);
     await setPlayer(subNameURL(movie));
   }
+
   const clicked = (keys, key) => keys.includes(key.toLowerCase());
 
   $(document.body).on("keyup", (event) => {
     let boxes = $(".movie-box");
-    if (boxes.length > 0 && !currentPlaying)
-      return setNewCurrentPlaying($(boxes[0]).children());
-    if (clicked(PREV_KEYS, event.key)) setPrevMovie();
+    if (clicked(["m"], event.key)) player[0].muted = !player[0].muted;
+    else if (boxes.length > 0 && !currentPlaying) setNewCurrentPlaying($(boxes[0]).children());
+    else if (clicked(PREV_KEYS, event.key)) setPrevMovie();
     else if (clicked(NEXT_KEYS, event.key)) setNextMovie();
   });
-
+  player.on("ended", setNextMovie);
+  player.on("keydown", (event) => {
+    if (clicked(["arrowup"], event.key)) {
+      if (player[0].volume >= 1 - VOLUME_CHANGE_STEP) player[0].volume = 1;
+      else player[0].volume += VOLUME_CHANGE_STEP;
+    } else if (clicked(["arrowdown"], event.key)) {
+      if (player[0].volume <= VOLUME_CHANGE_STEP) player[0].volume = 0;
+      else player[0].volume -= VOLUME_CHANGE_STEP;
+    } else if (clicked(["arrowright"], event.key)) {
+      if (player[0].currentTime >= player[0].duration - VIDEO_PLAYBACK_STEP) player[0].currentTime = player[0].duration - 2;
+      else player[0].currentTime += VIDEO_PLAYBACK_STEP;
+    } else if (clicked(["arrowleft"], event.key)) {
+      if (player[0].currentTime <= VIDEO_PLAYBACK_STEP) player[0].currentTime = 0;
+      else player[0].currentTime -= VIDEO_PLAYBACK_STEP;
+    }
+  });
   movie_row.delegate(".movie-box", "mouseenter", function (event) {
     let video = $(this).children();
     video.attr("src", video.attr("data-preview"));
