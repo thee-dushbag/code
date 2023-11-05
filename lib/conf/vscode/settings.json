@@ -90,7 +90,8 @@
     "stdbool.h": "c",
     "iso646.h": "c",
     "source_location": "cpp",
-    "stdfloat": "cpp"
+    "stdfloat": "cpp",
+    "strstream": "cpp"
   },
 
   "emmet.includeLanguages": {
