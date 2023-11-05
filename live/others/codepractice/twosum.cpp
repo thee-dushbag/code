@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include <sstream>
+#include "helpers.hpp"
 
 /*
 Given an array of integers nums and an integer target,
@@ -29,26 +29,6 @@ struct Solution {
     return result;
   }
 };
-
-template <typename T>
-std::string _tostr_vec(std::vector<T> const& vec) {
-  std::stringstream str;
-  std::size_t size{ vec.size() };
-  str << '[';
-  for (uint i = 0; i < size; i++) {
-    str << vec[i];
-    if (i + 1 < size)
-      str << ", ";
-  }
-  str << "]";
-  return str.str();
-};
-
-template<class T>
-std::ostream& operator<<(std::ostream& out, std::vector<T> const& vec) {
-  out << _tostr_vec(vec);
-  return out;
-}
 
 auto main(int argc, char** argv) -> int {
   if (argc <= 3) {
