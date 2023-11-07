@@ -40,8 +40,10 @@ struct Solution {
       _p = _temp;
       _temp = shiftNode(_temp);
     } while (l1 != nullptr || l2 != nullptr);
-    if (_temp->val == 0) _p->next = nullptr;
-    delete _temp;
+    if (_temp->val == 0) {
+      _p->next = nullptr;
+      delete _temp;
+    }
     return result;
   }
 private:
@@ -93,6 +95,15 @@ ListNode* getList(std::string const& number) {
   return result;
 }
 
+void deleteList(ListNode *list) {
+  ListNode *temp;
+  while(list != nullptr) {
+    temp = list;
+    list = list->next;
+    delete temp;
+  }
+}
+
 auto main(int argc, char** argv) -> int {
   if (argc != 3) {
     std::cerr << "Usage:\n"
@@ -112,8 +123,13 @@ Output:
   std::string sn1{ argv[1] }, sn2{ argv[2] };
   ListNode* number1 = getList(argv[1]);
   ListNode* number2 = getList(argv[2]);
+  ListNode* numbsum = Solution::addTwoNumbers(number1, number2);
 
   std::cout << "Number1: " << number1 << '\n'
     << "Number2: " << number2 << '\n'
-    << "NumbSum: " << Solution::addTwoNumbers(number1, number2) << '\n';
+    << "NumbSum: " << numbsum << '\n';
+  
+  deleteList(number1);
+  deleteList(number2);
+  deleteList(numbsum);
 }
