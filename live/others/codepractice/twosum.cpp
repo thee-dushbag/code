@@ -32,13 +32,13 @@ struct Solution {
 
 auto main(int argc, char** argv) -> int {
   if (argc <= 3) {
-    std::cout << "Usage:\n";
-    std::cout << '\t' << argv[0] << " [input...] target\n";
-    std::cout << "where input and target are integers.\n";
-    std::cout << "None integer values will be substituted for zeros.\n";
-    std::cout << "Example: " << argv[0] << " 1 2 3 5 7\n";
-    std::cout << "Output:";
-    std::cout << R"(
+    std::cerr << "Usage:\n"
+      << '\t' << argv[0] << " [input...] target\n"
+      << "where input and target are integers.\n"
+      << "None integer values will be substituted for zeros.\n"
+      << "Example: " << argv[0] << " 1 2 3 5 7\n"
+      << R"(
+Output:
   input    : [1, 2, 3, 5]
   target   : 7
   indicies : [1, 3]
@@ -63,8 +63,8 @@ auto main(int argc, char** argv) -> int {
     std::back_inserter(numbers),
     [&nums](int const& index) { return nums[index]; }
   );
-  std::cout << "input    : " << nums << '\n';
-  std::cout << "target   : " << target << '\n';
-  std::cout << "indicies : " << indicies << '\n';
-  std::cout << "output   : " << numbers << '\n';
+  std::cout << "input    : " << nums << '\n'
+    << "target   : " << target << '\n'
+    << "indicies : " << indicies << '\n'
+    << "output   : " << numbers << '\n';
 }
