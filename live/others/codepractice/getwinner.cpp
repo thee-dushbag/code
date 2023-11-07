@@ -19,38 +19,36 @@ All integers in array are unique.
 
 struct Solution {
   static int getWinner(std::vector<int>& arr, int k) {
-    std::pair<int, int> temp{ arr[0], 0 };
-    while (temp.second != k)
-      temp = _switch(arr, temp.second);
-    return temp.first;
+    int score = 0;
+    while (score != k)
+      score = _switch(arr, score);
+    return arr[0];
   }
 
 private:
-  static std::pair<int, int> _switch(std::vector<int>& arr, int score) {
-    std::pair<int, std::vector<int>::iterator> temp;
+  static int _switch(std::vector<int>& arr, int score) {
     if (arr[0] > arr[1]) {
+      std::swap(arr[0], arr[1]);
       score++;
-      temp = { arr[1], std::find(std::begin(arr), std::end(arr), arr[1]) };
     }
-    else {
+    else
       score = 1;
-      temp = { arr[0], arr.begin() };
-    }
-    arr.erase(temp.second);
-    arr.push_back(temp.first);
-    return { arr[0], score };
+    int temp = arr.front();
+    arr.erase(arr.begin());
+    arr.push_back(temp);
+    return score;
   }
 };
 
 auto main(int argc, char** argv) -> int {
   if (argc < 2) {
-    std::cout << "Usage:\n";
-    std::cout << '\t' << argv[0] << " [input...] score\n";
-    std::cout << "where input and target are integers.\n";
-    std::cout << "None integer values will be substituted for zeros.\n";
-    std::cout << "Example: " << argv[0] << " 2 1 3 5 4 6 7 2\n";
-    std::cout << "Output:";
-    std::cout << R"(
+    std::cerr << "Usage:\n"
+      << '\t' << argv[0] << " [input...] score\n"
+      << "where input and target are integers.\n"
+      << "None integer values will be substituted for zeros.\n"
+      << "Example: " << argv[0] << " 2 1 3 5 4 6 7 2\n"
+      << R"(
+Output:
   input  : [2, 1, 3, 5, 4, 6, 7]
   score  : 2
   output : [5, 6, 7, 1, 2, 3, 4]
@@ -71,8 +69,8 @@ auto main(int argc, char** argv) -> int {
 
   int winner = Solution::getWinner(output, score);
 
-  std::cout << "input  : " << input << '\n';
-  std::cout << "score  : " << score << '\n';
-  std::cout << "output : " << output << '\n';
-  std::cout << "winner : " << winner << '\n';
+  std::cout << "input  : " << input << '\n'
+    << "score  : " << score << '\n'
+    << "output : " << output << '\n'
+    << "winner : " << winner << '\n';
 }
