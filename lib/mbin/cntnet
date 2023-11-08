@@ -6,37 +6,75 @@ ERROR_COLOR=$'\033[91;1m'
 DEFAULT_COLOR=$'\033[0m'
 WHITE_COLOR=$'\033[97;1m'
 
+# IP Printer takes the form:
+#    printer <ip> <state>
+# where state is 1 or 2
+
+function _echo_color_ips() {
+  declare curip="$1"
+  declare -i state="$2"
+  if [ $state -eq 1 ]; then
+    echo >&1 "$OKAY_COLOR$cur_ip$DEFAULT_COLOR"
+  elif [ $state -eq 2 ]; then
+    echo >&2 "$ERROR_COLOR$cur_ip$DEFAULT_COLOR"
+  fi
+}
+
+function _echo_ips() {
+  declare curip="$1"
+  declare -i state="$2"
+  if [ $state -eq 1 ] || [ $state -eq 2 ]; then
+    echo >&$state "$cur_ip"
+  fi
+}
+
 function _cnthosts_impl() {
-  declare baseip="$1" holder="$2" cur_ip
-  declare -i timeout="$3" start="$4" stop="$5" packetcnt="$6"
+  declare baseip="$1" holder="$2" cur_ip interval="$3" printer="$8"
+  declare -i timeout="$4" start="$5" stop="$6" packetcnt="$7"
+  if [ -z "$printer" ]; then printer="_echo_color_ips"; fi
   for current in $(seq $start $stop); do
     if [ "$NET_COUNT_STOP_TOKEN" -eq 1 ]; then return 1; fi
-    cur_ip="${baseip/$holder/$current}"
-    if ping -c "$packetcnt" -w "$timeout" "$cur_ip" &>/dev/null; then
-      echo >&1 "$OKAY_COLOR$cur_ip$DEFAULT_COLOR"
+    cur_ip="${baseip//$holder/$current}"
+    if ping -c "$packetcnt" -w "$timeout" -i "$interval" "$cur_ip" &>/dev/null; then
+      $printer "$cur_ip" 1
     else
-      echo >&2 "$ERROR_COLOR$cur_ip$DEFAULT_COLOR"
+      $printer "$cur_ip" 2
     fi
   done
 }
 
 function cnthosts() {
   declare -a baseips
-  declare iprange="1:256" holder="IP"
+  declare iprange="1:256" holder="IP" interval="0.5" color="_echo_color_ips"
   declare -i timeout pcnt="1"
   while [ $# -ne 0 ]; do
     case "$1" in
     --help | -h)
       echo Usage:
-      echo -e "\t$(basename $0) [OPTIONS] [BASEIPS...]"
+      echo $'\t$(basename $0) [OPTIONS] [BASEIPS...]'
       echo Options:
-      echo -e "\t--help          -h  Show this help and exit."
-      echo -e "\t--range         -r  Range to test host ips. Default 1:256"
-      echo -e "\t--timeout       -t  Time taken to test a host."
-      echo -e "\t--holder        -H  Holder VAR for the current VALUE in the ip. Default 'IP', eg 192.172.IP.34"
-      echo -e "\t--packet-count  -p  How many pings to a hosts."
-      echo 'A lower timeout and high packet count could lead to a True-Negative'
+      echo $'\t--help          -h  Show this help and exit.'
+      echo $'\t--range         -r  Range to test host ips. Default 1:256'
+      echo $'\t--timeout       -t  Time taken to test a host.'
+      echo $'\t--holder        -H  Holder VAR for the current VALUE in the ip. Default 'IP', eg 192.172.IP.34'
+      echo $'\t--packet-count  -p  How many pings to a hosts.'
+      echo $'\t--interval      -i  Interval between each ping request.'
+      echo $'\t--color         -c  Get colorized output. [on by default]'
+      echo $'\t--no-color      -C  Remove color from output. [off by default]'
+      echo $'A lower timeout and high packet count could lead to a False-Negative'
       return 0
+      ;;
+    --interval | -i)
+      interval="$2"
+      shift 2
+      ;;
+    --no-color | -C)
+      color="_echo_ips"
+      shift 1
+      ;;
+    --color | -c)
+      color="_echo_color_ips"
+      shift 1
       ;;
     --range | -r)
       iprange="$2"
@@ -60,13 +98,19 @@ function cnthosts() {
       ;;
     esac
   done
+
   if [[ ! "$iprange" =~ ^[0-9]+:[0-9]+$ ]]; then
     echo >&2 "Invalid Range, expected <start:int>:<stop:int>, got $iprange"
     return 1
   fi
 
+  if [[ ! "$interval" =~ ^[0-9]+.[0-9]+$ ]]; then
+    echo >&2 "Invalid Interval, expected a floating value eg 0.5, got $interval"
+    return 1
+  fi
+
   for cur_ip in ${baseips[@]}; do
-    _cnthosts_impl "$cur_ip" "$holder" "$timeout" "${iprange%:*}" "${iprange#*:}" "${timeout:-$(expr $pcnt \* 2)}"
+    _cnthosts_impl "$cur_ip" "$holder" "$interval" "${timeout:-$(expr $pcnt \* 2)}" ${iprange//:/ } "$pcnt" "$color"
   done
 }
 

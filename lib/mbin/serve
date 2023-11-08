@@ -1,4 +1,4 @@
-#! /home/simon/Content/bin/py-env/bin/python3.11
+#!/usr/bin/env python
 
 from pathlib import Path
 from subprocess import run
