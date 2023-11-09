@@ -29,13 +29,15 @@ function _echo_ips() {
 }
 
 function _cnthosts_impl() {
-  declare baseip="$1" holder="$2" cur_ip interval="$3" printer="$8"
-  declare -i timeout="$4" start="$5" stop="$6" packetcnt="$7"
-  if [ -z "$printer" ]; then printer="_echo_color_ips"; fi
+  declare baseip="$1" holder="$2" cur_ip interval="$3" timeout="$4" printer="$8"
+  declare -i start="$5" stop="$6" packetcnt="$7"
+  if [ -z "$8" ]; then
+    printer="_echo_color_ips"
+  fi
   for current in $(seq $start $stop); do
     if [ "$NET_COUNT_STOP_TOKEN" -eq 1 ]; then return 1; fi
     cur_ip="${baseip//$holder/$current}"
-    if ping -c "$packetcnt" -w "$timeout" -i "$interval" "$cur_ip" &>/dev/null; then
+    if ping -c "$packetcnt" -W "$timeout" -i "$interval" "$cur_ip" &>/dev/null; then
       $printer "$cur_ip" 1
     else
       $printer "$cur_ip" 2
@@ -45,13 +47,13 @@ function _cnthosts_impl() {
 
 function cnthosts() {
   declare -a baseips
-  declare iprange="1:256" holder="IP" interval="0.5" color="_echo_color_ips"
-  declare -i timeout pcnt="1"
+  declare iprange="1:256" holder="IP" interval="0.5" color="_echo_color_ips" timeout
+  declare -i pcnt="1"
   while [ $# -ne 0 ]; do
     case "$1" in
     --help | -h)
       echo Usage:
-      echo $'\t$(basename $0) [OPTIONS] [BASEIPS...]'
+      echo -e "\t$(basename $0) [OPTIONS] [BASEIPS...]"
       echo Options:
       echo $'\t--help          -h  Show this help and exit.'
       echo $'\t--range         -r  Range to test host ips. Default 1:256'
@@ -104,8 +106,13 @@ function cnthosts() {
     return 1
   fi
 
-  if [[ ! "$interval" =~ ^[0-9]+.[0-9]+$ ]]; then
+  if [[ ! "$interval" =~ ^[0-9]*.?[0-9]+$ ]]; then
     echo >&2 "Invalid Interval, expected a floating value eg 0.5, got $interval"
+    return 1
+  fi
+
+  if [[ ! "$timeout" =~ ^[0-9]*.?[0-9]+$ ]]; then
+    echo >&2 "Invalid Timeout, expected a floating value eg 0.5, got $timeout"
     return 1
   fi
 

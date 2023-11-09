@@ -12,8 +12,8 @@ TAKEN_TIME_STR = "{target}: Took {lapse._time} seconds."
 
 
 def get_config(*, call_str=None, time_str=None):
-    func_call_str = call_str or FUNCTION_CALL_STR
-    take_time_str = time_str or TAKEN_TIME_STR
+    func_call_str = call_str if call_str is not None else FUNCTION_CALL_STR
+    take_time_str = time_str if time_str is not None else TAKEN_TIME_STR
     return TimeitConfig(function_call_str=func_call_str, taken_time_str=take_time_str)
 
 
