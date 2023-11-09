@@ -270,6 +270,7 @@ function _unmount_encfs_vault() {
 function _start_ssh_agent_daemon() {
   local ssh_agent_pid=$(pgrep ssh-agent)
   if [ -z "$ssh_agent_pid" ] || [ "-f" == "$1" ]; then
+    [ "-f" == "$1" ] && pkill ssh-agent
     eval $(ssh-agent -s)
   else
     echo ssh-agent already running on PID: $ssh_agent_pid >&2
