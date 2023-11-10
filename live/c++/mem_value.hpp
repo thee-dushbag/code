@@ -1,5 +1,5 @@
-#ifndef __HEADER_UNIQUE_MACRO
-#define __HEADER_UNIQUE_MACRO
+#ifndef __SNN_MEMBER_VAR_POINTER_
+#define __SNN_MEMBER_VAR_POINTER_
 
 #include <concepts>
 
@@ -46,4 +46,4 @@ namespace snn {
   }
 }
 
-#endif //__HEADER_UNIQUE_MACRO
+#endif //__SNN_MEMBER_VAR_POINTER_

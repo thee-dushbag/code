@@ -2,7 +2,7 @@ from multiprocessing import Array, Process, Value
 
 
 def increment_value(shared_int: Value):
-    shared_int.value = shared_int.value + 1
+    shared_int.value += 1
 
 
 def increment_array(shared_array: Array):
@@ -18,9 +18,10 @@ if __name__ == "__main__":
         Process(target=increment_value, args=(integer,)),
         Process(target=increment_array, args=(integer_array,)),
     ]
-
-    [p.start() for p in procs]
-    [p.join() for p in procs]
+    for p in procs:
+        p.start()
+    for p in procs:
+        p.join()
 
     print(integer.value)
     print(integer_array[:])

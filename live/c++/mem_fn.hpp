@@ -1,5 +1,5 @@
-#ifndef __HEADER_UNIQUE_MACRO
-#define __HEADER_UNIQUE_MACRO
+#ifndef __SNN_MEMBER_FUNCTION_POINTER_
+#define __SNN_MEMBER_FUNCTION_POINTER_
 
 #include <concepts>
 #include <type_traits>
@@ -56,4 +56,4 @@ namespace snn::functional {
     { return std::forward<_Sign _Class::*>(memfn); }
 }
 
-#endif //__HEADER_UNIQUE_MACRO
+#endif //__SNN_MEMBER_FUNCTION_POINTER_
