@@ -7,7 +7,7 @@ exec 50<"$(realpath fds/in)"
 
 # Creating a descriptor for output: descriptor number 51 and 52
 exec 51>"$(realpath fds/out)"
-exec 51>"$(realpath fds/ers)"
+exec 51>"$(realpath fds/err)"
 
 # Redirecting to open descriptos
 echo This is for Standard Output >&51
@@ -21,7 +21,7 @@ echo Read from stdin: $name
 # <  : for input
 # >  : for output
 # &- : indicates closing the descriptor
-exec 50<&- 52>&- 52&-
+exec 50<&- 52>&- 51>&-
 
 # We have also learned of grep and its amazing capapilities.
 # Use man for a refresh: man grep

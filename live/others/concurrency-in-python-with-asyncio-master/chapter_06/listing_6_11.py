@@ -2,7 +2,7 @@ from multiprocessing import Process, Value, cpu_count
 
 
 def increment_value(shared_int: Value):
-    shared_int.value = shared_int.value + 1
+    shared_int.value += 1
 
 
 if __name__ == "__main__":

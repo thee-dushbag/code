@@ -1,7 +1,7 @@
 import asyncio
 import concurrent.futures
 import functools
-import time
+import time, json
 from collections import defaultdict
 from typing import Dict, Generator, List
 
@@ -20,10 +20,9 @@ def map_frequencies(chunk: List[str]) -> Dict[str, int]:
 
 
 def merge_dictionaries(first: Dict[str, int], second: Dict[str, int]) -> Dict[str, int]:
-    merged = first
-    for key in second:
-        merged[key] += second[key]
-    return merged
+    for word, count in second.items():
+        first[word] += count
+    return first
 
 
 async def main(partition_size: int):
@@ -40,10 +39,12 @@ async def main(partition_size: int):
             intermediate_results = await asyncio.gather(*tasks)
             final_result = functools.reduce(merge_dictionaries, intermediate_results)
 
-            print(f"Aardvark has appeared {final_result['Aardvark']} times.")
-
             end = time.time()
+
+            print(f"Aardvark has appeared {final_result['Aardvark']} times.")
             print(f"MapReduce took: {(end - start):.4f} seconds")
+    with open('n-gram2.json', 'w') as f:
+        json.dump(dict(final_result), f, indent=2)
 
 
 if __name__ == "__main__":

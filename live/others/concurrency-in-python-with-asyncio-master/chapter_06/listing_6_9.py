@@ -4,7 +4,7 @@ import functools
 import time
 from typing import Dict, List
 
-from chapter_06.listing_6_8 import (map_frequencies, merge_dictionaries,
+from listing_6_8 import (map_frequencies, merge_dictionaries,
                                     partition)
 
 
