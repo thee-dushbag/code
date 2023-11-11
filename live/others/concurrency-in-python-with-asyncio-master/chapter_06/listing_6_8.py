@@ -21,7 +21,7 @@ def map_frequencies(chunk: List[str]) -> Dict[str, int]:
 
 def merge_dictionaries(first: Dict[str, int], second: Dict[str, int]) -> Dict[str, int]:
     for word, count in second.items():
-        first[word] += count
+        first[word] = first.get(word, 0) + count
     return first
 
 
