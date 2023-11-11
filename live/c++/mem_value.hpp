@@ -1,49 +1,53 @@
 #ifndef __SNN_MEMBER_VAR_POINTER_
 #define __SNN_MEMBER_VAR_POINTER_
 
-#include <concepts>
+#include <type_traits>
 
 namespace snn {
-  template <typename Type>
-  concept NonVoid = not std::same_as<Type, void>;
+template<class _Member_type, class _Member_class>
+using member_t = _Member_type _Member_class:: *;
 
-  template<NonVoid _Type, NonVoid _Class>
-  using member_t = _Type(_Class::*);
-
-  template<NonVoid _Type, NonVoid _Class>
-  struct _Member_value {
-    using value_type = _Type;
-    using member_class_ptr = _Class;
-    using member_type = member_t<_Type, _Class>;
-
-    member_type member;
-
-    _Member_value() = delete;
-    _Member_value(member_type&& val)
-      : member{ std::forward<member_type>(val) } { }
-
-    decltype(auto)
-      get(_Class const& obj) const {
-      return obj.*member;
-    }
-
-    decltype(auto)
-      operator()(_Class const& obj) const {
-      return get(obj);
-    }
-
-    template<NonVoid _Return>
-    _Return to(_Class const& obj) const
-      requires std::convertible_to<_Type, _Return> {
-      return get(obj);
-    }
-  };
-
-  template <NonVoid _Type, NonVoid _Class>
-  _Member_value<_Type, _Class>
-    member(member_t<_Type, _Class> mem) {
-    return mem;
+template<class _Member_type, class _Member_class>
+struct _Member_accessor {
+  using member_type = member_t<_Member_type, _Member_class>;
+  using member_class = _Member_class;
+  member_type _M_member;
+  _Member_accessor()
+    : _M_member{ nullptr } { }
+  _Member_accessor(member_type const &addr)
+    : _M_member{ addr } { }
+  _Member_accessor(member_type &&addr)
+    : _M_member{ std::move(addr) } {
+    addr = nullptr;
   }
+  _Member_accessor(_Member_accessor const &_ma)
+    : _M_member{ _ma._M_member } { }
+  _Member_accessor(_Member_accessor &&_ma)
+    : _M_member{ std::move(_ma._M_member) } {
+    _ma._M_member = nullptr;
+  }
+  void operator=(_Member_accessor &&_ma) {
+    this->_M_member = _ma._M_member;
+    _ma._M_member = nullptr;
+  }
+  member_type operator*() const { return _M_member; }
+  void operator=(_Member_accessor const &_ma) { this->_M_member = _ma._M_member; }
+  operator bool() const { return _M_member == nullptr; }
+  decltype(auto) get(member_class const &obj) const { return obj.*this->_M_member; }
+  decltype(auto) get(member_class &obj) const { return obj.*this->_M_member; }
+  decltype(auto) operator()(member_class const &obj) const { return get(obj); }
+  decltype(auto) operator()(member_class &obj) const { return get(obj); }
+
+  template<class _To = _Member_type>
+  std::remove_cvref_t<_To> to(member_class const &obj) const {
+    return get(obj);
+  }
+};
+
+template<class _Member_type, class _Member_class>
+_Member_accessor<_Member_type, _Member_class>
+member(member_t<_Member_type, _Member_class> const &ptr) { return ptr; }
+
 }
 
 #endif //__SNN_MEMBER_VAR_POINTER_

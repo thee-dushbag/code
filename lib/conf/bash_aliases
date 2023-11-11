@@ -7,9 +7,7 @@ alias origins="_get_origins"
 alias movie_origin="_set_movie"
 alias statics_origin="_set_statics"
 alias no_watch="watch_movie no-watch"
-alias mupt="sudo apt update; sudo apt upgrade"
 alias nv=nvim
-alias neof=neofetch
 alias pls=sudo
 alias ipy=ipython3
 alias ipython=ipython3
@@ -38,10 +36,9 @@ alias mwifi="origins_router && movie-app"
 
 alias nameep="py -m mpack.nameep"
 alias webrun="py -m mpack.webrun"
-alias psize="py -m mpack.dstat"
+# alias psize="py -m mpack.dstat" # Just us du -sh <path>
 alias toxspf="py -m mpack.toxspf"
-alias onpm=$(which npm)
-alias npm="npm --no-fund --no-audit --no-install-links"
+alias inpm="npm --no-fund --no-audit --no-install-links"
 alias mtools="py -m mpack.cmd_tools"
 
 alias ..="cd .."
@@ -57,6 +54,7 @@ alias dropvenv=_drop_venv
 alias vstp=_setup_encfs_vault
 alias vmnt=_mount_encfs_vault
 alias vumnt=_unmount_encfs_vault
+alias vmntd=_encfs_vault_mounted
 # xclip copy paste aliases
 # alias pbcopy='xclip -selection clipboard'
 # alias pbpaste='xclip -selection clipboard -o'
@@ -67,3 +65,4 @@ alias pbpaste='xsel --clipboard --output'
 
 alias lssh-add=_ssh_add_key
 alias lssh-agent=_start_ssh_agent_daemon
+alias mupt="yay --noconfirm --sudoloop=true"
