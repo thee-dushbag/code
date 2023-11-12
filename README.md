@@ -36,7 +36,6 @@ This is a brief overview of the structure of this **repository**.
   +  **C/C++** - amazingly complex and a mistery to solve and learn the beautiful world of low level programming.
   +  **Javascript** - the web is here to stay, a little of this goes a long way.
   + **Bash** - terminal scripting and tool chaining.
-  + **Rust** - wouldn't hurt to learn a bit of this beauty.
 
 - ***Technologies***
   + **markdown/reStructuredText** - for documentation.
@@ -79,3 +78,5 @@ I have deleted all the [React](https://react.dev) code in this repository. In th
 
 ### Complex Hobby.
 I do love C++ and C and they really are complex languages, but rust is appealing in that is is easy to think about and compile manage, you know, safety. I am considering to set my main language to be javascript and python, development languages be lua(configurations like vim) and bash(terminal scripting and tool chaining), learning about machines and their inner workings seems intuitive using languages with low level support, C/C++ and Rust seem to be the best candidates for this. C/C++ being the main and rust, just to know how it looks like and its minor features, C++ templates rule.
+
+You know what, fuck `RUST`. I was reading some book on rust, guess what I found? The book has many citations on why C/C++ is a "bad language" or atleast emphasis how inefficient it is to use it. An example, in the book `programming rust` by `o'reilly` publishers, they write, "In c++ main function, you must return a 0 at the end as the exit status while rust doesn't enforce this they say, but in truth, this is a LIE", another one is about memory safety, "I was watching a video on why learn rust and one of the reasons stated was that rust ensures safety while c++ doesn't since, if something fails in between calling the duo functions malloc and free, a memory leak would likely occur, but they did not mention the concept of RAII which ensures memory safety where it is needed. I am led to believe C++ is perfect and is improving over time with new features like `modules` in terms of static analysis. I hereon delete all rust codebase, no longer needed I say. Also, to add a cherry on top of this sundae of rust lore, the cargo tool behaves a lot like `npm` for javascript, as I was learning rust, I added two dependencies to my project, `artix-web` and `serde`, the total package download was approximately `154MB` of download, I have worked with a few C++ libraries and they were less than half of this.
