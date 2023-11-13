@@ -47,7 +47,7 @@ function _cnthosts_impl() {
 
 function cnthosts() {
   declare -a baseips
-  declare iprange="1:256" holder="IP" interval="0.5" color="_echo_color_ips" timeout
+  declare iprange="1:256" holder="IP" interval="0.5" color="_echo_color_ips" timeout=1
   declare -i pcnt="1"
   while [ $# -ne 0 ]; do
     case "$1" in
