@@ -1,7 +1,7 @@
 print(
     "".join(
         {
-            chr(i + c): chr((i + int(__import__("sys").argv[1] or 13)) % 26 + c)
+            chr(i + c): chr((i + 13) % 26 + c)
             for c in (65, 97)
             for i in range(26)
         }.get(c, c)

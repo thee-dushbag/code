@@ -3,7 +3,7 @@ def flag_on(value: int, flag: int) -> int:
 
 
 def flag_off(value: int, flag: int) -> int:
-    return value ^ flag
+    return (value ^ flag) if flag_enabled(value, flag) else value
 
 
 def flag_enabled(value: int, flag: int) -> bool:

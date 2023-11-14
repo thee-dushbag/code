@@ -13,3 +13,5 @@ Ignore*
 *.IGNORE.*
 .next/
 */rust/target/
+*.out
+*.exe
