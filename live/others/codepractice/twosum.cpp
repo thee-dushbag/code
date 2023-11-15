@@ -8,8 +8,8 @@ Given an array of integers nums and an integer target,
 find the indices of two integers in nums such that their
 sum equals target.
 Assume there is only one solution, ie only two integers
-in nums can add upto target and they are not equal to each
-other.
+in nums can add upto target. Each integer in the list
+can all be used once.
 */
 
 struct Solution {
@@ -17,7 +17,7 @@ struct Solution {
     std::vector<int> result;
     for (int a = 0; a < nums.size(); a++) {
       for (int b = 0; b < nums.size(); b++) {
-        if ((nums[a] + nums[b]) == target && nums[a] != nums[b]) {
+        if ((nums[a] + nums[b]) == target && a != b) {
           result.push_back(a);
           result.push_back(b);
           break;
