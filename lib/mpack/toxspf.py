@@ -5,8 +5,6 @@ from typing import Optional, Sequence
 from xml.etree import ElementTree as ET
 
 import click
-from moviepy.editor import AudioFileClip, VideoFileClip
-from yarl import URL
 
 
 @dataclass
@@ -44,6 +42,7 @@ class Track:
 
     @property
     def duration(self) -> int:
+        from moviepy.editor import AudioFileClip, VideoFileClip
         with suppress(Exception):
             return VideoFileClip(self.location).duration
         with suppress(Exception):
@@ -53,6 +52,7 @@ class Track:
         )
 
     def tag(self) -> ET.Element:
+        from yarl import URL
         track = ET.Element("track")
         ET.SubElement(track, "location").text = str(URL(self.location))
         ET.SubElement(track, "title").text = self.title

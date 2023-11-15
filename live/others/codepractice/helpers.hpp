@@ -16,15 +16,13 @@ std::string _tostr_vec(std::vector<T> const& vec) {
     if (i + 1 < size)
       str << ", ";
   }
-  str << "]";
+  str << ']';
   return str.str();
 };
 
 template<class T>
-std::ostream& operator<<(std::ostream& out, std::vector<T> const& vec) {
-  out << _tostr_vec(vec);
-  return out;
-}
+std::ostream& operator<<(std::ostream& out, std::vector<T> const& vec)
+{ return out << _tostr_vec(vec); }
 
 
 #endif //__CODEPRACTICE_HEADER_

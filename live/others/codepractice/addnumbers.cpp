@@ -19,19 +19,19 @@ Definition for singly-linked list.
 
 struct ListNode {
   int val;
-  ListNode* next;
+  ListNode *next;
   ListNode()
     : val(0), next(nullptr) { }
   ListNode(int x)
     : val(x), next(nullptr) { }
-  ListNode(int x, ListNode* next)
+  ListNode(int x, ListNode *next)
     : val(x), next(next) { }
 };
 
 
 struct Solution {
-  static ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-    ListNode* result{ new ListNode() }, * _temp, * _p{ nullptr };
+  static ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+    ListNode *result{ new ListNode() }, *_temp, *_p{ nullptr };
     _temp = result;
     do {
       addNodeValues(_temp, l1, l2);
@@ -47,11 +47,11 @@ struct Solution {
     return result;
   }
 private:
-  static ListNode* shiftNode(ListNode* list) {
+  static ListNode *shiftNode(ListNode *list) {
     return (list == nullptr) ? list : list->next;
   }
 
-  static void addNodeValues(ListNode* result, ListNode* l1, ListNode* l2) {
+  static void addNodeValues(ListNode *result, ListNode *l1, ListNode *l2) {
     int value{ 0 };
     if (l1 != nullptr && l2 != nullptr)
       value = l1->val + l2->val;
@@ -67,7 +67,7 @@ private:
   }
 };
 
-std::string print_list(ListNode* node) {
+std::string print_list(ListNode *node) {
   std::stringstream str;
   str << '[';
   while (node != nullptr) {
@@ -80,31 +80,32 @@ std::string print_list(ListNode* node) {
   return str.str();
 }
 
-std::ostream& operator<<(std::ostream& out, ListNode* node) {
+std::ostream &operator<<(std::ostream &out, ListNode *node) {
   out << print_list(node);
   return out;
 }
 
-ListNode* getList(std::string const& number) {
-  ListNode* result{ nullptr };
-  std::string temp;
-  for (char const& character : number) {
-    temp = std::string(1, character);
-    result = new ListNode(std::atoi(temp.data()), result);
+ListNode *getList(std::string const &number) {
+  std::string digits{ "0123456789" };
+  ListNode *result{ nullptr };
+  for (char character : number) {
+    if (digits.find(character) == std::string::npos)
+      character = '0';
+    result = new ListNode(character - '0', result);
   }
   return result;
 }
 
 void deleteList(ListNode *list) {
   ListNode *temp;
-  while(list != nullptr) {
+  while (list != nullptr) {
     temp = list;
     list = list->next;
     delete temp;
   }
 }
 
-auto main(int argc, char** argv) -> int {
+auto main(int argc, char **argv) -> int {
   if (argc != 3) {
     std::cerr << "Usage:\n"
       << '\t' << argv[0] << " n_one n_two\n"
@@ -121,14 +122,14 @@ Output:
   }
 
   std::string sn1{ argv[1] }, sn2{ argv[2] };
-  ListNode* number1 = getList(argv[1]);
-  ListNode* number2 = getList(argv[2]);
-  ListNode* numbsum = Solution::addTwoNumbers(number1, number2);
+  ListNode *number1 = getList(argv[1]);
+  ListNode *number2 = getList(argv[2]);
+  ListNode *numbsum = Solution::addTwoNumbers(number1, number2);
 
   std::cout << "Number1: " << number1 << '\n'
     << "Number2: " << number2 << '\n'
     << "NumbSum: " << numbsum << '\n';
-  
+
   deleteList(number1);
   deleteList(number2);
   deleteList(numbsum);

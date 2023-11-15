@@ -26,12 +26,16 @@ Example:
 from dataclasses import dataclass
 from importlib import import_module
 from types import ModuleType
-from typing import Callable, Coroutine
+from typing import Callable, Coroutine, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from aiohttp import web
+else:
+    class web:
+        Application = None
 
 import click
-from aiohttp import web
 from click.core import Context, Parameter
-from uvloop import install as install_uvloop
 
 
 @dataclass
@@ -109,6 +113,8 @@ class TargetParam(click.ParamType):
 @click.help_option('--help', '-h')
 def main(bind: BindArg, target: TargetArg):
     """Serve an aiohttp application {TARGET} <[package.]module>:<app_factory> on {BIND} <host>:<port>"""
+    from aiohttp import web
+    from uvloop import install as install_uvloop
     try:
         install_uvloop()
         web.run_app(target.target(), host=bind.host, port=bind.port)

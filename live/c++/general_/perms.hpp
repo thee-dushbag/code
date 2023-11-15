@@ -12,19 +12,23 @@ namespace snn::perms {
   };
 
   std::ostream &operator<<(std::ostream &out, Perm const &p) {
-    std::string opname = "UNKNOWN Perm";
+    std::string opname = "Perm::";
     switch (p) {
-    case Perm::NONE:
-      opname = "Perm::NONE";
+      using enum Perm;
+    case NONE:
+      opname += "NONE";
       break;
-    case Perm::READ:
-      opname = "Perm::READ";
+    case READ:
+      opname += "READ";
       break;
-    case Perm::WRITE:
-      opname = "Perm::WRITE";
+    case WRITE:
+      opname += "WRITE";
       break;
-    case Perm::EXECUTE:
-      opname = "Perm::EXECUTE";
+    case EXECUTE:
+      opname += "EXECUTE";
+      break;
+    default:
+      opname = "Perm::<UNKNOWN>";
       break;
     }
     return out << '<' << opname << ' ' << u_short(p) << '>';
@@ -54,9 +58,6 @@ namespace snn::perms {
     bool operator==(Perm const &p) const {
       return has(p);
     }
-    bool operator!=(Perm const &p) const {
-      return not has(p);
-    }
     bool has(Perm const &p) const {
       return (perm & u_short(p)) == u_short(p);
     }
@@ -80,6 +81,12 @@ namespace snn::perms {
       if (has(p)) perm ^= p;
       return *this;
     }
+    Permission &toggle(u_short const &p) {
+      perm ^= p; return *this;
+    }
+    Permission &toggle(Perm const &p) {
+      perm ^= u_short(p); return *this;
+    }
     bool only(u_short const &p) const {
       return perm == p;
     }
@@ -93,13 +100,14 @@ namespace snn::perms {
   };
 
   std::ostream &operator<<(std::ostream &out, Permission const &p) {
+    using enum Perm;
     out << "Permission(perm=" << p.value() << ", perms=[";
     if (p) {
-      if (p.has(Perm::READ)) out << Perm::READ << ',';
-      if (p.has(Perm::WRITE)) out << Perm::WRITE << ',';
-      if (p.has(Perm::EXECUTE)) out << Perm::EXECUTE << ',';
+      if (p.has(READ)) out << READ << ',';
+      if (p.has(WRITE)) out << WRITE << ',';
+      if (p.has(EXECUTE)) out << EXECUTE << ',';
     }
-    else out << Perm::NONE;
+    else out << NONE;
     return out << "])";
   }
 }
