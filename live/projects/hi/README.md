@@ -42,8 +42,8 @@ More information can be found on the module `hi.__meta__.py`.
 
 ```python
 from hi import __meta__ as meta
-print(meta.__author__) # Simon Nganga
-print(meta.__author_email__) # happyfortunes5052@gmail.com
+print(meta.__author__) # Author Name
+print(meta.__author_email__) # Maintainer Email
 # And the rest.
 ```
 
