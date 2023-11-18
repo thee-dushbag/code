@@ -79,11 +79,9 @@ function _get_virtual_env() {
 function _get_state_char() {
   # symbols="✓×"
   if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
-    echo -n ' ✔'
-    # echo -n ' ✓'
+    echo -n '✓'
   else
-    echo -n ' ✘'
-    # echo -n ' ×'
+    echo -n '×'
   fi
 }
 

@@ -13,7 +13,7 @@ class Option {
     return this.has_value() ? this._val : value;
   }
   transform(func) {
-    return new Option(func(this._val));
+    return new Option(this.has_value()? func(this._val): undefined);
   }
   and_then(func) {
     if (this.has_value()) func(this._val);
