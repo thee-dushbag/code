@@ -51,6 +51,11 @@ class StreamFiles:
     def __init_subclass__(cls) -> None:
         raise Exception("Do not subclass this class.")
 
+    def swap(self, stream: 'StreamFiles'):
+        self.errfile, stream.errfile = stream.errfile, self.errfile
+        self.infile, stream.infile = stream.infile, self.infile
+        self.outfile, stream.outfile = stream.outfile, self.outfile
+
 
 def create_null_stream(nullfile: str, *, own=False):
     oefile = open(nullfile, "w")
@@ -89,10 +94,10 @@ _null_stream: StreamFiles = None  # type: ignore
 
 def _null_stream_handler(null_stream: ty.Optional[StreamFiles] = None) -> StreamFiles:
     global _null_stream
-    if null_stream is not None:
-        _null_stream = null_stream  # Told Yeah
-    if _null_stream is None:
-        _null_stream = create_null_stream(_null_system_file)  # Told Yeah
+    if null_stream is None and _null_stream is None:
+        _null_stream = create_null_stream(_null_system_file) # Told Yeah
+    else:
+        _null_stream = null_stream # Told Yeah
     return _null_stream
 
 
@@ -130,7 +135,7 @@ def _reset_streams():
 def redirect(stream: ty.Optional[StreamFiles] = None):
     "Set the current stream to :stream: or :null_stream: if stream is None."
     if stream is None:
-        stream = _null_stream
+        stream = get_null_stream()
     _redirect_to(stream)
 
 
