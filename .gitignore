@@ -15,3 +15,4 @@ Ignore*
 */rust/target/
 *.out
 *.exe
+.pytest_cache
