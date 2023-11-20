@@ -1,7 +1,7 @@
 <center>
 
 # Hello World.
-<small><b>Coding is FUN!!!</b></small>
+<small>**Coding is FUN!!!**</small>
 
 ![What a Good Day.](./lib/conf/whatyoudoing.jpg )
 
@@ -58,7 +58,7 @@ My former tech-stack was composed of: ***<u><del>RAMB</del></u>***
 - [Mysql](https://www.mysql.com 'A relational database.') for storing app data.
 - [Bootstrap](https://getbootstrap.com 'A CSS Framework for styling webpages.') styling my frontend.
 
-Lately, I have found out that [React](https://react.dev) is a very massive framework, like yes I'm learning javascript, but that was for simple frontent motions, I am not a dedicated frontend developer. The [React](https://react.dev) ecosystem is too complex for me, don't get me started with webpack and its configurations and react state management frameworks like [Redux](https://redux.js.org), and I wish to step back fron it.
+Lately, I have found out that [React](https://react.dev) is a very massive framework, like yes I'm learning javascript, but that was for simple frontend motions, I am not a dedicated frontend developer. The [React](https://react.dev) ecosystem is too complex for me, don't get me started with webpack and its configurations and react state management frameworks like [Redux](https://redux.js.org), and I wish to step back from it.
 I was considering dropping javascript altogether for simple backend rendering using libraries like [Jinja](https://jinja.palletsprojects.com/en/3.1.x) but with a little research I have found simpler libraries that I can pick up easily as a to be backend developer.
 
 The new Almighty Tech Stack: ***<u>BAHM</u>***

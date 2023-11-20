@@ -3,7 +3,7 @@ from threading import Thread
 
 
 class ClientEchoThread(Thread):
-    def __init__(self, client):
+    def __init__(self, client: socket.socket):
         super().__init__()
         self.client = client
 
