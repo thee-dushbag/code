@@ -11,8 +11,12 @@ def get_status_code(url: str) -> int:
 
 start = time.time()
 
-with ThreadPoolExecutor(max_workers=1000) as pool:
-    urls = ["https://www.example.com" for _ in range(1000)]
+# urls = ("https://www.example.com" for _ in range(20))
+# for url in urls:
+#     print(get_status_code(url))
+
+with ThreadPoolExecutor(max_workers=500) as pool:
+    urls = ("https://www.example.com" for _ in range(500))
     results = pool.map(get_status_code, urls)
     for result in results:
         print(result)
