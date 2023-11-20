@@ -13,24 +13,18 @@ can all be used once.
 */
 
 struct Solution {
-  static std::vector<int> twoSum(std::vector<int>& nums, int target) {
-    std::vector<int> result;
-    for (int a = 0; a < nums.size(); a++) {
-      for (int b = 0; b < nums.size(); b++) {
-        if ((nums[a] + nums[b]) == target && a != b) {
-          result.push_back(a);
-          result.push_back(b);
-          break;
-        }
-      }
-      if (result.size() == 2)
-        break;
-    }
-    return result;
+  static std::vector<int> twoSum(std::vector<int> nums, int target) {
+    int i1, i2;
+    std::vector<int>::iterator p1, p2;
+    for (i1 = 0, p1 = nums.begin(); p1 < nums.end(); ++i1, ++p1)
+      for (i2 = i1, p2 = p1; p2 < nums.end(); ++i2, ++p2)
+        if ((*p1 + *p2) == target && i1 != i2)
+          return { i1, i2 };
+    return { };
   }
 };
 
-auto main(int argc, char** argv) -> int {
+auto main(int argc, char **argv) -> int {
   if (argc <= 3) {
     std::cerr << "Usage:\n"
       << '\t' << argv[0] << " [input...] target\n"
@@ -61,7 +55,7 @@ Output:
     std::cbegin(indicies),
     std::cend(indicies),
     std::back_inserter(numbers),
-    [&nums](int const& index) { return nums[index]; }
+    [&nums](int const &index) { return nums[index]; }
   );
   std::cout << "input    : " << nums << '\n'
     << "target   : " << target << '\n'
