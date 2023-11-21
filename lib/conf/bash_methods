@@ -319,6 +319,7 @@ function _retry_command() {
     --help | -h | -\?)
       echo 'Usage: <cmd> [options...] [command [options...]]'
       echo '--help    -h      -?    Show this message and exit.'
+      echo '--ignore  -i      -I    Ignore the next token, eg -I -R, will not throw (*_*)'
       echo '---last   --LAST  ---   Mark the rest of the arguments as part of command to retry'
       echo '--retry   -r      -R    How many times to retry the command. Default 3'
       echo '--timeout -t      -T    How long to wait till the next retry. Default 1'
@@ -345,7 +346,13 @@ function _retry_command() {
       shift 2
       ;;
 
+    --ignore | -i | -I)
+      command+=("$2")
+      shift 2
+      ;;
+
     ---last | --- | --LAST)
+      shift 1
       command+=("$@")
       break
       ;;
@@ -376,8 +383,10 @@ function _retry_command() {
   done
   local cmd="${command[*]}"
   if [[ -z "$cmd" ]]; then
-    echo No command to run.
+    echo >&2 No command to run.
     return 2
+  else
+    echo >&2 "Running: '$cmd'"
   fi
   declare -i current_count=1
   while [[ $current_count -le $retry_count ]]; do
@@ -391,6 +400,15 @@ function _retry_command() {
     current_count=$(($current_count + 1))
     sleep $timeout
   done
+  return $laststatus
+}
+
+function _expand_alias() {
+  if alias "$1" >/dev/null; then
+    echo "$(alias "$1" | cut -d= -f2- | tr -d \')"
+  else
+    return $?
+  fi
 }
 
 # _activate_virtual_env
