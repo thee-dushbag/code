@@ -186,6 +186,18 @@ function _list_venvs() {
   ls "$CONTENT_VENVS"
 }
 
+function _update_venvs() {
+  local venvs=($(_list_venvs))
+  local current_venv="$VIRTUAL_ENV"
+  for venv in "${venvs[@]}"; do
+    _activate_venv "$venv"
+    pip freeze | cut -d'=' -f1 | xargs -n1 pip install -U
+  done
+  if [ -n "$current_venv" ]; then
+    _activate_venv "$(basename "$current_venv")"
+  fi
+}
+
 function _load_venv_requrements() {
   local outputdir="$1"
   if [ -z "$outputdir" ]; then
@@ -286,6 +298,99 @@ function _ssh_add_key() {
     return 2
   fi
   ssh-add "$keypath"
+}
+
+function _in_array() {
+  declare -n array="$1"
+  local value="$2"
+  for val in "${array[@]}"; do
+    if [[ "$val" == "$value" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+function _retry_command() {
+  local command=() untilstatus=(0) timeout=1 untilthen="F"
+  declare -i retry_count=3 argcount="$#" laststatus
+  while [ $# -ne 0 ]; do
+    case "$1" in
+    --help | -h | -\?)
+      echo 'Usage: <cmd> [options...] [command [options...]]'
+      echo '--help    -h      -?    Show this message and exit.'
+      echo '---last   --LAST  ---   Mark the rest of the arguments as part of command to retry'
+      echo '--retry   -r      -R    How many times to retry the command. Default 3'
+      echo '--timeout -t      -T    How long to wait till the next retry. Default 1'
+      echo '--until   -u      -U    The exit status to ignore on. Default <array:int> (0)'
+      echo '--repspect-until --ru --RU  Respect until values, disable retry count. Values: T/F. Default F'
+      [[ "$argcount" -eq 1 ]] && return 0 || return 1
+      ;;
+
+    --timeout | -t | -T)
+      if [[ ! "$2" =~ [0-9]+(.[0-9]+)? ]]; then
+        echo >&2 "Expected timeout to be float, got '$2'"
+        return 1
+      fi
+      timeout="$2"
+      shift 2
+      ;;
+
+    --retry | -r | -R)
+      if [[ ! "$2" =~ [0-9]+ ]]; then
+        echo >&2 "Expected retry to be an integer, got '$2'"
+        return 1
+      fi
+      retry_count="$2"
+      shift 2
+      ;;
+
+    ---last | --- | --LAST)
+      command+=("$@")
+      break
+      ;;
+
+    --until | --U | -u)
+      if [[ ! "$2" =~ [0-9]+ ]]; then
+        echo >&2 "Expected \`until status\` to be an integer, got '$2'"
+        return 1
+      fi
+      untilstatus+=("$2")
+      shift 2
+      ;;
+
+    --repspect-until | --ru | --RU)
+      if [[ ! "$untilthen" =~ T|F ]]; then
+        echo >&2 "Expected respect-until to be T/F, got $2"
+        return 1
+      fi
+      untilthen="$2"
+      shift 2
+      ;;
+
+    *)
+      command+=("$1")
+      shift 1
+      ;;
+    esac
+  done
+  local cmd="${command[*]}"
+  if [[ -z "$cmd" ]]; then
+    echo No command to run.
+    return 2
+  fi
+  declare -i current_count=1
+  while [[ $current_count -le $retry_count ]]; do
+    $cmd
+    laststatus="$?"
+    if _in_array untilstatus $laststatus; then
+      break
+    elif [[ "$untilthen" == T ]]; then
+      current_count="-2"
+    fi
+    current_count=$(($current_count + 1))
+    sleep $timeout
+  done
 }
 
 # _activate_virtual_env

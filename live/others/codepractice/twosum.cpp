@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "helpers.hpp"
+#include <unordered_map>
 
 /*
 Given an array of integers nums and an integer target,
@@ -13,13 +14,19 @@ can all be used once.
 */
 
 struct Solution {
-  static std::vector<int> twoSum(std::vector<int> nums, int target) {
-    int i1, i2;
-    std::vector<int>::iterator p1, p2;
-    for (i1 = 0, p1 = nums.begin(); p1 < nums.end(); ++i1, ++p1)
-      for (i2 = i1, p2 = p1; p2 < nums.end(); ++i2, ++p2)
-        if ((*p1 + *p2) == target && i1 != i2)
-          return { i1, i2 };
+  static std::vector<int> twoSum(std::vector<int> const &nums, int target) {
+    int i1{ 0 }, n2{ 0 };
+    std::unordered_map<int, int> map;
+    map.reserve(nums.size());
+
+    for (auto ptr = nums.begin(); ptr != nums.end(); ptr++, i1++) {
+      if(map.contains(*ptr) && (2 * *ptr) == target)
+        return { map[*ptr], i1 };
+      map[*ptr] = i1;
+      n2 = target - *ptr;
+      if (map.contains(n2) && map[n2] != i1)
+        return { map[n2], i1 };
+    }
     return { };
   }
 };
