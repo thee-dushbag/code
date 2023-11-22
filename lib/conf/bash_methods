@@ -404,8 +404,11 @@ function _retry_command() {
 }
 
 function _expand_alias() {
-  if alias "$1" >/dev/null; then
-    echo "$(alias "$1" | cut -d= -f2- | tr -d \')"
+  local aliasname="$1"
+  shift 1
+  local aliasargs="$@"
+  if alias "$aliasname" >/dev/null; then
+    echo "$(alias "$aliasname" | cut -d= -f2- | tr -d \') $aliasargs"
   else
     return $?
   fi
