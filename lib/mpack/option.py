@@ -3,12 +3,14 @@ from typing import Any
 
 __all__ = "Option", "NONE", "NONETYPE"
 
+_T = ty.TypeVar("_T")
 
-def _scrub_class(Class: ty.Type, val=None):
+
+def _scrub_class(Class: ty.Type, val: ty.Any = None):
     Class.__new__ = lambda *_, **__: val
     Class.__init__ = lambda *_, **__: None
     if not hasattr(Class, "__eq__"):
-        Class.__eq__ = lambda s, o: s is o
+        Class.__eq__ = lambda s, o: s is o  # type: ignore
 
 
 def _single_none(Class: ty.Type):
@@ -32,16 +34,16 @@ class _NONETYPE:
     def __bool__(self) -> bool:
         return False
 
-    def __setattr__(self, _: str, __: Any) -> None:
+    def __setattr__(self, _: str, __: Any) -> ty.NoReturn:
         raise NotImplementedError
 
-    def __delattr__(self, _: str) -> None:
+    def __delattr__(self, _: str) -> ty.NoReturn:
         raise NotImplementedError
 
-    def __getattribute__(self, _: str) -> Any:
+    def __getattr__(self, *_) -> ty.NoReturn:
         raise NotImplementedError
 
-    def __init_subclass__(cls) -> None:
+    def __init_subclass__(cls) -> ty.NoReturn:
         raise NotImplementedError
 
     __repr__ = __str__
@@ -49,7 +51,6 @@ class _NONETYPE:
 
 NONE: _NONETYPE = _NONETYPE()
 NONETYPE: ty.Type = type(NONE)
-_T = ty.TypeVar("_T")
 _Optional: ty.TypeAlias = ty.Union[_T, _NONETYPE]
 
 
@@ -58,24 +59,24 @@ class Option(ty.Generic[_T]):
         self._val: _Optional[_T] = value
 
     def has_value(self) -> bool:
-        return self._val is not NONE
+        return self._valid_option(self._val)
 
     def __bool__(self) -> bool:
         return self.has_value()
 
     def value(self) -> _T:
         "This function may throw[ValueError] if it holds a None."
-        if self.has_value():
+        if self._valid_option(self._val):
             return self._val
         raise ValueError("Empty Option")
 
     def value_or(self, value: _T) -> _T:
-        return self._val if self.has_value() else value
+        return self._val if self._valid_option(self._val) else value
 
     def transform(self, func: ty.Callable[[_T], _Optional[_T]]) -> ty.Self:
         return (
             self.__class__(func(self._val))
-            if self.has_value()
+            if self._valid_option(self._val)
             else self.__class__(self._val)
         )
 
@@ -85,7 +86,7 @@ class Option(ty.Generic[_T]):
         return self
 
     def and_then(self, func: ty.Callable[[_T], ty.Any]) -> ty.Self:
-        if self.has_value():
+        if self._valid_option(self._val):
             func(self._val)
         return self
 
@@ -97,3 +98,7 @@ class Option(ty.Generic[_T]):
         return f"Option(value={self._val!r})"
 
     __repr__ = __str__
+
+    @staticmethod
+    def _valid_option(value: _Optional[_T]) -> ty.TypeGuard[_T]:
+        return value is not NONE
