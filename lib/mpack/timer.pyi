@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from typing import (Any, Callable, Coroutine, Generic, Type, TypeVar, cast,
-                    overload)
+from typing import Any, Callable, Coroutine, Generic, TypeVar, overload
 
 from .timable import Time
 

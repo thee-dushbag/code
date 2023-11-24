@@ -1,13 +1,11 @@
-from threading import Lock
-from typing import List
-
+from threading import RLock as Lock
 
 class IntListThreadsafe:
-    def __init__(self, wrapped_list: List[int]):
+    def __init__(self, wrapped_list: list[int]):
         self._lock = Lock()
         self._inner_list = wrapped_list
 
-    def indices_of(self, to_find: int) -> List[int]:
+    def indices_of(self, to_find: int) -> list[int]:
         with self._lock:
             enumerator = enumerate(self._inner_list)
             return [index for index, value in enumerator if value == to_find]
@@ -20,4 +18,6 @@ class IntListThreadsafe:
 
 
 threadsafe_list = IntListThreadsafe([1, 2, 1, 2, 1])
+print("Input list:", threadsafe_list._inner_list)
 threadsafe_list.find_and_replace(1, 2)
+print("Output list:", threadsafe_list._inner_list)

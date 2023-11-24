@@ -44,7 +44,7 @@ class StressTest:
 
     async def _make_requests(self):
         async with ClientSession() as session:
-            reqs = [
+            reqs = (
                 self._get_url(session, self._url) for _ in range(self._total_requests)
-            ]
+            )
             await asyncio.gather(*reqs)

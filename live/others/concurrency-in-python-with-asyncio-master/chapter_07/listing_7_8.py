@@ -28,16 +28,16 @@ async def reporter(request_count: int):
 async def main():
     loop = asyncio.get_running_loop()
     with ThreadPoolExecutor() as pool:
-        request_count = 200
-        urls = ["https://www.example.com" for _ in range(request_count)]
+        request_count = 20
+        urls = ("https://www.example.com" for _ in range(request_count))
         reporter_task = asyncio.create_task(reporter(request_count))
-        tasks = [
+        tasks = (
             loop.run_in_executor(pool, functools.partial(get_status_code, url))
             for url in urls
-        ]
+        )
         results = await asyncio.gather(*tasks)
         await reporter_task
-        print(results)
+        print(f"Collected {len(results)}/{request_count}")
 
 
 asyncio.run(main())

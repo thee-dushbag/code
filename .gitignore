@@ -16,3 +16,4 @@ Ignore*
 *.out
 *.exe
 .pytest_cache
+.mypy_cache
