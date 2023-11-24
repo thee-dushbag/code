@@ -27,7 +27,7 @@ def _single_none(Class: ty.Type):
 
 
 @_single_none
-class _NONETYPE:
+class _NONETYPE(ty.Final):
     def __str__(self) -> str:
         return "<NONE>"
 
@@ -50,8 +50,12 @@ class _NONETYPE:
 
 
 NONE: _NONETYPE = _NONETYPE()
-NONETYPE: ty.Type = type(NONE)
+NONETYPE: ty.Type[_NONETYPE] = type(NONE)
 _Optional: ty.TypeAlias = ty.Union[_T, _NONETYPE]
+
+
+def _is_not_none(value: _Optional[_T]) -> ty.TypeGuard[_T]:
+    return value is not NONE
 
 
 class Option(ty.Generic[_T]):
@@ -59,24 +63,24 @@ class Option(ty.Generic[_T]):
         self._val: _Optional[_T] = value
 
     def has_value(self) -> bool:
-        return self._valid_option(self._val)
+        return _is_not_none(self._val)
 
     def __bool__(self) -> bool:
         return self.has_value()
 
     def value(self) -> _T:
         "This function may throw[ValueError] if it holds a None."
-        if self._valid_option(self._val):
+        if _is_not_none(self._val):
             return self._val
         raise ValueError("Empty Option")
 
     def value_or(self, value: _T) -> _T:
-        return self._val if self._valid_option(self._val) else value
+        return self._val if _is_not_none(self._val) else value
 
     def transform(self, func: ty.Callable[[_T], _Optional[_T]]) -> ty.Self:
         return (
             self.__class__(func(self._val))
-            if self._valid_option(self._val)
+            if _is_not_none(self._val)
             else self.__class__(self._val)
         )
 
@@ -86,7 +90,7 @@ class Option(ty.Generic[_T]):
         return self
 
     def and_then(self, func: ty.Callable[[_T], ty.Any]) -> ty.Self:
-        if self._valid_option(self._val):
+        if _is_not_none(self._val):
             func(self._val)
         return self
 
@@ -98,7 +102,3 @@ class Option(ty.Generic[_T]):
         return f"Option(value={self._val!r})"
 
     __repr__ = __str__
-
-    @staticmethod
-    def _valid_option(value: _Optional[_T]) -> ty.TypeGuard[_T]:
-        return value is not NONE

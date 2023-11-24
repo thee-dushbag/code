@@ -2,7 +2,7 @@ import asyncio
 from asyncio import AbstractEventLoop
 from threading import Thread
 
-from chapter_07.listing_7_14 import LoadTester
+from listing_7_14 import LoadTester
 
 
 class ThreadedEventLoop(Thread):  # A
@@ -12,7 +12,10 @@ class ThreadedEventLoop(Thread):  # A
         self.daemon = True
 
     def run(self):
-        self._loop.run_forever()
+        try:
+            self._loop.run_forever()
+        finally:
+            self._loop.stop()
 
 
 loop = asyncio.new_event_loop()

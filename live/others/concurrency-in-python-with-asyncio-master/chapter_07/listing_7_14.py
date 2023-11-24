@@ -2,7 +2,7 @@ from queue import Queue
 from tkinter import Entry, Label, Tk, ttk
 from typing import Optional
 
-from chapter_07.listing_7_13 import StressTest
+from listing_7_13 import StressTest
 
 
 class LoadTester(Tk):

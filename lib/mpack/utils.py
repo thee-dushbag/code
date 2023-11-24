@@ -1,8 +1,6 @@
 from functools import wraps
 from typing import Any, Callable, Generic, Type, TypeVar
 
-from . import print
-
 T = TypeVar("T")
 
 
