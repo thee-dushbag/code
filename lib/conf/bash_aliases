@@ -51,6 +51,8 @@ alias lsvenv=_list_venvs
 alias loadvenvrq=_load_venv_requrements
 alias dropvenv=_drop_venv
 alias updatevenvs=_update_venvs
+complete -F _get_venv_activate_completion activate
+complete -F _get_venvs_drop dropvenv
 
 alias vstp=_setup_encfs_vault
 alias vmnt=_mount_encfs_vault

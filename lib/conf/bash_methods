@@ -155,6 +155,24 @@ function njobs() {
 #     fi
 # }
 
+function _get_venvs_completion() {
+  local curr_word="${COMP_WORDS[COMP_CWORD]}"
+  local prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
+  COMPREPLY=($(compgen -W "$(ls "$CONTENT_VENVS")" -- $curr_word))
+}
+
+function _get_venvs_drop() {
+  _get_venvs_completion
+}
+
+function _get_venv_activate_completion() {
+  if [ "$COMP_CWORD" -lt 2 ]; then
+    _get_venvs_completion
+  else
+    COMPREPLY=()
+  fi
+}
+
 function _activate_venv() {
   local venv_path=
   if [ -z "$1" ]; then
@@ -220,7 +238,7 @@ function _load_venv_requrements() {
 }
 
 function _drop_venv() {
-  local venv_path=
+  local venv_path
   for venv; do
     venv_path="$CONTENT_VENVS/$venv"
     if [ -e "$venv_path" ]; then
