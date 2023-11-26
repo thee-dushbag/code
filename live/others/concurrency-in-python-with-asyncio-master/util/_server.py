@@ -10,13 +10,13 @@ async def index(req: web.Request):
 
 
 async def sleeper(req: web.Request):
-    delay = int(req.match_info.get("time") or 1)
+    delay = float(req.match_info.get("time") or 0.5)
     resp = web.Response(text=f"Sleeping for {delay} second(s).")
     return await aio.sleep(delay, resp)
 
 
 routes = [
-    web.get("/delay/{time:[0-9]+}", sleeper),
+    web.get("/delay/{time:[0-9]+(.[0-9]+)?}", sleeper),
     web.route(hdrs.METH_ANY, "/", index),
     web.get("/delay", sleeper),
 ]

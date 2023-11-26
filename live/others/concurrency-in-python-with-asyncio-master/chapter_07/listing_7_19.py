@@ -10,7 +10,7 @@ def mean_for_row(arr, row):
     return np.mean(arr[row])
 
 
-data_points = 4000000000
+data_points = 250_000_000
 rows = 50
 columns = int(data_points / rows)
 
@@ -26,7 +26,7 @@ async def main():
             mean = functools.partial(mean_for_row, matrix, i)
             tasks.append(loop.run_in_executor(pool, mean))
 
-        results = asyncio.gather(*tasks)
+        await asyncio.gather(*tasks)
 
 
 asyncio.run(main())

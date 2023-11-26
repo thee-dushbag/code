@@ -7,9 +7,8 @@ from listing_7_14 import LoadTester
 
 class ThreadedEventLoop(Thread):  # A
     def __init__(self, loop: AbstractEventLoop):
-        super().__init__()
+        Thread.__init__(self, daemon=True)
         self._loop = loop
-        self.daemon = True
 
     def run(self):
         try:
