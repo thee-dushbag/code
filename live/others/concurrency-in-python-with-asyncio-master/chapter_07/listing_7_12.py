@@ -9,7 +9,8 @@ _counter = 0
 
 count_label = ttk.Label(
     window,
-    text='Click the button.'
+    text='Click the button.',
+    font=("monospace", 15, 'bold')
 )
 
 def say_hello():
