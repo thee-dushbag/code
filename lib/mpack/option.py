@@ -1,5 +1,4 @@
 import typing as ty
-from typing import Any
 
 __all__ = "Option", "NONE", "NONETYPE"
 
@@ -27,14 +26,14 @@ def _single_none(Class: ty.Type):
 
 
 @_single_none
-class _NONETYPE(ty.Final):
+class _NONETYPE:
     def __str__(self) -> str:
         return "<NONE>"
 
     def __bool__(self) -> bool:
         return False
 
-    def __setattr__(self, _: str, __: Any) -> ty.NoReturn:
+    def __setattr__(self, _: str, __: ty.Any) -> ty.NoReturn:
         raise NotImplementedError
 
     def __delattr__(self, _: str) -> ty.NoReturn:

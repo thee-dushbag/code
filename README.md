@@ -16,9 +16,9 @@ Also, there exists an **include** directory for my c++/c header files found on *
 
 There is my linux and vs-code configuration in the directory **lib/conf**, there are some other projects like the **math_interpreter** and the 2048 game engine under **Game2048** folder also it is a python package ready for installation.
 
-And by the way, there is a very powerful, though very buggy, number reader. It converts numbers to there names, eg read(1) -> 'one'.
+And by the way, there is a very powerful, though very buggy, number reader. It converts numbers to there names, eg `print(read(1)) # one`.
 
-This is the pride of my amatuer work and some other simple projects scattered around this repository including a local movie **website** hoster found in **live/python/movie-app** there is the first version, very poorly designed and a second version which is better in terms of usability.
+This is the pride of my amatuer work and some other simple projects scattered around this repository including a local movie **website** hoster found in **live/python/movie-app** there is the first version, very poorly designed and a second version which is better in general usability.
 ```python
 from mpack.number_reader import get_reader
 read = get_reader('english')
