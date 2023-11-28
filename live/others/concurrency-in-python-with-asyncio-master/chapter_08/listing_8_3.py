@@ -11,10 +11,12 @@ async def read_until_empty(stream_reader: StreamReader) -> AsyncGenerator[str, N
 async def main():
     host: str = "www.example.com"
     request: str = (
-        f"GET / HTTP/1.1\r\n" f"Connection: close\r\n" f"Host: {host}\r\n\r\n"
+        f"GET / HTTP/1.1\r\n"
+        f"Connection: close\r\n"
+        f"Host: {host}\r\n\r\n"
     )
 
-    stream_reader, stream_writer = await asyncio.open_connection("www.example.com", 80)
+    stream_reader, stream_writer = await asyncio.open_connection(host, 80)
 
     try:
         stream_writer.write(request.encode())  # B

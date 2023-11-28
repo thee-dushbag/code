@@ -1,12 +1,11 @@
 import asyncio
 from asyncio import AbstractEventLoop
 
-from chapter_08.listing_8_1 import HTTPGetClientProtocol
+from listing_8_1 import HTTPGetClientProtocol
 
 
 async def make_request(host: str, port: int, loop: AbstractEventLoop) -> str:
-    def protocol_factory():
-        return HTTPGetClientProtocol(host, loop)
+    protocol_factory = lambda: HTTPGetClientProtocol(host, loop)
 
     _, protocol = await loop.create_connection(protocol_factory, host=host, port=port)
 
