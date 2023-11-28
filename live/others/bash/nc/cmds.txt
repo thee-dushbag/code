@@ -1,0 +1,2 @@
+Start Server:nc -tlp 5052 localhost -e ./server.sh
+Connect Client:nc -t localhost 5052 -e ./client.sh

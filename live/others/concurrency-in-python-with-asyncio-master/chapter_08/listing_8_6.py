@@ -1,6 +1,6 @@
 import asyncio
 
-from chapter_08.listing_8_5 import create_stdin_reader
+from listing_8_5 import create_stdin_reader
 from util import delay
 
 

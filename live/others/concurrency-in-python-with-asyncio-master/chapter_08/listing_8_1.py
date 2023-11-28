@@ -15,7 +15,9 @@ class HTTPGetClientProtocol(asyncio.Protocol):
 
     def _get_request_bytes(self) -> bytes:  # B
         request = (
-            f"GET / HTTP/1.1\r\n" f"Connection: close\r\n" f"Host: {self._host}\r\n\r\n"
+            f"GET / HTTP/1.1\r\n"
+            f"Connection: close\r\n"
+            f"Host: {self._host}\r\n\r\n"
         )
         return request.encode()
 
@@ -24,11 +26,12 @@ class HTTPGetClientProtocol(asyncio.Protocol):
         self._transport = transport
         self._transport.write(self._get_request_bytes())  # C
 
-    def data_received(self, data):
+    def data_received(self, data: bytes):
         print(f"Data received!")
         self._response_buffer = self._response_buffer + data  # D
 
     def eof_received(self) -> Optional[bool]:
+        print("EOF flag received")
         self._future.set_result(self._response_buffer.decode())  # E
         return False
 
