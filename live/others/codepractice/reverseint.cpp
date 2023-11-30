@@ -52,9 +52,7 @@ public:
       result += portion;
       if (result < 0) return 0;
     }
-    if (isNegative) result = -result;
-    if (isNegative && result >= 0) return 0;
-    return result;
+    return isNegative? -result: result;
   }
 };
 
