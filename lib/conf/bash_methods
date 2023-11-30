@@ -385,7 +385,7 @@ function _retry_command() {
       ;;
 
     --repspect-until | --ru | --RU)
-      if [[ ! "$untilthen" =~ T|F ]]; then
+      if [[ ! "$2" =~ T|F ]]; then
         echo >&2 "Expected respect-until to be T/F, got $2"
         return 1
       fi
@@ -413,7 +413,7 @@ function _retry_command() {
     if _in_array untilstatus $laststatus; then
       break
     elif [[ "$untilthen" == T ]]; then
-      current_count="-2"
+      current_count="$((retry_count - 1))"
     fi
     current_count=$(($current_count + 1))
     sleep $timeout

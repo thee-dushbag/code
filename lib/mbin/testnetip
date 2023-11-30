@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 0 ]]; then
+	echo >&2 "Usage: $(basename "$0") [ips...]"
+	echo >&2 "Export variables: TIP_ATTEMPTS=<int> TIP_LOG_FILE=<file_path> TIP_WAIT_NOTIFY"
+	exit 0
+fi
+
+STOP_TOKEN=false
+ATTEMPTS=${TIP_ATTEMPTS:-5}
+LOG_FILE=${TIP_LOG_FILE:-~/Desktop/connect.log}
+
+if [ -n "${TIP_WAIT_NOTIFY-unset}" ]; then
+	NOTIFY_TYPE=low
+else
+	NOTIFY_TYPE=critical
+fi
+
+exec 51>>"$LOG_FILE"
+
+function _getline() {
+	local LINE="------------------------------------------"
+	echo "$LINE[ $* ]$LINE"
+}
+
+function _log() {
+	echo >&51 "$(date +%r): $*"
+}
+
+_log "$(_getline START)"
+_log "Logging to file '$LOG_FILE'"
+_log "Max Attempts set to $ATTEMPTS"
+_log "Notification level $NOTIFY_TYPE"
+
+function _please_stop() {
+	_log "Keyboard interrupt received, exiting."
+	STOP_TOKEN=true
+}
+
+function test_ip() {
+	local target_ip="$1"
+	local maxcount="${2:-0}"
+	local testtype="infinite"
+	if [[ $maxcount -gt 0 ]]; then testtype="metered"; fi
+	local ippat="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"
+	if [[ ! "$target_ip" =~ $ippat ]]; then
+		echo >&2 Invalid IP received: $target_ip
+		_log "Expected ip format xxx.xxx.xxx.xxx where xxx in range 0-255, got '$target_ip'"
+		return 1
+	fi
+	local counter=1
+	_log "Testing connection to $target_ip started. Test type $testtype. Max attempts set to $maxcount."
+	while true; do
+		if $STOP_TOKEN; then return 1; fi
+		if ping -c 1 -W 3 "$target_ip" &>/dev/null; then
+			notify-send -u "$NOTIFY_TYPE" -a "Test Connection" "Connection to $target_ip was successful after $counter attempts. Time $(date +%r)."
+			_log "Successfully connected to $target_ip on attempt $counter"
+			return 0
+		fi
+		if [[ $counter -ge $maxcount ]]; then
+			_log "Test limit reached, testing will be stopped for $target_ip after failed $counter attempts."
+			return 1
+		fi
+		_log "Failed to connect to $target_ip on attempt $counter"
+		counter=$((counter + 1))
+	done
+}
+
+trap _please_stop 2
+
+ips=("${@/#/\'}")
+ips=("${ips[@]/%/\'}")
+_log "Input ips [${ips[@]}]"
+
+toret=0
+
+for curip; do
+	if $STOP_TOKEN; then
+		_log "Stop token raised when starting test on $curip"
+		toret=1
+		break
+	fi
+	if ! test_ip "$curip" $ATTEMPTS; then
+		toret=1
+	fi
+done
+
+_log "Application stopped. Exit status $toret"
+_log "$(_getline "STOP ")"
+exit $toret
