@@ -3,7 +3,7 @@
 # Hello World.
 <small>**Coding is FUN!!!**</small>
 
-![What a Good Day.](./lib/conf/whatyoudoing.jpg )
+![What a Good Day.][^entry_picture]
 
 </center>
 
@@ -41,7 +41,7 @@ This is a brief overview of the structure of this **repository**.
   + **markdown/reStructuredText** - for documentation.
   + **json/yaml** - for data serialization.
   + **docker/nginx** - for containerization and general work.
-  + **graphql** - using python [strawberry](https://strawberry.rocks) package, api design becomes a whole lot easier.
+  + **graphql** - using python [strawberry][strawberry] package, api design becomes a whole lot easier.
 
 This is the worst **README** in all history, no worries, improvements are on the way.
 
@@ -51,32 +51,48 @@ Did you see what I did there, I made README bold. **(\*** v **\*)**.
 In this section, I blog about my new advancements and long time choices like one below, Tech Stack.
 
 ### Tech Stack.
-My former tech-stack was composed of: ***<u><del>RAMB</del></u>***
+My former tech-stack was composed of: ***<u>~~RAMB~~</u>***
 
-- [React](https://react.dev 'A javascript frontent framework.') for my frontend.
-- [AioHTTP](https://docs.aiohttp.org/en/stable 'A Simple light weight python package for building backends.') for my backend.
-- [Mysql](https://www.mysql.com 'A relational database.') for storing app data.
-- [Bootstrap](https://getbootstrap.com 'A CSS Framework for styling webpages.') styling my frontend.
+- [React][react] for my frontend.
+- [AioHTTP][aiohttp] for my backend.
+- [Mysql][mysql] for storing app data.
+- [Bootstrap][bootstrap] styling my frontend.
 
-Lately, I have found out that [React](https://react.dev) is a very massive framework, like yes I'm learning javascript, but that was for simple frontend motions, I am not a dedicated frontend developer. The [React](https://react.dev) ecosystem is too complex for me, don't get me started with webpack and its configurations and react state management frameworks like [Redux](https://redux.js.org), and I wish to step back from it.
-I was considering dropping javascript altogether for simple backend rendering using libraries like [Jinja](https://jinja.palletsprojects.com/en/3.1.x) but with a little research I have found simpler libraries that I can pick up easily as a to be backend developer.
+Lately, I have found out that [React][react] is a very massive framework, like yes I'm learning javascript, but that was for simple frontend motions, I am not a dedicated frontend developer. The [React][react] ecosystem is too complex for me, don't get me started with webpack and its configurations and react state management frameworks like [Redux][redux], and I wish to step back from it.
+I was considering dropping javascript altogether for simple backend rendering using libraries like [Jinja][jinja] but with a little research I have found simpler libraries that I can pick up easily as a to be backend developer.
 
 The new Almighty Tech Stack: ***<u>BAHM</u>***
-- [Bootstrap](https://getbootstrap.com 'A CSS Framework for styling webpages.') styling my frontend.
-- [AioHTTP](https://docs.aiohttp.org/en/stable 'A Simple light weight python package for building backends.') for my backend.
-- [HTMX](https://htmx.org 'A javascript frontent framework.') **/** [Hyperscript](https://hyperscript.org 'Simple HTMX like library that uses javascript underneath to get things done.') for my frontend logic (and a tiny bit of javascript where needed).
-- [Mysql](https://www.mysql.com 'A relational database.') for storing app data.
+- [Bootstrap][bootstrap] styling my frontend.
+- [AioHTTP][aiohttp] for my backend.
+- [HTMX][htmx] **/** [Hyperscript][hyperscript] for my frontend logic (and a tiny bit of javascript where needed).
+- [Mysql][mysql] for storing app data.
 
-[HTMX](https://htmx.org) is a light weight javascript library that really simplifies frontend development for backend developers, it hides the underneath javascript for small basic **hx-** directives. [Hyperscript](https://hyperscript.org) brings logic into [HTMX](https://htmx.org) which greatly simplifies working in the frontend.
+[HTMX][htmx] is a light weight javascript library that really simplifies frontend development for backend developers, it hides the underneath javascript for small basic **hx-** directives. [Hyperscript][hyperscript] brings logic into [HTMX][htmx] which greatly simplifies working in the frontend.
 
-[HTMX](https://htmx.org) expects HTML responses from the server on query while React expects JSON, though other kinds of data can be configured like HTML or markdown using [react-markdown](https://www.npmjs.com/package/react-markdown) library. The HTML responses can be achived using templating libraries like [Mako](https://www.makotemplates.org) and [Jinja](https://jinja.palletsprojects.com/en/3.1.x), I personally prefer [Mako](https://www.makotemplates.org)  to Jinja due to its python like syntax and integratable nature with python as part of the template.
+[HTMX][htmx] expects HTML responses from the server on query while React expects JSON, though other kinds of data can be configured like HTML or markdown using [react-markdown][react_markdown] library. The HTML responses can be achived using templating libraries like [Mako][mako] and [Jinja][jinja], I personally prefer [Mako][mako]  to Jinja due to its python like syntax and integratable nature with python as part of the template.
 This new stack drops complexity by over 70% based on my judgement. With this, I hereon declare my decline in the learning of the overly complex React library.
 I can now focus mainly to one language, python, and a little of other languages like javascript, lua and c++, my hobby languages.
 
 ### Officially dropped React
-I have deleted all the [React](https://react.dev) code in this repository. In this drop, I am considering to add some other minor Javascript libraries like [AlpineJS](https://alpinejs.dev) and [JQuery](https://jquery.com) as they are light weight and easy to learn and maintain. [JQuery](https://jquery.com) is old and stable, while [AlpineJS](https://alpinejs.dev) is migrating to the hypermedia realm in which it supports [HTMX](https://htmx.org).
+I have deleted all the [React][react] code in this repository. In this drop, I am considering to add some other minor Javascript libraries like [AlpineJS][alpinejs] and [JQuery][jquery] as they are light weight and easy to learn and maintain. [JQuery][jquery] is old and stable, while [AlpineJS][alpinejs] is migrating to the hypermedia realm in which it supports [HTMX][htmx].
 
 ### Complex Hobby.
 I do love C++ and C and they really are complex languages, but rust is appealing in that is is easy to think about and compile manage, you know, safety. I am considering to set my main language to be javascript and python, development languages be lua(configurations like vim) and bash(terminal scripting and tool chaining), learning about machines and their inner workings seems intuitive using languages with low level support, C/C++ and Rust seem to be the best candidates for this. C/C++ being the main and rust, just to know how it looks like and its minor features, C++ templates rule.
 
 You know what, fuck `RUST`. I was reading some book on rust, guess what I found? The book has many citations on why C/C++ is a "bad language" or atleast emphasis how inefficient it is to use it. An example, in the book `programming rust` by `o'reilly` publishers, they write, "In c++ main function, you must return a 0 at the end as the exit status while rust doesn't enforce this" they say, but in truth, this is a LIE, another one is about memory safety, I was watching a video on why learn rust and one of the reasons stated was that rust ensures safety while c++ doesn't since, if something fails in between calling the duo functions malloc and free, a memory leak would likely occur, but they did not mention the concept of RAII which ensures memory safety where it is needed. I am led to believe C++ is perfect and is improving over time with new features like `modules` in terms of static analysis. I hereon delete all rust codebase, no longer needed I say. Also, to add a cherry on top of this sundae of rust lore, the cargo tool behaves a lot like `npm` for javascript, as I was learning rust, I added two dependencies to my project, `artix-web` and `serde`, the total package download was approximately `154MB` of download, I have worked with a few C++ libraries and they were less than half of this.
+
+
+[htmx]: https://htmx.org
+[react]: https://react.dev
+[jquery]: https://jquery.com
+[redux]: https://redux.js.org
+[mysql]: https://www.mysql.com
+[alpinejs]: https://alpinejs.dev
+[bootstrap]: https://getbootstrap.com
+[mako]: https://www.makotemplates.org
+[strawberry]: https://strawberry.rocks
+[hyperscript]: https://hyperscript.org
+[^entry_picture]: ./lib/conf/whatyoudoing.jpg
+[aiohttp]: https://docs.aiohttp.org/en/stable
+[jinja]: https://jinja.palletsprojects.com/en/3.1.x
+[react_markdown]: https://www.npmjs.com/package/react-markdown

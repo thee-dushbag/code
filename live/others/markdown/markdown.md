@@ -257,8 +257,8 @@ Example using `~~~json <!-- json content here --> ~~~`
 
 ## Footnotes
 Use the caret symbol
-Go up there [top](#heading-one)  
-Index File [^index]
+Go up there [top](#heading-one)
+[Index File][^index]
 
 <!-- ## Definition Lists -->
 
