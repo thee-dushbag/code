@@ -6,11 +6,11 @@ from typing import Optional
 class HTTPGetClientProtocol(asyncio.Protocol):
     def __init__(self, host: str, loop: AbstractEventLoop):
         self._host: str = host
-        self._future: Future = loop.create_future()
+        self._future: Future[str] = loop.create_future()
         self._transport: Optional[Transport] = None
         self._response_buffer: bytes = b""
 
-    async def get_response(self):  # A
+    async def get_response(self) -> str:  # A
         return await self._future
 
     def _get_request_bytes(self) -> bytes:  # B
@@ -28,7 +28,7 @@ class HTTPGetClientProtocol(asyncio.Protocol):
 
     def data_received(self, data: bytes):
         print(f"Data received!")
-        self._response_buffer = self._response_buffer + data  # D
+        self._response_buffer += data  # D
 
     def eof_received(self) -> Optional[bool]:
         print("EOF flag received")

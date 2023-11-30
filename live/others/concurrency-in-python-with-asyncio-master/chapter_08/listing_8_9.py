@@ -1,9 +1,10 @@
 from collections import deque
 from typing import Awaitable, Callable, Deque
 
+CallbackType = Callable[[Deque], Awaitable[None]]
 
 class MessageStore:
-    def __init__(self, callback: Callable[[Deque], Awaitable[None]], max_size: int):
+    def __init__(self, callback: CallbackType, max_size: int):
         self._deque = deque(maxlen=max_size)
         self._callback = callback
 

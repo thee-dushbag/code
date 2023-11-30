@@ -3,10 +3,10 @@ import os
 import tty
 from collections import deque
 
-from chapter_08.listing_8_5 import create_stdin_reader
-from chapter_08.listing_8_7 import *
-from chapter_08.listing_8_8 import read_line
-from chapter_08.listing_8_9 import MessageStore
+from listing_8_5 import create_stdin_reader
+from listing_8_7 import *
+from listing_8_8 import read_line
+from listing_8_9 import MessageStore
 
 
 async def sleep(delay: int, message_store: MessageStore):
