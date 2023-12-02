@@ -176,7 +176,7 @@ function _get_venv_activate_completion() {
 function _activate_venv() {
   local venv_path=
   if [ -z "$1" ]; then
-    venv_path=$DEF_PYTHON_ENV
+    venv_path="$DEF_PYTHON_ENV"
   else
     venv_path="$CONTENT_VENVS/$1"
   fi
@@ -426,7 +426,8 @@ function _expand_alias() {
   shift 1
   local aliasargs="$@"
   if alias "$aliasname" >/dev/null; then
-    echo "$(alias "$aliasname" | cut -d= -f2- | tr -d \') $aliasargs"
+    # echo "$(alias "$aliasname" | cut -d= -f2- | tr -d \') $aliasargs"
+    echo "${BASH_ALIASES["$aliasname"]} $aliasargs"
   else
     return $?
   fi
