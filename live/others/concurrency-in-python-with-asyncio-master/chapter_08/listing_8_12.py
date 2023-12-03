@@ -19,37 +19,53 @@ class ServerState:
 
     async def _echo(self, reader: StreamReader, writer: StreamWriter):  # C
         try:
-            while (data := await reader.readline()) != b"":
+            while data := await reader.readline():
+                if not data:
+                    break
                 writer.write(data)
                 await writer.drain()
             self._writers.remove(writer)
+            writer.close()
+            await writer.wait_closed()
             await self._notify_all(
                 f"Client disconnected. {len(self._writers)} user(s) are online!\n"
             )
         except Exception as e:
             logging.exception("Error reading from client.", exc_info=e)
             self._writers.remove(writer)
-
+            writer.close()
+            await writer.wait_closed()
+    
     async def _notify_all(self, message: str):  # D
         for writer in self._writers:
-            try:
-                writer.write(message.encode())
-                await writer.drain()
-            except ConnectionError as e:
-                logging.exception("Could not write to client.", exc_info=e)
-                self._writers.remove(writer)
+            writer.write(message.encode())
+            await writer.drain()
+
+    async def close(self):
+        def _close(w):
+            w.close()
+            return w.wait_closed()
+
+        toclose = (_close(w) for w in self._writers)
+        await asyncio.gather(*toclose)
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *_):
+        await self.close()
 
 
 async def main():
-    server_state = ServerState()
-
-    async def client_connected(reader: StreamReader, writer: StreamWriter) -> None:  # E
-        await server_state.add_client(reader, writer)
-
-    server = await asyncio.start_server(client_connected, "127.0.0.1", 8000)  # F
-
-    async with server:
-        await server.serve_forever()
+    async with ServerState() as echoserver:
+        async with await asyncio.start_server(
+            echoserver.add_client, "localhost", 8000
+        ) as server:
+            await server.serve_forever()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        ...

@@ -5,10 +5,10 @@ import tty
 from asyncio import StreamReader, StreamWriter
 from collections import deque
 
-from chapter_08.listing_8_5 import create_stdin_reader
-from chapter_08.listing_8_7 import *
-from chapter_08.listing_8_8 import read_line
-from chapter_08.listing_8_9 import MessageStore
+from listing_8_5 import create_stdin_reader
+from listing_8_7 import *
+from listing_8_8 import read_line
+from listing_8_9 import MessageStore
 
 
 async def send_message(message: str, writer: StreamWriter):
@@ -57,12 +57,15 @@ async def main():
 
     try:
         await asyncio.wait(
-            [message_listener, input_listener], return_when=asyncio.FIRST_COMPLETED
+            (message_listener, input_listener), return_when=asyncio.FIRST_COMPLETED
         )
-    except Exception as e:
-        logging.exception(e)
+    except asyncio.CancelledError:
+        ...
+    finally:
         writer.close()
         await writer.wait_closed()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    try: asyncio.run(main())
+    except KeyboardInterrupt: ...
