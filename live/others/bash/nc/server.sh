@@ -7,4 +7,4 @@ for current in {1..50}; do
 	if [ "$data" == "stop" ]; then break; fi
 	echo >&51 "Received: $data"
 done
-exec >&52-
+exec >&51-

@@ -5,72 +5,104 @@ from asyncio import StreamReader, StreamWriter
 
 class ChatServer:
     def __init__(self):
-        self._username_to_writer = {}
+        self._username_to_writer: dict[str, asyncio.StreamWriter] = {}
+        self._closed = False
+        self._chats: list[asyncio.Task] = []
 
-    async def start_chat_server(self, host: str, port: int):
-        server = await asyncio.start_server(self.client_connected, host, port)
-
-        async with server:
-            await server.serve_forever()
+    async def start(self):
+        self._closed = False
 
     async def client_connected(self, reader: StreamReader, writer: StreamWriter):  # A
-        command = await reader.readline()
-        print(f"CONNECTED {reader} {writer}")
-        command, args = command.split(b" ")
-        if command == b"CONNECT":
-            username = args.replace(b"\n", b"").decode()
-            self._add_user(username, reader, writer)
-            await self._on_connect(username, writer)
-        else:
-            logging.error("Got invalid command from client, disconnecting.")
-            writer.close()
-            await writer.wait_closed()
+        try:
+            command = await asyncio.wait_for(reader.readline(), 10)
+            command, _, args = command.partition(b" ")
+            args = args.strip()
+            username = args.decode()
+            if username in self._username_to_writer:
+                writer.write(f"[SERVER]: Username {username} already taken.\n".encode())
+            elif command.lower() == b"connect":
+                self._add_user(username, reader, writer)
+                await self.onconnect(username, writer)
+                return
+            else:
+                writer.write(f"Unknown command {command!s}, available 'connect <username>'\n".encode())
+                # logging.error(f"Got invalid command from client, disconnecting. {command}")
+        except TimeoutError:
+            writer.write(b"You took too long to identify yourself.")
+        await writer.drain()
+        writer.close()
+        await writer.wait_closed()
 
     def _add_user(self, username: str, reader: StreamReader, writer: StreamWriter):  # B
         self._username_to_writer[username] = writer
-        asyncio.create_task(self._listen_for_messages(username, reader))
+        task = asyncio.create_task(self.userchat(username, reader))
+        self._chats.append(task)
 
-    async def _on_connect(self, username: str, writer: StreamWriter):  # C
+    async def onconnect(self, username: str, writer: StreamWriter):  # C
         writer.write(
             f"Welcome! {len(self._username_to_writer)} user(s) are online!\n".encode()
         )
         await writer.drain()
-        await self._notify_all(f"{username} connected!\n")
+        await self.broadcast(f"{username} connected!\n")
 
     async def _remove_user(self, username: str):
         writer = self._username_to_writer[username]
+        writer.close()
+        await writer.wait_closed()
         del self._username_to_writer[username]
-        try:
-            writer.close()
-            await writer.wait_closed()
-        except Exception as e:
-            logging.exception("Error closing client writer, ignoring.", exc_info=e)
 
-    async def _listen_for_messages(self, username: str, reader: StreamReader):  # D
+    async def userchat(self, username: str, reader: StreamReader):  # D
         try:
-            while (data := await asyncio.wait_for(reader.readline(), 60)) != b"":
-                await self._notify_all(f"{username}: {data.decode()}")
-            await self._notify_all(f"{username} has left the chat\n")
-        except Exception as e:
-            logging.exception("Error reading from client.", exc_info=e)
+            while (data := await asyncio.wait_for(reader.readline(), 20)) != b"":
+                await self.broadcast(f"{username}: {data.decode()}")
+        except asyncio.TimeoutError:
+            await self.broadcast(f"[SERVER]: {username} idling around, kicked out.\n")
+        finally:
             await self._remove_user(username)
+            await self.broadcast(f"[SERVER]: {username} has left the chat\n")
 
-    async def _notify_all(self, message: str):  # E
-        inactive_users = []
-        for username, writer in self._username_to_writer.items():
-            try:
-                writer.write(message.encode())
-                await writer.drain()
-            except ConnectionError as e:
-                logging.exception("Could not write to client.", exc_info=e)
-                inactive_users.append(username)
+    async def broadcast(self, message: str):  # E
+        for writer in self._username_to_writer.values():
+            writer.write(message.encode())
+            await writer.drain()
 
-        [await self._remove_user(username) for username in inactive_users]
+    async def close(self):
+        await self.broadcast("Server shutting down...\n")
+        self._closed = True
+
+        def _close(writer):
+            writer.close()
+            return writer.wait_closed()
+
+        toclose = (_close(w) for w in self._username_to_writer.values())
+        await asyncio.gather(*toclose)
+        
+        for chat in self._chats:
+            chat.cancel()
+
+    async def __aenter__(self):
+        await self.start()
+        return self
+
+    async def __aexit__(self, *_):
+        if not self._closed:
+            await self.close()
+
+    def __del__(self):
+        if not self._closed:
+            asyncio.create_task(self.close())
 
 
 async def main():
-    chat_server = ChatServer()
-    await chat_server.start_chat_server("127.0.0.1", 8000)
+    async with ChatServer() as chatserver:
+        async with await asyncio.start_server(
+            chatserver.client_connected, "localhost", 8000
+        ) as server:
+            await server.serve_forever()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        ...
