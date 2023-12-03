@@ -71,3 +71,4 @@ alias lssh-agent=_start_ssh_agent_daemon
 alias mupt="yay --noconfirm --sudoloop=true"
 alias retrythis=_retry_command
 alias ex_alias=_expand_alias
+alias wtf=_explain_exit_status

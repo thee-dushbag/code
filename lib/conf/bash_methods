@@ -424,13 +424,16 @@ function _retry_command() {
 function _expand_alias() {
   local aliasname="$1"
   shift 1
-  local aliasargs="$@"
   if alias "$aliasname" >/dev/null; then
     # echo "$(alias "$aliasname" | cut -d= -f2- | tr -d \') $aliasargs"
-    echo "${BASH_ALIASES["$aliasname"]} $aliasargs"
+    echo "${BASH_ALIASES["$aliasname"]} $@"
   else
     return $?
   fi
+}
+
+function _explain_exit_status() {
+  perror $?
 }
 
 # _activate_virtual_env
