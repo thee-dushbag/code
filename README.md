@@ -3,7 +3,7 @@
 # Hello World.
 <small>**Coding is FUN!!!**</small>
 
-![What a Good Day.][^entry_picture]
+![What a Good Day.][entry_picture]
 
 </center>
 
@@ -92,7 +92,7 @@ You know what, fuck `RUST`. I was reading some book on rust, guess what I found?
 [mako]: https://www.makotemplates.org
 [strawberry]: https://strawberry.rocks
 [hyperscript]: https://hyperscript.org
-[^entry_picture]: ./lib/conf/whatyoudoing.jpg
+[entry_picture]: lib/conf/whatyoudoing.jpg
 [aiohttp]: https://docs.aiohttp.org/en/stable
 [jinja]: https://jinja.palletsprojects.com/en/3.1.x
 [react_markdown]: https://www.npmjs.com/package/react-markdown
