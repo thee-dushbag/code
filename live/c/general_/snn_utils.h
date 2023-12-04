@@ -2,6 +2,7 @@
 #define __SNN_UTILS_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 // typedef struct __safe_string_token_iterator
 // {
@@ -41,13 +42,13 @@
 //     __iter->__last_index = 0;
 // }
 
-void snn_reduce(void *__arr, size_t s, size_t __len, void *__res, void (*__func)(void *, void *, void *))
+void snn_reduce(void *__arr, size_t s, size_t __len, void *__res, void (*__func)(void *, void *))
 {
     if (__len == 1)
         return;
-    __func(__arr, __arr + s, __res);
-    for (size_t i = 2; i < __len; i++)
-        __func(__arr + (s * i), __res, __res);
+    __func(__res, __arr);
+    for (size_t i = 1; i < __len; i++)
+        __func(__res, __arr + (s * i));
 }
 
 #endif //__SNN_UTILS_H

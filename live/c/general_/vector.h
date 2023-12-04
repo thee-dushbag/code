@@ -12,11 +12,11 @@ void vector_init(vector *vec, int x, int y, int z) {
     vec->z = z;
 }
 
-void vector_view(vector *vec) {
+void vector_view(vector const *const vec) {
     printf("<vector(x=%d, y=%d, z=%d)\n", vec->x, vec->y, vec->z);
 }
 
-vector vector_addv(vector *a, vector *b) {
+vector vector_addv(vector const *const a, vector const *const b) {
     vector res;
     res.x = a->x + b->x;
     res.y = a->y + b->y;
@@ -24,7 +24,7 @@ vector vector_addv(vector *a, vector *b) {
     return res;
 }
 
-vector vector_adds(vector *a, int b) {
+vector vector_adds(vector const *const a, int b) {
     vector res;
     res.x = a->x + b;
     res.y = a->y + b;
@@ -32,7 +32,7 @@ vector vector_adds(vector *a, int b) {
     return res;
 }
 
-vector vector_subv(vector *a, vector *b) {
+vector vector_subv(vector const *const a, vector const *const b) {
     vector res;
     res.x = a->x - b->x;
     res.y = a->y - b->y;
@@ -40,7 +40,7 @@ vector vector_subv(vector *a, vector *b) {
     return res;
 }
 
-vector vector_subs(vector *a, int b) {
+vector vector_subs(vector const *const a, int b) {
     vector res;
     res.x = a->x - b;
     res.y = a->y - b;
@@ -48,7 +48,7 @@ vector vector_subs(vector *a, int b) {
     return res;
 }
 
-vector vector_mulv(vector *a, vector *b) {
+vector vector_mulv(vector const *const a, vector const *const b) {
     vector res;
     res.x = a->x * b->x;
     res.y = a->y * b->y;
@@ -56,7 +56,7 @@ vector vector_mulv(vector *a, vector *b) {
     return res;
 }
 
-vector vector_muls(vector *a, int b) {
+vector vector_muls(vector const *const a, int b) {
     vector res;
     res.x = a->x * b;
     res.y = a->y * b;

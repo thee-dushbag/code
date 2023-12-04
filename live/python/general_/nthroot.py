@@ -25,7 +25,7 @@ def _create_range(x: float, r: _Range, /) -> _Tester:
 # def sqrt(x: float, r: _Range, /) -> float:
 #     inrange = _create_range(x, r)
 #     last_y, cur_y, counter = x, x / DECAY_FACTOR, 0
-#     while not inrange((cur_sqr := cur_y ** 2)):
+#     while not inrange(cur_sqr := cur_y ** 2):
 #         t = last_y
 #         extent, last_y = abs(cur_y - last_y) / DECAY_FACTOR, cur_y
 #         print(f"{counter} {cur_y=:.4f} last_y={t:.4f} {extent=:.4f} {cur_sqr=}")
@@ -41,7 +41,7 @@ def _create_range(x: float, r: _Range, /) -> _Tester:
 def nthroot(x: float, n: float, r: _Range, /, *, factor: float = DECAY_FACTOR) -> float:
     inrange = _create_range(x, r)
     last_y, cur_y, counter = x, x / factor, 0
-    while not inrange((cur_nthp := pow(cur_y, n))):
+    while not inrange(cur_nthp := pow(cur_y, n)):
         t = last_y
         extent, last_y = abs(cur_y - last_y) / factor, cur_y
         print(f"{counter} {cur_y=:.15f} last_y={t:.15f} {extent=:.15f} {cur_nthp=:.15f}")
