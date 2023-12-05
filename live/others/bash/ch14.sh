@@ -134,6 +134,15 @@ function pind() {
 function dvsub() {
   # Default value substitution occurs if
   # the variable is unset or null.
+  # Check if a variable exists
+  for varname in "HOME EMOH"; do
+    if [ -v $varname ]; then
+      echo $varname exists
+    else
+      echo $varname not found
+    fi
+  done
+
   echo Value: ${var:-VAR_IS_UNSET}
   echo ValueAfter: $var
   local var=
