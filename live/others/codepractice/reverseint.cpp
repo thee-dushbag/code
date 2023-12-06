@@ -33,7 +33,6 @@ Constraints:
 class Solution {
 public:
   static int digitCounter(int x) {
-    if (x <= 0) return 0;
     auto val = std::log10(x);
     if (std::isnan(val) or std::isinf(val)) return 0;
     return int(std::floor(val + 1));
