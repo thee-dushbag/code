@@ -1,21 +1,28 @@
 from datetime import datetime
-
 from aiohttp import web
-from aiohttp.web_request import Request
-from aiohttp.web_response import Response
-
-routes = web.RouteTableDef()
+from rich import print
 
 
-@routes.get("/time")  # A
-async def time(request: Request) -> Response:
+async def time(req: web.Request) -> web.Response:
     today = datetime.today()
-
-    result = {"month": today.month, "day": today.day, "time": str(today.time())}
-
+    print(dict(req.headers))
+    result = dict(
+        month=today.month,
+        day=today.day,
+        year=today.year,
+        time=str(today.time())
+    )
     return web.json_response(result)  # B
 
 
-app = web.Application()  # C
-app.add_routes(routes)
-web.run_app(app)
+routes = [web.get("/time", time)]
+
+
+async def application():
+    app = web.Application()  # C
+    app.add_routes(routes)
+    return app
+
+
+if __name__ == "__main__":
+    web.run_app(application())
