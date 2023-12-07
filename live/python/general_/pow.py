@@ -31,14 +31,16 @@ def _create_pow_map(base: float, exp: int) -> tuple[float, dict[int, float], int
         temp *= temp
     return base, mapping, exp - (2**rounds - 1)
 
-def _create_growing_pow_map(base: float, exp: int) -> tuple[float, dict[int, float], int]:
-    cache: dict[int, float] = {}
+def _create_growing_pow_map(base: float, exp: int) -> tuple[float, dict[int, tuple[float, int]], int]:
+    cache: dict[int, tuple[float, int]] = {}
     rounds= _m.floor(_m.log2(exp))
-    temp, base, exp = base, 1, exp - (2 ** rounds - 1)
+    temp, base, exp_decay = base, 1, 1
     for round in range(rounds):
         base *= temp
         temp *= temp
-        cache[round] = base
+        exp_decay *= 2
+        cache[round] = base, exp_decay - 1
+    exp -= cache[rounds - 1][1]
     return base, cache, exp
 
 
@@ -53,12 +55,14 @@ def _compute_from_map(mapping: dict[int, float], exp: int) -> float:
     return base * _compute_from_map(mapping, exp)
 
 
-def _compute_from_growing_map(cache: dict[int, float], exp: int) -> float:
-    base = cache[0]
+def _compute_from_growing_map(cache: dict[int, tuple[float, int]], exp: int) -> float:
+    cur = cache[0]
+    base = cur[0]
     while exp > 1:
         rounds = _m.floor(_m.log2(exp))
-        base *= cache[rounds - 1]
-        exp -= (2 ** rounds - 1)
+        cur = cache[rounds - 1]
+        base *= cur[0]
+        exp -= cur[1]
     return base
 
 def int_exp(base: float, exp: int, /) -> float:
