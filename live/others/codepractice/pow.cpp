@@ -1,10 +1,9 @@
 #include <iostream>
-#include <unordered_map>
 #include <cmath>
 #include <iomanip>
 #include <vector>
-#include <span>
 #include <limits>
+#include <span>
 #include "helpers.hpp"
 
 /*
@@ -33,14 +32,41 @@ Constraints:
   -10^4 <= x^n <= 10^4
 */
 
+struct ExpBaseTracker {
+  double base;
+  uint exp;
+  ExpBaseTracker()
+    : base{ }, exp{ } { }
+  ExpBaseTracker(double b, uint e)
+    : base{ b }, exp{ e } { }
+};
+
+std::ostream &operator<<(std::ostream &out, ExpBaseTracker const &tracker) {
+  return out << "{base: " << tracker.base << ", exp: " << tracker.exp << '}';
+}
+
+#ifndef _GLIBCXXSPAN
+std::ostream &operator<<(std::ostream &out, std::span<ExpBaseTracker> const &tracker_arr) {
+  std::size_t len{ tracker_arr.size() }, counter{ 1 };
+  out << '[';
+  for (ExpBaseTracker const &tracker : tracker_arr) {
+    out << tracker;
+    if (counter < len)
+      out << ", ";
+    ++counter;
+  }
+  return out << ']';
+}
+#endif
+
 class Solution {
 public:
   static double myPow(double base, int e) {
-    long exp = e;
     if (base == 0) return 0;
-    if (exp == 0) return 1;
+    if (e == 0) return 1;
     if (std::abs(base) == 1)
-      return (std::abs(exp) & 1) ? base : std::abs(base);
+      return (e & 1) ? base : std::abs(base);
+    long exp = e;
     if (exp < 0) {
       if (exp == std::numeric_limits<int>::min() and std::abs(base) < 1)
         return 0;
@@ -51,25 +77,32 @@ public:
     if (exp == 2) return base * base;
 
     uint exp_decay{ 1 };
-    int rounds = std::floor(std::log2(exp));
-    std::unordered_map<int, std::pair<double, int>> cache{ };
+    u_short rounds = std::floor(std::log2(exp));
+    ExpBaseTracker cache[rounds];
     double temp{ base };
     base = 1;
+
     for (int round = 0; round < rounds; ++round) {
       base *= temp;
       temp *= temp;
       exp_decay *= 2;
       cache[round] = { base, exp_decay - 1 };
     }
-    exp -= cache.at(rounds - 1).second;
-    std::pair<double, int> temp2;
-    temp = cache.at(0).first;
+
+#ifndef _GLIBCXXSPAN
+    std::cout << "cache=" << std::span{ cache, cache + rounds } << '\n';
+#endif
+
+    exp -= cache[rounds - 1].exp;
+    temp = cache[0].base;
+
     while (exp > 1) {
       rounds = std::floor(std::log2(exp));
-      temp2 = cache.at(rounds - 1);
-      temp *= temp2.first;
-      exp -= temp2.second;
+      std::cout << "exp=" << exp << " rounds=" << rounds << '\n';
+      temp *= cache[rounds - 1].base;
+      exp -= cache[rounds - 1].exp;
     }
+
     return base * temp;
   }
 };
@@ -77,7 +110,7 @@ public:
 auto main(int argc, char **argv) -> int {
   if (argc <= 2) {
     std::cerr << "Usage: " << argv[0] << " base [exps...]"
-      << "Example: 2 -5 10 -12 15"
+      << "Example: " << argv[0] << " 2 -5 10 -12 15"
       << R"(
 Output:
   2 ^ -5 = 0.031250
@@ -89,11 +122,11 @@ Output:
   }
 
   double base{ std::atof(argv[1]) };
-  long number;
+  int number;
 
   for (int i = 2; i < argc; i++) {
-    number = std::atol(argv[i]);
+    number = std::atoi(argv[i]);
     std::cout << base << " ^ " << number
-      << " = " << std::fixed << Solution::myPow(base, int(number)) << '\n';
+      << " = " << std::fixed << Solution::myPow(base, number) << '\n';
   }
 }
