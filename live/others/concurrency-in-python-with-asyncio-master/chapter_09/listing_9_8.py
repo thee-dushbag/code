@@ -1,42 +1,30 @@
-from typing import Dict, List
-
 import asyncpg
 from asyncpg import Record
 from asyncpg.pool import Pool
 from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import JSONResponse
 from starlette.routing import Route
+from __init__ import cred
+from contextlib import asynccontextmanager
 
 
-async def create_database_pool():
-    pool: Pool = await asyncpg.create_pool(
-        host="127.0.0.1",
-        port=5432,
-        user="postgres",
-        password="password",
-        database="products",
-        min_size=6,
-        max_size=6,
-    )
-    app.state.DB = pool
+@asynccontextmanager
+async def database_ctx(app: Starlette):
+    async with asyncpg.create_pool(**cred, min_size=6, max_size=6) as pool:
+        app.state.DB = pool
+        yield
 
 
-async def destroy_database_pool():
-    pool = app.state.DB
-    await pool.close()
-
-
-async def brands(request: Request) -> Response:
+async def brands(request: Request) -> JSONResponse:
     connection: Pool = request.app.state.DB
     brand_query = "SELECT brand_id, brand_name FROM brand"
-    results: List[Record] = await connection.fetch(brand_query)
-    result_as_dict: List[Dict] = [dict(brand) for brand in results]
+    results: list[Record] = await connection.fetch(brand_query)
+    result_as_dict: list[dict] = [dict(brand) for brand in results]
     return JSONResponse(result_as_dict)
 
 
 app = Starlette(
     routes=[Route("/brands", brands)],
-    on_startup=[create_database_pool],
-    on_shutdown=[destroy_database_pool],
+    lifespan=database_ctx,
 )

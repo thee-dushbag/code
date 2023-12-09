@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="">
-<head>
+  <head>
     <title>Starlette Web Sockets</title>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            let socket = new WebSocket("ws://localhost:8000/counter");
-
-            socket.onmessage = (event) => {
-                const counter = document.querySelector("#counter");
-                counter.textContent = event.data;
-            };
-        });
+      let socket
+      document.addEventListener("DOMContentLoaded", () => {
+        socket = new WebSocket("ws://localhost:8000/counter");
+        const counter = document.querySelector("#counter");
+        socket.onmessage = (event) => {
+          counter.textContent = event.data;
+        };
+        socket.onclose = (event) => {
+          console.log(`Connection closed: ${event.data}`);
+          counter.textContent = "Waiting for connection...";
+        };
+        socket.onerror = (event) => {
+          console.log("An Error occurred:", event.data);
+        };
+      });
     </script>
-</head>
-<body>
-    <span>Users online: </span>
-    <span id="counter"></span>
-</body>
+  </head>
+  <body>
+    <div>
+      <span>Users online: </span>
+      <span id="counter">Waiting for connection...</span>
+    </div>
+  </body>
 </html>
