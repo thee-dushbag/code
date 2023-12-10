@@ -16,6 +16,7 @@ std::ostream &operator<<(std::ostream &out, ListNode *list) {
   out << '[';
   while (list) {
     out << list->val;
+    // out << "{value:" << list->val << ", addr: " << std::addressof(list->val) << "}";
     list = list->next;
     if (list) out << ", ";
   }
@@ -24,43 +25,27 @@ std::ostream &operator<<(std::ostream &out, ListNode *list) {
 
 struct Solution {
   static ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) {
-    ListNode *sorted{ new ListNode{} }, *temp{ sorted }, **temp2;
-    while (true) {
-      if (not list1 or not list2) {
-        temp->next = list1 ? list1 : list2;
-        break;
-      }
-      temp2 = (list1->val <= list2->val) ? &list1 : &list2;
-      temp->next = *temp2;
-      temp = temp->next;
-      *temp2 = temp->next;
-    }
-    temp = sorted;
-    sorted = sorted->next;
-    delete temp;
-    return sorted;
+    ListNode sorted, *last{ &sorted }, **list;
+    while (list1 and list2)
+      *list = (last = (last->next = *(list = list1->val < list2->val ? &list1 : &list2)))->next;
+    last->next = list1 ? list1 : list2;
+    return sorted.next;
   }
 };
 
 ListNode *makelist(std::vector<int> const &ilist) {
-  std::vector<int>::const_iterator iter{ ilist.cbegin() }, end{ ilist.cend() };
-  if (iter == end) return nullptr;
-  ListNode *head{ new ListNode{ *iter } }, *temp{ head };
-  iter++;
-  while (iter != end) {
-    temp->next = new ListNode{ *iter };
-    temp = temp->next;
-    iter++;
-  }
-  return head;
+  ListNode head, *last{ &head };
+  for (int const &item : ilist)
+    last = (last->next = new ListNode{ item });
+  return head.next;
 }
 
 void deletelist(ListNode *list) {
-  ListNode *temp;
+  ListNode *first;
   while (list) {
-    temp = list;
+    first = list;
     list = list->next;
-    delete temp;
+    delete first;
   }
 }
 
@@ -86,14 +71,21 @@ Output:
   for (int i = index; i < argc; i++)
     list2_vec.push_back(std::atoi(argv[i]));
 
-  if(not std::ranges::is_sorted(list1_vec)) {
-    std::cerr << "Sorting list1: " << list1_vec << '\n';
-    std::ranges::sort(list1_vec);
-  }
+  bool notsorted1{ not std::ranges::is_sorted(list1_vec) },
+    notsorted2{ not std::ranges::is_sorted(list2_vec) };
 
-  if(not std::ranges::is_sorted(list2_vec)) {
-    std::cerr << "Sorting list2: " << list2_vec << '\n';
-    std::ranges::sort(list2_vec);
+  if (notsorted1 or notsorted2) {
+    if (notsorted1) {
+      std::cerr << "Sorting list1: " << list1_vec;
+      std::ranges::sort(list1_vec);
+      std::cerr << " to " << list1_vec << '\n';
+    }
+    if (notsorted2) {
+      std::cerr << "Sorting list2: " << list2_vec;
+      std::ranges::sort(list2_vec);
+      std::cerr << " to " << list2_vec << '\n';
+    }
+    std::cerr << '\n';
   }
 
   ListNode *list1{ makelist(list1_vec) },
