@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 0 ]]; then
+  echo -e >&2 "Expected some names to greet.\nUsage: $0 [names...]"
+  exit 1
+fi
+
+for name; do
+  echo "Hello $name, how was your day?"
+done
