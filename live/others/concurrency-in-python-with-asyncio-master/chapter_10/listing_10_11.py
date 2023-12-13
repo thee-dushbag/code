@@ -20,7 +20,7 @@ class CircuitBreaker:
         self.time_window = time_window
         self.max_failures = max_failures
         self.reset_interval = reset_interval
-        self.last_request_time = None
+        self.last_request_time: datetime = None  # type: ignore
         self.last_failure_time = None
         self.current_failures = 0
 
@@ -56,7 +56,7 @@ class CircuitBreaker:
             return await asyncio.wait_for(
                 self.callback(*args, **kwargs), timeout=self.timeout
             )
-        except Exception as e:
+        except Exception:
             self.current_failures = self.current_failures + 1
             if self.last_failure_time is None:
                 self.last_failure_time = datetime.now()

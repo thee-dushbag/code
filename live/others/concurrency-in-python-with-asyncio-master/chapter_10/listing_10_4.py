@@ -1,25 +1,18 @@
-import asyncpg
 from aiohttp.web_app import Application
-from asyncpg.pool import Pool
+from aiohttp.web_request import Request
+from __init__ import cred
+import asyncpg
 
 DB_KEY = "database"
 
+async def database_ctx(app: Application):
+    async with asyncpg.create_pool(**cred, min_size=6, max_size=6) as pool:
+        app[DB_KEY] = pool
+        yield
 
-async def create_database_pool(
-    app: Application, host: str, port: int, user: str, database: str, password: str
-):
-    pool: Pool = await asyncpg.create_pool(
-        host=host,
-        port=port,
-        user=user,
-        password=password,
-        database=database,
-        min_size=6,
-        max_size=6,
-    )
-    app[DB_KEY] = pool
+def getapp_pool(app: Application) -> asyncpg.Pool:
+    if pool := app.get(DB_KEY): return pool
+    raise Exception("Database Context not setup, call app.cleanup_ctx.append(database_ctx)")
 
-
-async def destroy_database_pool(app: Application):
-    pool: Pool = app[DB_KEY]
-    await pool.close()
+def getpool(req: Request) -> asyncpg.Pool:
+    return getapp_pool(req.app)
