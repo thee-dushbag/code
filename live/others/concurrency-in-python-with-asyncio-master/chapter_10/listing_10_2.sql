@@ -1,7 +1,9 @@
+
 CREATE TABLE user_cart(
     user_id    INT NOT NULL,
     product_id INT NOT NULL
 );
+
 
 INSERT INTO user_cart VALUES (1, 1);
 INSERT INTO user_cart VALUES (1, 2);

@@ -1,42 +1,28 @@
-import functools
-
 from aiohttp import web
-from aiohttp.web_request import Request
-from aiohttp.web_response import Response
-from chapter_10.listing_10_4 import (DB_KEY, create_database_pool,
-                                     destroy_database_pool)
+from listing_10_4 import getpool, database_ctx
 
-routes = web.RouteTableDef()
-
-
-@routes.get("/users/{id}/cart")
-async def time(request: Request) -> Response:
+async def carts(request: web.Request) -> web.Response:
     try:
-        str_id = request.match_info["id"]
-        user_id = int(str_id)
-        db = request.app[DB_KEY]
+        user_id = int(request.match_info["id"])
+        db = getpool(request)
         favorite_query = "SELECT product_id from user_cart where user_id = $1"
         result = await db.fetch(favorite_query, user_id)
-        if result is not None:
-            return web.json_response([dict(record) for record in result])
-        else:
+        if result is None:
             raise web.HTTPNotFound()
-    except ValueError:
+        return web.json_response([dict(record) for record in result])
+    except Exception:
         raise web.HTTPBadRequest()
 
 
-app = web.Application()
-app.on_startup.append(
-    functools.partial(
-        create_database_pool,
-        host="127.0.0.1",
-        port=5432,
-        user="postgres",
-        password="password",
-        database="cart",
-    )
-)
-app.on_cleanup.append(destroy_database_pool)
+routes = [web.get(r"/users/{id:\d+}/cart", carts)]
 
-app.add_routes(routes)
-web.run_app(app, port=8003)
+
+async def application() -> web.Application:
+    app = web.Application()
+    app.cleanup_ctx.append(database_ctx)
+    app.add_routes(routes)
+    return app
+
+
+if __name__ == "__main__":
+    web.run_app(application(), port=8003)

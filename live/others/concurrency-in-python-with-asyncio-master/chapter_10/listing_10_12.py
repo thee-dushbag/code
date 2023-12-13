@@ -1,6 +1,5 @@
+from listing_10_11 import CircuitBreaker
 import asyncio
-
-from chapter_10.listing_10_11 import CircuitBreaker
 
 
 async def main():
@@ -12,19 +11,15 @@ async def main():
     )
 
     for _ in range(4):
-        try:
-            await cb.request()
-        except Exception as e:
-            pass
+        try: await cb.request()
+        except Exception: pass
 
     print("Sleeping for 5 seconds so breaker closes...")
     await asyncio.sleep(5)
 
     for _ in range(4):
-        try:
-            await cb.request()
-        except Exception as e:
-            pass
+        try: await cb.request()
+        except Exception: pass
 
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

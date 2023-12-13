@@ -1,21 +1,22 @@
-import asyncio
-import random
-
 from aiohttp import web
-from aiohttp.web_request import Request
-from aiohttp.web_response import Response
-
-routes = web.RouteTableDef()
+import asyncio, random
 
 
-@routes.get("/products/{id}/inventory")
-async def get_inventory(request: Request) -> Response:
+async def get_inventory(req: web.Request) -> web.Response:
     delay: float = random.randint(0, 20) / 10
     await asyncio.sleep(delay)
     inventory: int = random.randint(0, 100)
     return web.json_response({"inventory": inventory})
 
 
-app = web.Application()
-app.add_routes(routes)
-web.run_app(app, port=8001)
+routes = [web.get("/products/{id}/inventory", get_inventory)]
+
+
+async def application():
+    app = web.Application()
+    app.add_routes(routes)
+    return app
+
+
+if __name__ == "__main__":
+    web.run_app(application(), port=8001)
