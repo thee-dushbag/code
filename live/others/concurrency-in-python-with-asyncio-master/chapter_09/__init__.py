@@ -1,7 +1,7 @@
 import os
 import typing as ty
 
-password = os.getenv("PG_PASSWORD") or ""
+password = os.getenv("PG_PASSWORD", "")
 
 
 class Credential(ty.TypedDict):

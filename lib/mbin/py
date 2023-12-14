@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from subprocess import run
 
-EXT = ".py"
+EXT = [".py", ".pyc"]
 
 def main(args: list[str]) -> None:
     """
@@ -20,9 +20,11 @@ def main(args: list[str]) -> None:
         file, sargs = "", ""
     else:
         file, *args = args[1:]
-        if not file.endswith(EXT):
-            if (mod := Path(file + EXT)).exists():
-                file = str(mod)
+        if not file.endswith(EXT[0]):
+            for ext in EXT:
+                if (mod := Path(file + ext)).exists():
+                    file = str(mod)
+                    break
 
         sargs = ('"' + '" "'.join(args) + '"') if args else ''
     try:

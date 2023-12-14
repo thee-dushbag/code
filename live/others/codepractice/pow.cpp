@@ -59,8 +59,7 @@ std::ostream &operator<<(std::ostream &out, std::span<ExpBaseTracker> const &tra
 }
 #endif
 
-class Solution {
-public:
+struct Solution {
   static double myPow(double base, int e) {
     if (base == 0) return 0;
     if (e == 0) return 1;
