@@ -1,9 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <deque>
 #include "helpers.hpp"
 #include <algorithm>
-#include <chrono>
-#include <thread>
 
 /*
 Given an integer array arr of distinct integers and an integer k.
@@ -18,35 +17,31 @@ All integers in array are unique.
 */
 
 struct Solution {
-  static int getWinner(std::vector<int>& arr, int k) {
-    int score = 0;
-    while (score != k)
-      score = _switch(arr, score);
-    return arr[0];
-  }
-
-private:
-  static int _switch(std::vector<int>& arr, int score) {
-    if (arr[0] > arr[1]) {
-      std::swap(arr[0], arr[1]);
-      score++;
+  static int getWinner(std::vector<int> &arr, int k) {
+    if (k  > (arr.size() / 2))
+      return std::ranges::max(arr);
+    std::deque<int> darr{ arr.begin(), arr.end() };
+    int score{ };
+    while (score < k) {
+      if (darr[0] > darr[1]) {
+        std::swap(darr[0], darr[1]);
+        score++;
+      }
+      else score = 1;
+      darr.push_back(darr.front());
+      darr.pop_front();
     }
-    else
-      score = 1;
-    int temp = arr.front();
-    arr.erase(arr.begin());
-    arr.push_back(temp);
-    return score;
+    return darr[0];
   }
 };
 
-auto main(int argc, char** argv) -> int {
+auto main(int argc, char **argv) -> int {
   if (argc < 2) {
     std::cerr << "Usage:\n"
-      << '\t' << argv[0] << " [input...] score\n"
+      << '\t' << argv[0] << " score [input...]\n"
       << "where input and target are integers.\n"
       << "None integer values will be substituted for zeros.\n"
-      << "Example: " << argv[0] << " 2 1 3 5 4 6 7 2\n"
+      << "Example: " << argv[0] << " 2 2 1 3 5 4 6 7\n"
       << R"(
 Output:
   input  : [2, 1, 3, 5, 4, 6, 7]
@@ -57,16 +52,13 @@ Output:
     std::exit(1);
   }
 
-  std::vector<int> input;
-  input.reserve(argc);
-  for (int i = 1; i < argc; i++)
-    input.push_back(std::atoi(argv[i]));
+  std::vector<int> input(argc - 2);
+  int score = std::atoi(argv[1]);
 
-  int score = input.back();
-  input.pop_back();
+  for (int i = 2; i < argc; i++)
+    input[i - 2] = std::atoi(argv[i]);
 
   std::vector<int> output = input;
-
   int winner = Solution::getWinner(output, score);
 
   std::cout << "input  : " << input << '\n'

@@ -5,20 +5,23 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <deque>
 
-template <typename T>
-std::string _tostr_vec(std::vector<T> const &vec) {
+
+template <typename Cont>
+std::string _tostr_cont(Cont const &cont) {
   std::stringstream str;
-  std::size_t size{ vec.size() };
+  std::size_t size{ cont.size() };
   str << '[';
   for (uint i = 0; i < size; i++) {
-    str << vec[i];
+    str << cont[i];
     if (i + 1 < size)
       str << ", ";
   }
   str << ']';
   return str.str();
 };
+
 
 template<class T, class U>
 std::ostream &operator<<(std::ostream &out, std::pair<T, U> const &pair) {
@@ -41,8 +44,13 @@ std::string _tostr_map(M<T, U> const &map) {
 }
 
 template<class T>
-std::ostream &operator<<(std::ostream &out, std::vector<T> const &vec) {
-  return out << _tostr_vec(vec);
+std::ostream &operator<<(std::ostream &out, std::deque<T> const &cont) {
+  return out << _tostr_cont<std::deque<T>>(cont);
+}
+
+template<class T>
+std::ostream &operator<<(std::ostream &out, std::vector<T> const &cont) {
+  return out << _tostr_cont<std::vector<T>>(cont);
 }
 
 #ifdef _GLIBCXX_UNORDERED_MAP
