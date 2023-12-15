@@ -28,11 +28,12 @@ class ReadNumberParam(click.ParamType):
     type=click.Choice([str(l) for l in locales], case_sensitive=False),
     default=DEFAULT_LOCALE,
 )
-@click.argument("number", type=ReadNumberParam())
-def main(lang: str, number: str):
+@click.argument("numbers", type=ReadNumberParam(), nargs=-1)
+def main(lang: str, numbers: list[str]):
     reader = get_reader(lang)
-    number_name = reader(number)
-    click.echo(number_name)
+    for number in numbers:
+        number_name = reader(t.cast(float, number))
+        click.echo(number_name)
 
 
 if __name__ == "__main__":

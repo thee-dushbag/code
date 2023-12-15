@@ -182,8 +182,7 @@ def prepare(config: Config):
 
 
 def get_config(app: web.Application) -> Config:
-    if config := app.get(APP_KEY, None):
-        return config
+    if config := app.get(APP_KEY, None): return config
     raise Exception("Call setup on application to use config.")
 
 

@@ -211,5 +211,8 @@
   },
   "[rust]": {
     "editor.defaultFormatter": "jinxdash.prettier-rust"
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
   }
 }

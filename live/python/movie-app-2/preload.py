@@ -24,7 +24,6 @@ app = ty.cast(web.Application, {})
 @click.option("--default-height", type=int, default=256)
 @click.option("--default-width", type=int, default=512)
 @click.option("--dry-run", flag_value=True)
-@click.option("--run", "-r", flag_value=True)
 def main(
     default_width: int,
     default_height: int,
@@ -40,9 +39,8 @@ def main(
     reload_default_thumbnail: bool,
     reload_default_preview: bool,
     dry_run: bool,
-    run: bool,
 ):
-    "Use <command> --run/--dry-run to run the app. Just a workaround. (*_*) or atleast with one option, any option."
+    "Use <command> [--dry-run] to run [test] the app."
     if data_directory:
         data_directory = data_directory.absolute()
     sizes = abs(default_width), abs(default_height)

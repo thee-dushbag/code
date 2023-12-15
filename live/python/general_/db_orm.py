@@ -1,6 +1,5 @@
 import json as js
 from itertools import chain
-from pprint import pprint
 from random import choice, randint
 from typing import Sequence
 
