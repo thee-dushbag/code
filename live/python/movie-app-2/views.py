@@ -57,12 +57,13 @@ async def media_not_found_fallback(req: web.Request, handler):
     try:
         return await handler(req)
     except web.HTTPNotFound:
-        if req.url.path.startswith("/source/thumbnails"):
-            raise web.HTTPTemporaryRedirect(
-                f"/source/{cfg.DEFAULT_THUMBNAIL.name}"
-            )
-        if req.url.path.startswith("/source/previews"):
-            raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_PREVIEW.name}")
+        if req.url.path.startswith('/source/'):
+            if req.url.path.startswith("/source/thumbnails"):
+                raise web.HTTPTemporaryRedirect(
+                    f"/source/{cfg.DEFAULT_THUMBNAIL.name}"
+                )
+            if req.url.path.startswith("/source/previews"):
+                raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_PREVIEW.name}")
         raise
 
 
@@ -80,7 +81,7 @@ routes: list[web.AbstractRouteDef] = [
     web.get("/api/refresh", refresh, name="refresh_api"),
     web.static("/static", cfg.STATIC_DIR, show_index=True),
     web.static("/public", cfg.PUBLIC_DIR, show_index=True),
-    web.static("/source", cfg.RESOURCE_DIR, show_index=True, follow_symlinks=True),
+    # web.static("/source", cfg.RESOURCE_DIR, show_index=True, follow_symlinks=True),
 ]
 
 

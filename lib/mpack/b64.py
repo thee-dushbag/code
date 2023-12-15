@@ -7,9 +7,9 @@ def cli():
 
 @click.command('decode')
 @click.help_option('--help', '-h')
-@click.option('--string', '-s', multiple=True)
-def decode(string: tuple[str]):
-    for encoded in string:
+@click.argument('strings', nargs=-1)
+def decode(strings: tuple[str]):
+    for encoded in strings:
         try:
             value = urlsafe_b64decode(encoded).decode()
             click.echo(value)
@@ -18,9 +18,9 @@ def decode(string: tuple[str]):
 
 @click.command('encode')
 @click.help_option('--help', '-h')
-@click.option('--string', '-s', multiple=True)
-def encode(string: tuple[str]):
-    for decoded in string:
+@click.argument('strings', nargs=-1)
+def encode(strings: tuple[str]):
+    for decoded in strings:
         try:
             value = urlsafe_b64encode(decoded.encode()).decode()
             click.echo(value)
