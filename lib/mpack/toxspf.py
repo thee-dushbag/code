@@ -1,8 +1,8 @@
 from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Sequence
-from xml.etree import ElementTree as ET
+import typing as ty
+from xml.etree import ElementTree
 
 import click
 
@@ -12,22 +12,22 @@ class TrackExtension:
     id: int
     application: str = "http://www.videolan.org/vlc/playlist/0"
 
-    def tag(self) -> ET.Element:
-        tag = ET.Element("extension", application=self.application)
-        vlcid = ET.SubElement(tag, f"vlc:id")
+    def tag(self) -> ElementTree.Element:
+        tag = ElementTree.Element("extension", application=self.application)
+        vlcid = ElementTree.SubElement(tag, f"vlc:id")
         vlcid.text = str(self.id)
         return tag
 
 
 @dataclass
 class Extension:
-    items: Sequence[int]
+    items: ty.Sequence[int]
     application: str = "http://www.videolan.org/vlc/playlist/0"
 
-    def tag(self) -> ET.Element:
-        ext = ET.Element("extension", application=self.application)
+    def tag(self) -> ElementTree.Element:
+        ext = ElementTree.Element("extension", application=self.application)
         for item in self.items:
-            ET.SubElement(ext, "vlc:item").text = str(item)
+            ElementTree.SubElement(ext, "vlc:item").text = str(item)
         return ext
 
 
@@ -43,6 +43,7 @@ class Track:
     @property
     def duration(self) -> int:
         from moviepy.editor import AudioFileClip, VideoFileClip
+
         with suppress(Exception):
             return VideoFileClip(self.location).duration
         with suppress(Exception):
@@ -51,15 +52,16 @@ class Track:
             f"File is neither audio nor video: {self.location!r} or is of unknown type."
         )
 
-    def tag(self) -> ET.Element:
+    def tag(self) -> ElementTree.Element:
         from yarl import URL
-        track = ET.Element("track")
-        ET.SubElement(track, "location").text = str(URL(self.location))
-        ET.SubElement(track, "title").text = self.title
-        ET.SubElement(track, "creator").text = self.creator
-        ET.SubElement(track, "album").text = self.album
-        ET.SubElement(track, "trackNum").text = str(self.trackNum)
-        ET.SubElement(track, "duration").text = str(self.duration)
+
+        track = ElementTree.Element("track")
+        ElementTree.SubElement(track, "location").text = str(URL(self.location))
+        ElementTree.SubElement(track, "title").text = self.title
+        ElementTree.SubElement(track, "creator").text = self.creator
+        ElementTree.SubElement(track, "album").text = self.album
+        ElementTree.SubElement(track, "trackNum").text = str(self.trackNum)
+        ElementTree.SubElement(track, "duration").text = str(self.duration)
         track.append(self.extension.tag())
         return track
 
@@ -69,8 +71,8 @@ class Track:
         location: str,
         trackNum: int,
         *,
-        album: Optional[str] = None,
-        extensionID: Optional[int] = None,
+        album: ty.Optional[str] = None,
+        extensionID: ty.Optional[int] = None,
         creator=None,
     ) -> "Track":
         path = Path(location).absolute()
@@ -103,16 +105,16 @@ class PlayList:
         items = [track.extension.id for track in self.trackList]
         return Extension(items)
 
-    def tag(self) -> ET.Element:
+    def tag(self) -> ElementTree.Element:
         attrib = {
             "xmlns": "http://xspf.org/ns/0/",
             "xmlns:vlc": "http://www.videolan.org/vlc/playlist/ns/0/",
             "version": "1",
         }
-        playlist = ET.Element("playlist", attrib)
+        playlist = ElementTree.Element("playlist", attrib)
         tracks = [track.tag() for track in self.trackList]
-        ET.SubElement(playlist, "title").text = self.title
-        ET.SubElement(playlist, "trackList").extend(tracks)
+        ElementTree.SubElement(playlist, "title").text = self.title
+        ElementTree.SubElement(playlist, "trackList").extend(tracks)
         playlist.append(self.extension.tag())
         return playlist
 
@@ -158,8 +160,8 @@ def make_playlist(
     title = title or "Playlist"
     const = PlaylistConstants(title, trackList, creator, album)
     tag = PlayList.createPlaylist(const).tag()
-    ET.indent(tag, "\t")
-    etreestr = ET.tostring(tag, encoding="utf-8", xml_declaration=True)
+    ElementTree.indent(tag, "\t")
+    etreestr = ElementTree.tostring(tag, encoding="utf-8", xml_declaration=True)
     if output is None:
         return click.echo(etreestr)
     path = Path(output)

@@ -1,15 +1,14 @@
-from functools import wraps
-from typing import Any, Callable, Generic, Type, TypeVar
+import functools, typing
 
-T = TypeVar("T")
+T = typing.TypeVar("T")
 
 
-class Singleton(Generic[T]):
-    def __init__(self, cls: Type[T]) -> None:
-        self.warpped_class: Type[T] = cls
+class Singleton(typing.Generic[T]):
+    def __init__(self, cls: typing.Type[T]) -> None:
+        self.warpped_class: typing.Type[T] = cls
         self.instance: T | None = None
 
-    def __call__(self, *args: Any, **kwds: Any) -> T:
+    def __call__(self, *args: typing.Any, **kwds: typing.Any) -> T:
         if self.instance is None:
             self.instance = self.warpped_class(*args, **kwds)
         return self.instance
@@ -18,11 +17,11 @@ class Singleton(Generic[T]):
 def filter_keys(*, ok_keys=None, no_keys=None, overide_found=False, not_found=False):
     assert (
         any((ok_keys, no_keys)) or not_found
-    ), "Must Pass ok_keys or no_keys as Iterable[str | Any]"
+    ), "Must Pass ok_keys or no_keys as Iterable[str | typing.Any]"
     not_found, overide_found = map(bool, (not_found, overide_found))
     ok_keys_i, no_keys_i = map(tuple, (ok_keys or (), no_keys or ()))
 
-    def filterer(key: Any, *, o=None, no=None) -> bool:
+    def filterer(key: typing.Any, *, o=None, no=None) -> bool:
         o, no = bool(o or overide_found), bool(no or not_found)
         ok_s, no_s = key in ok_keys_i, key in no_keys_i
         if not ok_s and not no_s:
@@ -94,10 +93,10 @@ class Deco:
 
 
 def do_nothing(
-    _F: Callable[..., Any] | None = None,
+    _F: typing.Callable[..., typing.Any] | None = None,
     *,
-    return_value: Any = MISSING,
-    call_with: Callable[..., Any] = MISSING,
+    return_value: typing.Any = MISSING,
+    call_with: typing.Callable[..., typing.Any] = MISSING,
 ):
     def _impl(*args, **kwargs):
         nonlocal return_value
@@ -107,8 +106,8 @@ def do_nothing(
         return return_value
 
     if _F is None:
-        return lambda func: wraps(func)(_impl)
-    return wraps(_F)(_impl)
+        return lambda func: functools.wraps(func)(_impl)
+    return functools.wraps(_F)(_impl)
 
 
 class Tracer:
@@ -116,7 +115,7 @@ class Tracer:
         self.calls = 0
         self.func = function
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self, *args: typing.Any, **kwargs: typing.Any) -> typing.Any:
         self.calls += 1
         print(
             f"Called {self.func.__name__} {self.calls} time{'s' if self.calls != 1 else ''}: [{args}, {kwargs}]"

@@ -1,3 +1,3 @@
-function sleep(delay: number, callback_value?: any, ...args?: any): Promise<any>;
+declare function sleep<T>(delay: number, result: T | null): Promise<T>;
 
-export { sleep }
+export { sleep };

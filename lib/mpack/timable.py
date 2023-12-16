@@ -1,7 +1,5 @@
-import enum
-from typing import Any, Protocol, SupportsFloat, TypeGuard
+import enum, typing as ty, attrs
 
-from attrs import asdict, define, field
 
 MILLISEONDS_SECONDS = 0.001
 SECONDS_MILLISECONDS = 1000
@@ -15,16 +13,16 @@ PRETTY_TIME_FORMAT = (
 )
 
 
-class Timable(Protocol):
+class Timable(ty.Protocol):
     def __time_seconds__(self) -> float:
         ...
 
 
-def _is_timable(time: Any) -> TypeGuard[Timable]:
+def _is_timable(time: ty.Any) -> ty.TypeGuard[Timable]:
     return hasattr(time, "__time_seconds__")
 
 
-SupportsTimable = Timable | SupportsFloat
+SupportsTimable = Timable | ty.SupportsFloat
 
 
 def timable(time: SupportsTimable) -> float:
@@ -35,7 +33,7 @@ def timable(time: SupportsTimable) -> float:
 
 def pretty_time(time: SupportsTimable) -> str:
     t = Time(timable(time))
-    return PRETTY_TIME_FORMAT % asdict(t)
+    return PRETTY_TIME_FORMAT % attrs.asdict(t)
 
 
 def to_hours(time: SupportsTimable) -> float:
@@ -67,18 +65,18 @@ def hours_to_days(time: float):
     return to_days(secs)
 
 
-@define(slots=True)
+@attrs.define(slots=True)
 class Time:
     class TimeState(enum.StrEnum):
         FUTURE = enum.auto()
         PAST = enum.auto()
 
-    _time: float = field(factory=float, converter=float, eq=False, repr=False)
-    hours: int = field(factory=int, converter=int, kw_only=True)
-    minutes: int = field(factory=int, converter=int, kw_only=True)
-    seconds: int = field(factory=int, converter=int, kw_only=True)
-    milliseconds: int = field(factory=int, converter=int, kw_only=True)
-    state: TimeState = field(default=TimeState.FUTURE, init=False)
+    _time: float = attrs.field(factory=float, converter=float, eq=False, repr=False)
+    hours: int = attrs.field(factory=int, converter=int, kw_only=True)
+    minutes: int = attrs.field(factory=int, converter=int, kw_only=True)
+    seconds: int = attrs.field(factory=int, converter=int, kw_only=True)
+    milliseconds: int = attrs.field(factory=int, converter=int, kw_only=True)
+    state: TimeState = attrs.field(default=TimeState.FUTURE, init=False)
 
     def __time_seconds__(self):
         return self.time
@@ -123,10 +121,14 @@ class Time:
         return _t
 
 
-@define(slots=True)
+PAST: ty.Final = Time.TimeState.PAST
+FUTURE: ty.Final = Time.TimeState.FUTURE
+
+
+@attrs.define(slots=True)
 class WeekTime(Time):
-    days: int = field(factory=int, converter=int, kw_only=True)
-    weeks: int = field(factory=int, converter=int, kw_only=True)
+    days: int = attrs.field(factory=int, converter=int, kw_only=True)
+    weeks: int = attrs.field(factory=int, converter=int, kw_only=True)
 
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
