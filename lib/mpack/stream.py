@@ -97,7 +97,7 @@ def _null_stream_handler(null_stream: ty.Optional[StreamFiles] = None) -> Stream
     if null_stream is None and _null_stream is None:
         _null_stream = create_null_stream(_null_system_file) # Told Yeah
     else:
-        _null_stream = null_stream # Told Yeah
+        _null_stream = ty.cast(StreamFiles, null_stream) # Told Yeah
     return _null_stream
 
 

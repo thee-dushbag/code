@@ -63,8 +63,8 @@ class PreviewEnv:
     image_count: int = attrs.field(default=15)
 
     def __attrs_post_init__(self):
-        if self.clip.parent == self.preview_dir:
-            self.preview_dir = None
+        if not self.preview_dir:
+            self.preview_dir = self.clip.parent
         if self.preview_name is None:
             if self.preview_dir is None:
                 preview_name = self.clip.stem + "_preview"
@@ -72,15 +72,9 @@ class PreviewEnv:
             else:
                 p = self.preview_dir / self.clip.name
         else:
-            self.preview_name = (
-                str(self.preview_name)
-                if not type(self.preview_name) == Path
-                else self.preview_name
-            )
-            if self.preview_dir is None:
-                p = self.clip.parent / self.preview_name
-            else:
-                p = self.preview_dir / self.preview_name
+            if isinstance(self.preview_name, Path):
+                self.preview_name = str(self.preview_name)
+            p = self.preview_dir / self.preview_name
         self.preview_name = p
 
     def _prepare_env(self):
