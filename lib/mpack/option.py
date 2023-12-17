@@ -76,7 +76,7 @@ class Option(ty.Generic[_T]):
     def value_or(self, value: _T) -> _T:
         return self._val if _is_not_none(self._val) else value
 
-    def transform(self, func: ty.Callable[[_T], _Optional[_T]]) -> ty.Self:
+    def transform(self, func: ty.Callable[[_T], _Optional[_T | None]]) -> ty.Self:
         return (
             self.__class__(func(self._val))
             if _is_not_none(self._val)
