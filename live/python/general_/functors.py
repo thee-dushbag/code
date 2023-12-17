@@ -35,6 +35,9 @@ class SumFunctor:
             self.y = y
 
     def __call__(self) -> Any:
+        self.update()
+
+    def update(self):
         res = my_sum(self.x, self.y)
         with self.__lock:
             self.res = res

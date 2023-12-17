@@ -77,11 +77,11 @@ def test_value_or():
 def test_reset():
     opt: Option[int] = Option(5052)
     assert (
-        v := opt.value_or(NONE)
+        v := opt.value_or(-1)
     ) == 5052, f"Expected current value to be 5052, found {v}"
     opt.reset(1234)
     assert (
-        v := opt.value_or(NONE)
+        v := opt.value_or(-1)
     ) == 1234, f"Expected current value to be 1234, found {v}"
     assert (
         opt.reset() is opt
@@ -93,7 +93,7 @@ def test_transform():
     new_opt = opt.transform(lambda i: i - 5000)
     assert new_opt is not opt, f"Expected a completely new Option instance"
     assert (
-        v := new_opt.value_or(NONE)
+        v := new_opt.value_or(-1)
     ) == 52, f"Expected transformation result to be 52, found {v}"
     value = 1234
 
