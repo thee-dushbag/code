@@ -2,7 +2,6 @@ from concurrent.futures import ThreadPoolExecutor, wait
 from itertools import count
 from threading import Lock
 from typing import Any, Callable, Generic, Optional, TypeVar
-
 from attrs import define, field
 
 
