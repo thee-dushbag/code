@@ -1,3 +1,8 @@
+"""
+In this chapter you learn about web applications
+from aiohttp, flask to django applications.
+"""
+
 import os
 import typing as ty
 

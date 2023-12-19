@@ -1,29 +1,28 @@
-import asyncio
-from asyncio import Semaphore
+import asyncio as aio
 
 
-async def acquire(semaphore: Semaphore):
+async def acquire(semaphore: aio.Semaphore):
     print("Waiting to acquire")
     async with semaphore:
         print("Acquired")
-        await asyncio.sleep(5)
+        await aio.sleep(5)
     print("Releasing")
 
 
-async def release(semaphore: Semaphore):
-    print("Releasing as a one off!")
-    semaphore.release()
+async def release(semaphore: aio.Semaphore):
     print("Released as a one off!")
+    print("Before:", semaphore._value)
+    semaphore.release()
+    print("After:", semaphore._value)
 
 
 async def main():
-    semaphore = Semaphore(2)
-
+    semaphore = aio.Semaphore(2)
     print("Acquiring twice, releasing three times...")
-    await asyncio.gather(acquire(semaphore), acquire(semaphore), release(semaphore))
+    await aio.gather(
+        acquire(semaphore), acquire(semaphore), release(semaphore), acquire(semaphore)
+    )
 
-    print("Acquiring three times...")
-    await asyncio.gather(acquire(semaphore), acquire(semaphore), acquire(semaphore))
 
-
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

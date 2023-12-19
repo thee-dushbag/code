@@ -1,27 +1,27 @@
-import asyncio
-import functools
-from asyncio import Event
+import asyncio as aio
 
 
-def trigger_event(event: Event):
+def trigger_event(event: aio.Event):
+    print("Triggering event!")
     event.set()
 
 
-async def do_work_on_event(event: Event):
+async def do_work_on_event(event: aio.Event):
     print("Waiting for event...")
-    await event.wait()  # A
+    await event.wait()
     print("Performing work!")
-    await asyncio.sleep(1)  # B
+    await aio.sleep(0.5)
     print("Finished work!")
-    event.clear()  # C
+    event.clear()
 
 
 async def main():
-    event = asyncio.Event()
-    asyncio.get_running_loop().call_later(
-        5.0, functools.partial(trigger_event, event)
-    )  # D
-    await asyncio.gather(do_work_on_event(event), do_work_on_event(event))
+    event = aio.Event()
+    aio.get_running_loop().call_later(3.0, trigger_event, event)
+    aio.get_running_loop().call_later(6.0, trigger_event, event)
+    await aio.gather(do_work_on_event(event), do_work_on_event(event))
+    await do_work_on_event(event)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

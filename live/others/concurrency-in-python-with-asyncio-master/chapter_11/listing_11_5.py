@@ -1,5 +1,4 @@
-import asyncio
-from asyncio import Lock
+import asyncio as aio
 
 
 class MockSocket:
@@ -10,14 +9,14 @@ class MockSocket:
         if self.socket_closed:
             raise Exception("Socket is closed!")
         print(f"Sending: {msg}")
-        await asyncio.sleep(1)
+        await aio.sleep(1)
         print(f"Sent: {msg}")
 
     def close(self):
         self.socket_closed = True
 
 
-user_names_to_sockets = {
+users2sockets = {
     "John": MockSocket(),
     "Terry": MockSocket(),
     "Graham": MockSocket(),
@@ -25,29 +24,28 @@ user_names_to_sockets = {
 }
 
 
-async def user_disconnect(username: str, user_lock: Lock):
+async def user_disconnect(username: str, user_lock: aio.Lock):
     print(f"{username} disconnected!")
     async with user_lock:  # A
-        print(f"Removing {username} from dictionary")
-        socket = user_names_to_sockets.pop(username)
+        print(f"Removing {username} from chat")
+        socket = users2sockets.pop(username)
         socket.close()
 
 
-async def message_all_users(user_lock: Lock):
+async def message_all_users(user_lock: aio.Lock):
     print("Creating message tasks")
     async with user_lock:  # B
-        messages = [
-            socket.send(f"Hello {user}")
-            for user, socket in user_names_to_sockets.items()
-        ]
-        await asyncio.gather(*messages)
+        messages = (
+            socket.send(f"Hello {user}") for user, socket in users2sockets.items()
+        )
+        await aio.gather(*messages)
+
 
 
 async def main():
-    user_lock = Lock()
-    await asyncio.gather(
-        message_all_users(user_lock), user_disconnect("Eric", user_lock)
-    )
+    user_lock = aio.Lock()
+    await aio.gather(message_all_users(user_lock), user_disconnect("Eric", user_lock))
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

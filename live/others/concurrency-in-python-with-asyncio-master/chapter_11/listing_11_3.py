@@ -1,4 +1,4 @@
-import asyncio
+import asyncio as aio
 
 
 class MockSocket:
@@ -9,14 +9,14 @@ class MockSocket:
         if self.socket_closed:
             raise Exception("Socket is closed!")
         print(f"Sending: {msg}")
-        await asyncio.sleep(1)
+        await aio.sleep(1)
         print(f"Sent: {msg}")
 
     def close(self):
         self.socket_closed = True
 
 
-user_names_to_sockets = {
+users2sockets = {
     "John": MockSocket(),
     "Terry": MockSocket(),
     "Graham": MockSocket(),
@@ -26,20 +26,22 @@ user_names_to_sockets = {
 
 async def user_disconnect(username: str):
     print(f"{username} disconnected!")
-    socket = user_names_to_sockets.pop(username)
+    socket = users2sockets.pop(username)
     socket.close()
 
 
 async def message_all_users():
     print("Creating message tasks")
-    messages = [
-        socket.send(f"Hello {user}") for user, socket in user_names_to_sockets.items()
-    ]
-    await asyncio.gather(*messages)
+    messages = (socket.send(f"Hello {user}") for user, socket in users2sockets.items())
+    await aio.gather(*messages)
 
 
 async def main():
-    await asyncio.gather(message_all_users(), user_disconnect("Eric"))
+    # Okay:
+    # await aio.gather(user_disconnect("Eric"), message_all_users())
+    # Fails:
+    await aio.gather(message_all_users(), user_disconnect("Eric"))
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

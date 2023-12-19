@@ -1,28 +1,27 @@
-import asyncio
-from asyncio import Lock
-
+import asyncio as aio
 from util import delay
 
 
-async def a(lock: Lock):
-    print("Coroutine a waiting to acquire the lock")
+async def A(lock: aio.Lock):
+    print("Coroutine A waiting to acquire the lock")
     async with lock:
-        print("Coroutine a is in the critical section")
+        print("Coroutine A is in the critical section")
         await delay(2)
-    print("Coroutine a released the lock")
+    print("Coroutine A released the lock")
 
 
-async def b(lock: Lock):
-    print("Coroutine b waiting to acquire the lock")
+async def B(lock: aio.Lock):
+    print("Coroutine B waiting to acquire the lock")
     async with lock:
-        print("Coroutine b is in the critical section")
+        print("Coroutine B is in the critical section")
         await delay(2)
-    print("Coroutine b released the lock")
+    print("Coroutine B released the lock")
 
 
 async def main():
-    lock = Lock()
-    await asyncio.gather(a(lock), b(lock))
+    lock = aio.Lock()
+    await aio.gather(A(lock), B(lock))
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

@@ -1,21 +1,20 @@
-import asyncio
-from asyncio import Condition
+import asyncio as aio
 
 
-async def do_work(condition: Condition):
+async def do_work(condition: aio.Condition, wid: int):
     while True:
-        print("Waiting for condition lock...")
+        print(f"{wid}: Waiting for condition lock...")
         async with condition:
-            print("Acquired lock, releasing and waiting for condition...")
+            print(f"{wid}: Acquired lock, releasing and waiting for condition...")
             await condition.wait()
-            print("Condition event fired, re-acquiring lock and doing work...")
-            await asyncio.sleep(1)
-        print("Work finished, lock released.")
+            print(f"{wid}: Condition event fired, re-acquiring lock and doing work...")
+            await aio.sleep(1)
+        print(f"{wid}: Work finished, lock released.")
 
 
-async def fire_event(condition: Condition):
+async def fire_event(condition: aio.Condition):
     while True:
-        await asyncio.sleep(5)
+        await aio.sleep(3)
         print("About to notify, acquiring condition lock...")
         async with condition:
             print("Lock acquired, notifying all workers.")
@@ -24,10 +23,12 @@ async def fire_event(condition: Condition):
 
 
 async def main():
-    condition = Condition()
+    condition = aio.Condition()
 
-    asyncio.create_task(fire_event(condition))
-    await asyncio.gather(do_work(condition), do_work(condition))
+    aio.create_task(fire_event(condition))
+    await aio.gather(do_work(condition, 1), do_work(condition, 2))
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    try: aio.run(main())
+    except KeyboardInterrupt: ...

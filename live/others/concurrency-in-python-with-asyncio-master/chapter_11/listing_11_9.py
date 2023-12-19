@@ -1,13 +1,13 @@
-import asyncio
-from asyncio import BoundedSemaphore
+import asyncio as aio
 
 
 async def main():
-    semaphore = BoundedSemaphore(1)
+    bounded_semaphore = aio.BoundedSemaphore(1)
 
-    await semaphore.acquire()
-    semaphore.release()
-    semaphore.release()
+    await bounded_semaphore.acquire()
+    bounded_semaphore.release()
+    bounded_semaphore.release()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

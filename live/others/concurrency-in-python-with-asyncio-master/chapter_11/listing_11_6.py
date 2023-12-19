@@ -1,18 +1,19 @@
-import asyncio
-from asyncio import Semaphore
+import asyncio as aio
 
 
-async def operation(semaphore: Semaphore):
-    print("Waiting to acquire semaphore...")
+async def operation(semaphore: aio.Semaphore, task_id: int):
+    print(f"Task: {task_id} pending")
     async with semaphore:
-        print("Semaphore acquired!")
-        await asyncio.sleep(2)
-    print("Semaphore released!")
+        print(f"Task: {task_id} running")
+        await aio.sleep(task_id % 2 + 1)
+    print(f"Task: {task_id} done")
 
 
 async def main():
-    semaphore = Semaphore(2)
-    await asyncio.gather(*[operation(semaphore) for _ in range(4)])
+    semaphore = aio.Semaphore(2)
+    tasks = (operation(semaphore, task_id) for task_id in range(1, 11))
+    await aio.gather(*tasks)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

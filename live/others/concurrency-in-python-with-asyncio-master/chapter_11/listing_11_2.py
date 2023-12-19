@@ -1,24 +1,24 @@
-import asyncio
+import asyncio as aio
 
 counter: int = 0
 
 
 async def increment():
     global counter
-    temp_counter = counter
-    temp_counter = temp_counter + 1
-    await asyncio.sleep(0.01)
+    temp_counter = counter + 1
+    await aio.sleep(0.01)
     counter = temp_counter
 
 
 async def main():
     global counter
-    for _ in range(1000):
-        tasks = [asyncio.create_task(increment()) for _ in range(100)]
-        await asyncio.gather(*tasks)
-        print(f"Counter is {counter}")
+    for cnt in range(1, 1001):
+        tasks = (aio.create_task(increment()) for _ in range(100))
+        await aio.gather(*tasks)
+        print(f"{cnt}. Counter is {counter}")
         assert counter == 100
         counter = 0
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())
