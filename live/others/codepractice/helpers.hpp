@@ -53,6 +53,14 @@ std::ostream &operator<<(std::ostream &out, std::vector<T> const &cont) {
   return out << _tostr_cont<std::vector<T>>(cont);
 }
 
+template<class T>
+std::ostream &operator<<(std::ostream &out, std::vector<std::vector<T>> const &cont) {
+  std::vector<std::string> strings;
+  for (const std::vector<T> &vec: cont)
+    strings.push_back(_tostr_cont(vec));
+  return out << _tostr_cont<std::vector<std::string>>(strings);
+}
+
 #ifdef _GLIBCXX_UNORDERED_MAP
 template<class T, class U>
 std::ostream &operator<<(std::ostream &out, std::unordered_map<T, U> const &map) {
