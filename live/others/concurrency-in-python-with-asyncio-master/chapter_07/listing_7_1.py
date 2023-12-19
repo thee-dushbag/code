@@ -1,4 +1,3 @@
-from collections.abc import Callable, Iterable, Mapping
 import socket
 from threading import Thread
 

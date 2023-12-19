@@ -1,22 +1,21 @@
-import asyncio
-from enum import Enum
+import asyncio as aio, enum
 
 
-class ConnectionState(Enum):
-    WAIT_INIT = 0
-    INITIALIZING = 1
-    INITIALIZED = 2
+class ConnectionState(enum.Enum):
+    WAIT_INIT = enum.auto()
+    INITIALIZING = enum.auto()
+    INITIALIZED = enum.auto()
 
 
 class Connection:
     def __init__(self):
         self._state = ConnectionState.WAIT_INIT
-        self._condition = asyncio.Condition()
+        self._condition = aio.Condition()
 
     async def initialize(self):
         await self._change_state(ConnectionState.INITIALIZING)
         print("initialize: Initializing connection...")
-        await asyncio.sleep(3)  # simulate connection startup time
+        await aio.sleep(3)  # simulate connection startup time
         print("initialize: Finished initializing connection")
         await self._change_state(ConnectionState.INITIALIZED)
 
@@ -24,8 +23,8 @@ class Connection:
         async with self._condition:
             print("execute: Waiting for connection to initialize")
             await self._condition.wait_for(self._is_initialized)
-            print(f"execute: Running {query}!!!")
-            await asyncio.sleep(3)  # simulate a long query
+            print(f"execute: Running {query!r}")
+            await aio.sleep(3)  # simulate a long query
 
     async def _change_state(self, state: ConnectionState):
         async with self._condition:
@@ -45,11 +44,12 @@ class Connection:
 
 async def main():
     connection = Connection()
-    query_one = asyncio.create_task(connection.execute("select * from table"))
-    query_two = asyncio.create_task(connection.execute("select * from other_table"))
-    asyncio.create_task(connection.initialize())
+    query_one = aio.create_task(connection.execute("select * from table"))
+    query_two = aio.create_task(connection.execute("select * from other_table"))
+    aio.create_task(connection.initialize())
     await query_one
     await query_two
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())

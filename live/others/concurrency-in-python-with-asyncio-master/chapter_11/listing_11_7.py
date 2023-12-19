@@ -1,10 +1,10 @@
-import asyncio
-from asyncio import Semaphore
-
+import asyncio as aio
 from aiohttp import ClientSession
 
+URL = "https://www.example.com"
 
-async def get_url(url: str, session: ClientSession, semaphore: Semaphore):
+
+async def get_url(url: str, session: ClientSession, semaphore: aio.Semaphore):
     print("Waiting to acquire semaphore...")
     async with semaphore:
         print("Acquired semaphore, requesting...")
@@ -14,12 +14,11 @@ async def get_url(url: str, session: ClientSession, semaphore: Semaphore):
 
 
 async def main():
-    semaphore = Semaphore(10)
+    semaphore = aio.Semaphore(10)
     async with ClientSession() as session:
-        tasks = [
-            get_url("https://www.example.com", session, semaphore) for _ in range(1000)
-        ]
-        await asyncio.gather(*tasks)
+        tasks = (get_url(URL, session, semaphore) for _ in range(1000))
+        await aio.gather(*tasks)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    aio.run(main())
