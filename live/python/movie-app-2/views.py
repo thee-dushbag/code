@@ -38,8 +38,8 @@ async def refresh(req: web.Request):
     try:
         sortorder = req.query["sortby"]
         order = mov.Order(sortorder)  # type: ignore
-        movies.sort_movies(order) # type: ignore
-        movies.order = order # type: ignore
+        movies.sort_movies(order)  # type: ignore
+        movies.order = order  # type: ignore
     except KeyError:
         pass
     try:
@@ -49,7 +49,7 @@ async def refresh(req: web.Request):
             cfg.generate_thumbnails(cfg.config(req))
     except KeyError:
         pass
-    return web.HTTPTemporaryRedirect('/')
+    return web.HTTPTemporaryRedirect("/")
 
 
 @web.middleware
@@ -57,11 +57,9 @@ async def media_not_found_fallback(req: web.Request, handler):
     try:
         return await handler(req)
     except web.HTTPNotFound:
-        if req.url.path.startswith('/source/'):
+        if req.url.path.startswith("/source/"):
             if req.url.path.startswith("/source/thumbnails"):
-                raise web.HTTPTemporaryRedirect(
-                    f"/source/{cfg.DEFAULT_THUMBNAIL.name}"
-                )
+                raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_THUMBNAIL.name}")
             if req.url.path.startswith("/source/previews"):
                 raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_PREVIEW.name}")
         raise
@@ -76,12 +74,12 @@ home_page = template_handler(
 routes: list[web.AbstractRouteDef] = [
     web.get("/", home_page),
     web.get("/movies", movies_page),
-    web.get(r"/api/movie/{movie_id:\d+}", movie, name="movie"),
+    web.static("/static", cfg.STATIC_DIR),
+    web.static("/public", cfg.PUBLIC_DIR),
     web.get("/api/movies", movies, name="movies_api"),
     web.get("/api/refresh", refresh, name="refresh_api"),
-    web.static("/static", cfg.STATIC_DIR, show_index=True),
-    web.static("/public", cfg.PUBLIC_DIR, show_index=True),
-    # web.static("/source", cfg.RESOURCE_DIR, show_index=True, follow_symlinks=True),
+    web.get(r"/api/movie/{movie_id:\d+}", movie, name="movie"),
+    web.static("/source", cfg.RESOURCE_DIR, follow_symlinks=True),
 ]
 
 
