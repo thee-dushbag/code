@@ -20,3 +20,14 @@ function merge(nums1, m, nums2, n) {
   nums1.splice(0, m);
   nums1.push(...nums2);
 }
+
+/**
+ * @param {number[]} prices
+ * @param {number} money
+ * @return {number}
+ */
+function buyChoco(prices, money) {
+  prices.sort((a, b) => a - b);
+  let leftover = prices[0] + prices[1] - money;
+  return leftover < 0 ? money : leftover;
+}

@@ -3,8 +3,6 @@ import asyncio as aio
 
 async def _echo(broadcast, reader: aio.StreamReader, writer: aio.StreamWriter):
     while line := await reader.readline():
-        if not line:
-            break
         await broadcast(writer, line)
 
 
@@ -41,14 +39,12 @@ class Chat:
 
     async def close(self):
         self.closed = True
-        if not self.clients:
-            return
+        if not self.clients: return
         await self.broadcast(None, b"Server shutting down....\n")
-        torun = []
-        for client in self.clients:
-            client.close()
-            torun.append(client.wait_closed())
-        await aio.gather(*torun)
+        def closenwait(c: aio.StreamWriter):
+            c.close()
+            return c.wait_closed()
+        await aio.gather(*(closenwait(c) for c in self.clients))
 
     async def __aenter__(self):
         return self
@@ -71,15 +67,20 @@ class _GeneratorContext:
         return self
 
     def __enter__(self):
-        if self._ctx:
-            return next(self._ctx)
+        if self._ctx is None:
+            raise RuntimeError("_GeneratorContext was not initialized.")
+        return next(self._ctx)
 
-    def __exit__(self, *_):
+    def __exit__(self, etype: type[BaseException], eval: BaseException, etraceb):
         if self._ctx:
             try:
                 anext(self._ctx)
-            except StopIteration as e:
-                return e.value
+            except StopIteration:
+                ...
+            else:
+                raise ValueError(
+                    "Passed generator yielded more than once"
+                ) from eval
 
 
 @_GeneratorContext
