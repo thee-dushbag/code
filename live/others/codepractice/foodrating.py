@@ -45,7 +45,7 @@ class FoodRatings:
         target.rating = newRating
         # NOTE: heapification is O(N) and redoing it after every
         # rate change is extremely expensive
-        heapify(self.cuisinemap[target.cuisine]) # <- Very expensive
+        heapify(self.cuisinemap[target.cuisine])  # <- Very expensive
         # TODO: Make a simple sifter based on the index of a node
         # that hosds the value.
 

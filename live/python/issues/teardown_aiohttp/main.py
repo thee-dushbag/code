@@ -1,7 +1,7 @@
 from aiohttp import web
 import processor  # Import our processor plugin
 
-CTX_TYPE = '' # Contol which type of setup-teardown is used. ctx/seted
+CTX_TYPE = 'ctx' # Contol which type of setup-teardown is used. ctx/seted
 
 async def process_order(req: web.Request):
     queue = req.app[processor.QUEUE]
