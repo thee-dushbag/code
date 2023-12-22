@@ -9,6 +9,7 @@ alias statics_origin="_set_statics"
 alias no_watch="watch_movie no-watch"
 alias nv=nvim
 alias pls=sudo
+alias py3=python3
 alias ipy=ipython3
 alias ipython=ipython3
 alias ali="nv $CONTENT_CONF/bash_aliases"

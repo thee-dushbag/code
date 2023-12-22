@@ -43,12 +43,8 @@ This is a brief overview of the structure of this **repository**.
   + **docker/nginx** - for containerization and general work.
   + **graphql** - using python [strawberry][strawberry] package, api design becomes a whole lot easier.
 
-This is the worst **README** in all history, no worries, improvements are on the way.
-
-Did you see what I did there, I made README bold. **(\*** v **\*)**.
-
 ## Updates.
-In this section, I blog about my new advancements and long time choices like one below, Tech Stack.
+In this section, I blog about my new advancements and long time choices.
 
 ### Tech Stack.
 My former tech-stack was composed of: ***<u>~~RAMB~~</u>***
@@ -78,9 +74,6 @@ I have deleted all the [React][react] code in this repository. In this drop, I a
 
 ### Complex Hobby.
 I do love C++ and C and they really are complex languages. I am considering to set my main language to be javascript and python, development languages be lua(configurations like vim) and bash(terminal scripting and tool chaining), learning about machines and their inner workings seems intuitive using languages with low level support, C/C++.
-
-You know what, fuck `RUST`. I was reading some book on rust, guess what I found? The book has many citations on why C/C++ is a "bad language" or atleast emphasis how inefficient it is to use it. An example, in the book `programming rust` by `o'reilly` publishers, they write, "In c++ main function, you must return a 0 at the end as the exit status while rust doesn't enforce this" they say, but in truth, this is a LIE, another one is about memory safety, I was watching a video on why learn rust and one of the reasons stated was that rust ensures safety while c++ doesn't since, if something fails in between calling the duo functions malloc and free, a memory leak would likely occur, but they did not mention the concept of RAII which ensures memory safety where it is needed. I am led to believe C++ is perfect and is improving over time with new features like `modules` in terms of static analysis. I hereon delete all rust codebase, no longer needed I say. Also, to add a cherry on top of this sundae of rust lore, the cargo tool behaves a lot like `npm` for javascript, as I was learning rust, I added two dependencies to my project, `artix-web` and `serde`, the total package download was approximately `154MB` of download, I have worked with a few C++ libraries and they were less than half of this.
-
 
 [htmx]: https://htmx.org
 [react]: https://react.dev
