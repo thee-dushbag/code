@@ -1,0 +1,14 @@
+version: "3"
+name: ldocker
+
+services:
+  myimage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mycontainer
+    environment:
+      NAME: Simon
+      SISTER: Faith
+      MUM: Lydia
+      DAD: Charles
