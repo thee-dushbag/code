@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+filename="$(basename "$0")"
+current_dir="$(pwd)"
+shorten=false
+verbose=false
+quiet=false
+
+function errlog() {
+  if ! $quiet; then
+    echo >&2 "$*"
+  fi
+}
+
+function infolog() {
+  if $verbose; then
+    echo >&2 "$*"
+  fi
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --help | -h)
+    echo "Usage: $filename [-q|--quiet] [-h|--help] [--path|-p path] [--shorten|-s] [--no-shorten|-S]"
+    echo "--help       -h   Print this message and exit."
+    echo "--path       -p   Path to check if it exists in a repo, default current directory."
+    echo "--quiet      -q   Do not print error messages on fail."
+    echo "--shorten    -s   Shorten the path, if found, to its base name. ie the repo name."
+    echo "--verbose    -v   Show the progress of the repo search"
+    echo "--no-shorten -S   Return the full path of the repo."
+    echo "NOTE: --no-shorten simply reverses --shorten and last one has the hishest precedence."
+    echo "      use --quiet as first argument to completely turn off error messages."
+    exit
+    ;;
+  --quiet | -q) quiet=true ;;
+  --verbose | -v) verbose=true ;;
+  --shorten | -s) shorten=true ;;
+  --no-shorten | -S) shorten=false ;;
+  --path | -p)
+    if [ ! -e "$2" ]; then
+      errlog "PathNotFound: $2"
+      exit 2
+    fi
+    current_dir="$2"
+    shift 1
+    ;;
+  *)
+    errlog "Invalid argument: '$1'"
+    exit 1
+    ;;
+  esac
+  shift 1
+done
+
+while [ ! -e "$current_dir/.git" ] && [ "$current_dir" != '/' ]; do
+  infolog "Dropping: '$current_dir'"
+  current_dir="$(dirname "$current_dir")"
+  infolog "Checking: '$current_dir'"
+done
+
+if [ -e "$current_dir/.git" ]; then
+  infolog "Found   : '$current_dir'"
+  if $shorten; then
+    current_dir="$(basename "$current_dir")"
+  fi
+  echo "$current_dir"
+  exit 0
+fi
+
+infolog "Error: Not in repo."
+errlog "Not in git repository."
+exit 2

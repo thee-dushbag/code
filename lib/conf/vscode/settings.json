@@ -100,7 +100,9 @@
     "jinja-html": "html",
     "jinja": "html",
     "pyscript": "html",
-    "markdown": "md"
+    "markdown": "md",
+    "javascript": "javascript",
+    "python3": "python3"
   },
   "C_Cpp.errorSquiggles": "enabled",
   "python.testing.unittestEnabled": false,
