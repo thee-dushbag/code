@@ -23,17 +23,19 @@ from typing import Sequence
 
 
 class Solution:
-    @staticmethod
-    def minCost(items: str, costs: Sequence[int]) -> int:
-        size, index, min_costs = len(items), 0, 0
+    def minCost(self, colors: str, costs: Sequence[int]) -> int:
+        size, index, min_costs = len(colors), 0, 0
         while index < size:
-            current_color, min_cost, count = items[index], costs[index], 0
+            current_color, max_cost = colors[index], 0
+            total_cost, count = 0, 0
             while index < size:
-                color, cost = items[index], costs[index]
+                color = colors[index]
                 if color != current_color: break
+                cost = costs[index]
                 count, index = count + 1, index + 1
-                min_cost = cost if cost < min_cost else min_cost
-            min_costs += min_cost if count > 1 else 0
+                total_cost += cost
+                max_cost = cost if cost > max_cost else max_cost
+            min_costs += (total_cost - max_cost) if count > 1 else 0
         return min_costs
 
 
@@ -60,7 +62,7 @@ class TestCase:
         self.cost = self._cost()
 
     def _cost(self) -> int:
-        return Solution.minCost(self.colors, self.costs)
+        return Solution().minCost(self.colors, self.costs)
 
     def __str__(self) -> str:
         return f"TestCase(colors={self.colors!r}, costs={self.costs!r}, cost={self.cost!r})"
@@ -77,20 +79,21 @@ def main():
         ("aab", (2, 1, 3), 1),
         ("abc", (1, 2, 3), 0),
         ("abbc", (1, 2, 4, 3), 2),
-        ("aaaaa", (2, 4, 5, 1, 3), 1),
+        ("aaaaa", (2, 4, 5, 1, 3), 10),
         ("aabcc", (2, 1, 3, 4, 5), 5),
         ("aabaa", (1, 2, 3, 5, 4), 5),
-        ("bbbbbc", (2, 4, 5, 1, 3, 6), 1),
-        ("baaaaa", (1, 4, 3, 2, 5, 6), 2),
+        ("bbbbbc", (2, 4, 5, 1, 3, 6), 10),
+        ("baaaaa", (1, 4, 3, 2, 5, 6), 14),
         ("aabbcc", (1, 2, 4, 3, 5, 6), 9),
         ("abccde", (1, 2, 3, 4, 5, 6), 3),
-        ("bbbaaa", (4, 9, 3, 8, 8, 9), 11),
-        ("baaaaac", (1, 2, 3, 4, 5, 6, 7), 2),
-        ("baaaaacc", (1, 2, 3, 4, 5, 6, 7, 8), 9),
+        ("bbbaaa", (4, 9, 3, 8, 8, 9), 23),
+        ("baaaaac", (1, 2, 3, 4, 5, 6, 7), 14),
+        ("baaaaacc", (1, 2, 3, 4, 5, 6, 7, 8), 21),
         ("aabcddfhh", (1, 2, 3, 4, 5, 6, 7, 4, 5), 10),
-        ("cccebbbaaa", (2, 1, 3, 4, 9, 3, 8, 8, 9, 4), 8),
+        ("cccebbbaaa", (2, 1, 3, 4, 9, 3, 8, 8, 9, 4), 26),
         ("abaddccaeefghh", (1, 2, 3, 2, 3, 4, 3, 2, 1, 2, 3, 4, 2, 3), 8),
-        ("abbcccddddeeeee", (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), 24),
+        ("abbcccddddeeeee", (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), 85),
+        ("rggbbbrrrrgrggggg", (1, 2, 3, 4, 3, 2, 5, 2, 3, 1, 3, 5, 4, 2, 2, 4, 5), 25),
     )
 
     from rich import print
