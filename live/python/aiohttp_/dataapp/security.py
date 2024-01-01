@@ -41,7 +41,7 @@ class UserDataAuthPolicy(AbstractAuthorizationPolicy):
         user = manager.users.get(username)
         if not user: return False
         perm = user.permission
-        return flags.flag_enabled(perm, permission)
+        return flags.ison(perm, permission)
 
     async def authorized_userid(self, identity: str):
         manager = getappdata(_APP)

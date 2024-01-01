@@ -1,5 +1,5 @@
 from aiohttp import web
-import enum, time, base64, json
+import enum, time, base64, json, typing as ty
 from mpack import flags
 from aiohttp_security import (
     AbstractIdentityPolicy,
@@ -12,13 +12,13 @@ from dataclasses import dataclass
 
 
 class Perm(enum.IntFlag):
-    NONE: int = enum.auto(0)
-    READ_DATA: int = enum.auto()
-    WRITE_DATA: int = enum.auto()
-    DELETE_DATA: int = enum.auto()
-    READ_USER: int = enum.auto()
-    WRITE_USER: int = enum.auto()
-    DELETE_USER: int = enum.auto()
+    NONE = enum.auto(0) # type: ignore
+    READ_DATA = enum.auto()
+    WRITE_DATA = enum.auto()
+    DELETE_DATA = enum.auto()
+    READ_USER = enum.auto()
+    WRITE_USER = enum.auto()
+    DELETE_USER = enum.auto()
 
 
 USERS = {}
@@ -39,7 +39,7 @@ def sldata(path: Path):
 
     return job
 
-_sentinel = object()
+_sentinel: ty.Any = object()
 
 @dataclass
 class AuthInfo:
@@ -60,7 +60,7 @@ class UserDataAuthPolicy(AbstractAuthorizationPolicy):
         user = USERS.get(identity.username)
         if not user: return False
         perm = user.get("permission", Perm.NONE)
-        return flags.flag_enabled(perm, permission)
+        return flags.ison(perm, permission)
 
     async def authorized_userid(self, identity: AuthInfo):
         return identity.authenticate()
@@ -113,7 +113,7 @@ class UsersView(web.View):
             data = await self.request.post()
             password = data.get("password", None)
             permission = data.get("permission", None)
-            if permission is not None:
+            if permission is not None and isinstance(permission, str):
                 if not permission.isnumeric():
                     raise web.HTTPBadRequest(
                         reason=f"Expected an integer value for permission, found: {permission!r}"

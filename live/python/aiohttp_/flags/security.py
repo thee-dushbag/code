@@ -28,7 +28,7 @@ class UsersAuthorizationPolicy(AbstractAuthorizationPolicy):
     async def permits(self, identity: str, permission: int, context=None):
         if user := await self.authorized_userid(identity):
             p = cast(int, user.permission)
-            return flags.flag_enabled(p, permission)
+            return flags.ison(p, permission)
 
     async def authorized_userid(self, identity: str):
         n, e = await get_user(identity)

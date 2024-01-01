@@ -1,22 +1,6 @@
 import enum as _enum
-
+from mpack import flags
 import attrs as _attrs
-
-
-def flag_on(value: int, flag: int) -> int:
-    return value | flag
-
-
-def flag_off(value: int, flag: int) -> int:
-    return value ^ flag
-
-
-def flag_enabled(value: int, flag: int) -> bool:
-    return (value & flag) == flag
-
-
-def flag_disabled(value: int, flag: int) -> bool:
-    return not flag_enabled(value, flag)
 
 
 class perm(_enum.IntFlag):
@@ -27,8 +11,7 @@ class perm(_enum.IntFlag):
     @classmethod
     def interpret(cls, perm: int):
         return {
-            name: flag_enabled(perm, int(flag))
-            for name, flag in cls.__members__.items()
+            name: flags.ison(perm, int(flag)) for name, flag in cls.__members__.items()
         }
 
 
@@ -53,16 +36,16 @@ class Person:
         print("-" * 50)
 
     def grant(self, _perm: int):
-        self.perm = flag_on(self.perm, _perm)
+        self.perm = flags.turnon(self.perm, _perm)
 
     def deny(self, _perm: int):
-        self.perm = flag_off(self.perm, _perm)
+        self.perm = flags.turnoff(self.perm, _perm)
 
     def can(self, _perm: int):
-        return flag_enabled(self.perm, _perm)
+        return flags.ison(self.perm, _perm)
 
     def cannot(self, _perm: int):
-        return flag_disabled(self.perm, _perm)
+        return flags.isoff(self.perm, _perm)
 
 
 me = Person("Simon Nganga", 6)
