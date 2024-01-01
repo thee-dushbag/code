@@ -79,7 +79,7 @@ class Solution:
                 max_score = score
         return max_score
 
-    _step: ty.Callable[[str], tuple[int, int]] = staticmethod(
+    _path_step: ty.Callable[[str], tuple[int, int]] = staticmethod(
         dict(
             N=(0, 1),
             S=(0, -1),
@@ -91,9 +91,32 @@ class Solution:
     def isPathCrossing(self, path: str) -> bool:
         current: tuple[int, int] = 0, 0
         passed: set[tuple[int, int]] = {current}
-        for step in map(self._step, path):
+        for step in map(self._path_step, path):
             current = current[0] + step[0], current[1] + step[1]
             if current in passed:
                 return True
             passed.add(current)
         return False
+
+    def findContentChildren(self, g: list[int], c: list[int]) -> int:
+        g.sort()
+        c.sort()
+        i = j = 0
+        gc, cc = len(g), len(c)
+        while j < cc and i < gc:
+            if c[j] >= g[i]:
+                i += 1
+            j += 1
+        return i
+
+    _climb_steps: list[int] = [1, 2]
+    _climb_size: int = 2
+
+    def climbStairs(self, n: int) -> int:
+        if n <= self._climb_size:
+            return self._climb_steps[n - 1]
+        nth = self.climbStairs(n - 2) + self.climbStairs(n - 1)
+        self.__class__._climb_size += 1
+        self._climb_steps.append(nth)
+        return nth
+
