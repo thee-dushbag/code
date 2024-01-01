@@ -21,7 +21,7 @@ class Perm(_enum.IntFlag):
     @classmethod
     def interpret(cls, perm):
         return {
-            name: _flg.flag_enabled(perm, value)
+            name: _flg.ison(perm, value)
             for name, value in cls.__members__.items()
             if value != cls.NONE
         }
@@ -81,13 +81,13 @@ class Database:
 
     def permitted(self, user: _md.Users, perm: int):
         p = cast(int, user.permission)
-        return _flg.flag_enabled(p, perm)
+        return _flg.ison(p, perm)
 
     def grant(self, user: _md.Users, perm: int):
-        self._perm(user, perm, _flg.flag_on)
+        self._perm(user, perm, _flg.turnon)
 
     def deny(self, user: _md.Users, perm: int):
-        self._perm(user, perm, _flg.flag_off)
+        self._perm(user, perm, _flg.turnoff)
 
 
 def hash_password(password: str, _fmt="utf-8"):

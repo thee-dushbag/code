@@ -60,7 +60,7 @@ async def update_perm(req: web.Request):
     perm = _db.Perm.NONE
     for v in values:
         if v is not None:
-            perm = flags.flag_on(perm, v)
+            perm = flags.turnon(perm, v)
     db = _db.get_db(req)
     user.permission = perm
     db.update_user(user)
