@@ -1,5 +1,5 @@
 {
-  "python.analysis.extraPaths": ["./lib"],
+  "python.analysis.extraPaths": ["~/Content/code/lib"],
   "files.associations": {
     "*.mako": "mako",
     "*.html": "html",
