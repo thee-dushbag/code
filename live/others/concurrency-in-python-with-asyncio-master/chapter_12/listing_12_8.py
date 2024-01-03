@@ -1,15 +1,14 @@
+import dataclasses as dt
 import asyncio
-from asyncio import PriorityQueue, Queue
-from dataclasses import dataclass, field
 
 
-@dataclass(order=True)
+@dt.dataclass(order=True)
 class WorkItem:
     priority: int
-    data: str = field(compare=False)
+    data: str = dt.field(compare=False)
 
 
-async def worker(queue: Queue):
+async def worker(queue: asyncio.Queue):
     while not queue.empty():
         work_item: WorkItem = await queue.get()
         print(f"Processing work item {work_item}")
@@ -17,8 +16,7 @@ async def worker(queue: Queue):
 
 
 async def main():
-    priority_queue = PriorityQueue()
-
+    priority_queue = asyncio.PriorityQueue()
     work_items = [
         WorkItem(3, "Lowest priority"),
         WorkItem(3, "Lowest priority second"),
@@ -35,4 +33,5 @@ async def main():
     await asyncio.gather(priority_queue.join(), worker_task)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
