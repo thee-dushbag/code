@@ -18,13 +18,11 @@ async def worker(queue: Queue):
 
 async def main():
     priority_queue = PriorityQueue()
-
     work_items = [
         WorkItem(3, "Lowest priority"),
         WorkItem(2, "Medium priority"),
         WorkItem(1, "High priority"),
     ]
-
     worker_task = asyncio.create_task(worker(priority_queue))
 
     for work in work_items:
@@ -33,4 +31,5 @@ async def main():
     await asyncio.gather(priority_queue.join(), worker_task)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
