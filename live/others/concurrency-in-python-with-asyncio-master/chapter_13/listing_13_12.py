@@ -1,27 +1,26 @@
 import asyncio
-from asyncio import StreamReader, StreamWriter
-from asyncio.subprocess import Process
 
 
-async def consume_and_send(text_list, stdout: StreamReader, stdin: StreamWriter):
+async def consume_and_send(
+    text_list, stdout: asyncio.StreamReader, stdin: asyncio.StreamWriter
+):
     for text in text_list:
-        line = await stdout.read(2048)
-        print(line)
+        line = await stdout.read(50)
+        print(line.decode())
         stdin.write(text.encode())
         await stdin.drain()
 
 
 async def main():
-    program = ["python3", "listing_13_13.py"]
-    process: Process = await asyncio.create_subprocess_exec(
+    program = "python3", "listing_13_11.py"
+    process = await asyncio.create_subprocess_exec(
         *program, stdout=asyncio.subprocess.PIPE, stdin=asyncio.subprocess.PIPE
     )
-
-    text_input = ["one\n", "two\n", "three\n", "four\n", "quit\n"]
-
-    await asyncio.gather(
-        consume_and_send(text_input, process.stdout, process.stdin), process.wait()
-    )
+    assert process.stdin and process.stdout
+    text_input = "Simon\n", "Nganga\n", "Njeri\n", "Faith\n", "\n"
+    consume_feed = consume_and_send(text_input, process.stdout, process.stdin)
+    await asyncio.gather(consume_feed, process.wait())
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

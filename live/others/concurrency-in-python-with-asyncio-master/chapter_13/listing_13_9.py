@@ -1,2 +1,2 @@
-username = input("Please enter a username: ")
-print(f"Your username is {username}")
+name = input("Please enter your name: ")
+print(f"Hello {name}, how was your day?")
