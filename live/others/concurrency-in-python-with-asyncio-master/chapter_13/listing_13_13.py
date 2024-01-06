@@ -1,10 +1,6 @@
-import time
-from random import randrange
+import time, random
 
-user_input = ""
-
-while user_input != "quit":
-    user_input = input("Enter text to echo: ")
-    for i in range(randrange(10)):
+while name := input("Name: "):
+    for _ in range(random.randrange(1, 11)):
         time.sleep(0.5)
-        print(user_input)
+        print(f"  Hello {name}, how was your day?")

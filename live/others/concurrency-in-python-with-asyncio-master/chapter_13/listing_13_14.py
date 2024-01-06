@@ -1,16 +1,18 @@
 import asyncio
-from asyncio import Event, StreamReader, StreamWriter
-from asyncio.subprocess import Process
 
 
-async def output_consumer(input_ready_event: Event, stdout: StreamReader):
-    while (data := await stdout.read(1024)) != b"":
-        print(data)
-        if data.decode().endswith("Enter text to echo: "):
+async def output_consumer(
+    input_ready_event: asyncio.Event, stdout: asyncio.StreamReader
+):
+    while data := await stdout.read(2048):
+        print(data.decode())
+        if data.endswith(b"Name: "):
             input_ready_event.set()
 
 
-async def input_writer(text_data, input_ready_event: Event, stdin: StreamWriter):
+async def input_writer(
+    text_data, input_ready_event: asyncio.Event, stdin: asyncio.StreamWriter
+):
     for text in text_data:
         await input_ready_event.wait()
         stdin.write(text.encode())
@@ -19,14 +21,14 @@ async def input_writer(text_data, input_ready_event: Event, stdin: StreamWriter)
 
 
 async def main():
-    program = ["python3", "listing_13_13.py"]
-    process: Process = await asyncio.create_subprocess_exec(
+    program = "python3", "listing_13_13.py"
+    process = await asyncio.create_subprocess_exec(
         *program, stdout=asyncio.subprocess.PIPE, stdin=asyncio.subprocess.PIPE
     )
 
     input_ready_event = asyncio.Event()
-
-    text_input = ["one\n", "two\n", "three\n", "four\n", "quit\n"]
+    assert process.stdin and process.stdout
+    text_input = "Simon\n", "Nganga\n", "Faith\n", "Njeri\n", "\n"
 
     await asyncio.gather(
         output_consumer(input_ready_event, process.stdout),
@@ -35,4 +37,5 @@ async def main():
     )
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

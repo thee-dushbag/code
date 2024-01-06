@@ -1,6 +1,5 @@
 import asyncio
 from asyncio import StreamReader
-from asyncio.subprocess import Process
 
 
 async def write_output(prefix: str, stdout: StreamReader):
@@ -9,15 +8,17 @@ async def write_output(prefix: str, stdout: StreamReader):
 
 
 async def main():
-    program = ["ls", "-la"]
-    process: Process = await asyncio.create_subprocess_exec(
+    program: tuple[str, str] = "ls", "-la"
+    process = await asyncio.create_subprocess_exec(
         *program, stdout=asyncio.subprocess.PIPE
     )
+    assert process.stdout is not None
     print(f"Process pid is: {process.pid}")
     stdout_task = asyncio.create_task(write_output(" ".join(program), process.stdout))
 
-    return_code, _ = await asyncio.gather(process.wait(), stdout_task)
-    print(f"Process returned: {return_code}")
+    *return_code, _, _ = await asyncio.gather(process.wait(), stdout_task)
+    print(f"Processes returned: {str(return_code)[1:-1]}")
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

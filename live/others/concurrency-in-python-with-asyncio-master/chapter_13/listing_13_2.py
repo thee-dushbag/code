@@ -15,4 +15,5 @@ async def main():
         print(status_code)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

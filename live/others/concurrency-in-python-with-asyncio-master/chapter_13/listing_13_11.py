@@ -1,5 +1,4 @@
-user_input = ""
-
-while user_input != "quit":
-    user_input = input("Enter text to echo: ")
-    print(user_input)
+while True:
+    name = input("Please enter your name: ")
+    if not name: break
+    print(f"Hello {name}, how was your day?")
