@@ -1,8 +1,5 @@
-import functools
-import selectors
-
-from chapter_14.listing_14_8 import CustomFuture
-
+import functools, selectors
+from listing_14_8 import CustomFuture
 
 class EventLoop:
     def __init__(self):

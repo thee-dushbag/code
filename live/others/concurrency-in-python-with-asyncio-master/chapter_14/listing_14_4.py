@@ -1,10 +1,7 @@
-import asyncio
-from asyncio import StreamReader, StreamWriter
-
-import uvloop
+import asyncio, uvloop
 
 
-async def connected(reader: StreamReader, writer: StreamWriter):
+async def connected(reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
     line = await reader.readline()
     writer.write(line)
     await writer.drain()
@@ -17,5 +14,8 @@ async def main():
     await server.serve_forever()
 
 
-uvloop.install()  # A
-asyncio.run(main())
+if __name__ == "__main__":
+    try:
+        uvloop.run(main())
+    except KeyboardInterrupt:
+        ...

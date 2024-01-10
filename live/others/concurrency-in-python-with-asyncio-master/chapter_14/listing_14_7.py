@@ -8,9 +8,18 @@ async def say_goodbye():
 
 async def meet_and_greet():
     await say_hello()
+    print("How have you been?")
+    print("I've been good, you?")
+    print("Me too.")
     await say_goodbye()
 
 
-coro = meet_and_greet()
+def run(coro):
+    try:
+        coro.send(None)
+    except StopIteration:
+        ...
 
-coro.send(None)
+
+if __name__ == "__main__":
+    run(meet_and_greet())
