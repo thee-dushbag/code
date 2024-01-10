@@ -1,4 +1,4 @@
-import asyncio
+import asyncio, time
 
 
 class TaskRunner:
@@ -10,17 +10,18 @@ class TaskRunner:
         self.tasks.append(func)
 
     async def _run_all(self):
-        awaitable_tasks = []
-
+        atasks = []
         for task in self.tasks:
-            if asyncio.iscoroutinefunction(task):
-                awaitable_tasks.append(asyncio.create_task(task()))
-            elif asyncio.iscoroutine(task):
-                awaitable_tasks.append(asyncio.create_task(task))
-            else:
-                self.loop.call_soon(task)
+            task = task() if asyncio.iscoroutinefunction(task) else task
+            atasks.append(
+                asyncio.create_task(task)
+                if asyncio.iscoroutine(task)
+                else asyncio.to_thread(task)
+            )
+        await asyncio.gather(*atasks)
 
-        await asyncio.gather(*awaitable_tasks)
+    def reset(self):
+        self.tasks.clear()
 
     def run(self):
         self.loop.run_until_complete(self._run_all())
@@ -30,6 +31,8 @@ if __name__ == "__main__":
 
     def regular_function():
         print("Hello from a regular function!")
+        time.sleep(3)
+        print("Regular finished sleeping!")
 
     async def coroutine_function():
         print("Running coroutine, sleeping!")
@@ -40,5 +43,4 @@ if __name__ == "__main__":
     runner.add_task(coroutine_function)
     runner.add_task(coroutine_function())
     runner.add_task(regular_function)
-
     runner.run()

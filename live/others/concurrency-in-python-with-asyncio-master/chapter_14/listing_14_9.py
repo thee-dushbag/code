@@ -12,7 +12,7 @@ while True:
         print("Future is not done...")
         if i == 1:
             print("Setting future value...")
-            future.set_result("Finished!")
+            future.set_result("Boooooyaaaa!")
         i = i + 1
     except StopIteration as si:
         print(f"Value is: {si.value}")

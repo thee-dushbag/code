@@ -1,5 +1,4 @@
 import asyncio
-
 from util import delay
 
 
@@ -20,10 +19,11 @@ async def create_tasks_sleep():
 
 
 async def main():
-    print("--- Testing without asyncio.sleep(0) ---")
+    print("--- Testing without sleep ---")
     await create_tasks_no_sleep()
     print("--- Testing with asyncio.sleep(0) ---")
     await create_tasks_sleep()
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

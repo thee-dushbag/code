@@ -1,16 +1,22 @@
-class CustomFuture:
+import typing as ty
+
+T = ty.TypeVar("T")
+__all__ = ("CustomFuture",)
+
+
+class CustomFuture(ty.Generic[T]):
     def __init__(self):
-        self._result = None
+        self._result: T = None  # type: ignore
         self._is_finished = False
         self._done_callback = None
 
-    def result(self):
+    def result(self) -> T:
         return self._result
 
     def is_finished(self):
         return self._is_finished
 
-    def set_result(self, result):
+    def set_result(self, result: T):
         self._result = result
         self._is_finished = True
         if self._done_callback:

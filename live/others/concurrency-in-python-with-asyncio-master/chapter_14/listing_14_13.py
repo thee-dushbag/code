@@ -1,7 +1,6 @@
 import socket
-
-from chapter_14.listing_14_11 import CustomTask
-from chapter_14.listing_14_12 import EventLoop
+from listing_14_11 import CustomTask
+from listing_14_12 import EventLoop
 
 
 async def read_from_client(conn, loop: EventLoop):  # A
@@ -32,5 +31,6 @@ async def main(loop: EventLoop):
     await listen_for_connections(server_socket, loop)
 
 
-event_loop = EventLoop()  # C
-event_loop.run(main(event_loop))
+if __name__ == "__main__":
+    event_loop = EventLoop()
+    event_loop.run(main(event_loop))
