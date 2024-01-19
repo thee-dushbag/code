@@ -5,4 +5,4 @@
 3. [Statements](./statements.md)
 4. [Table Constructor](./table-constructor.md)
 5. [Functions](./functions.md)
-6. [More Functions]('./more-functions.md)
+6. [More Functions](./more-functions.md)
