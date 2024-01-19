@@ -1,0 +1,7 @@
+FROM mailer-base:0.6
+ADD ["./live-impl", "${APPROOT}"]
+ENV MAILER_HOST="192.168.0.100" \
+    MAILER_PORT="8080"
+USER example:example
+RUN chmod a+x "${APPROOT}/${APP}"
+CMD ["my.app.mailer@gmail.com", "theedushbag@gmail.com"]
