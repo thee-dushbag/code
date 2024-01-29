@@ -2,6 +2,7 @@
   "python.analysis.extraPaths": ["~/Content/code/lib"],
   "files.associations": {
     "*.mako": "mako",
+    "*.df": "dockerfile",
     "*.html": "html",
     "ostream": "cpp",
     "iosfwd": "cpp",
@@ -93,7 +94,11 @@
     "stdfloat": "cpp",
     "strstream": "cpp",
     "shared_mutex": "cpp",
-    "signal.h": "c"
+    "signal.h": "c",
+    "lox.h": "c",
+    "time.h": "c",
+    "stddef.h": "c",
+    "ctype.h": "c"
   },
 
   "emmet.includeLanguages": {
