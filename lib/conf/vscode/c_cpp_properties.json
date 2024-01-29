@@ -1,12 +1,18 @@
 {
-  "configurations": [
-    {
-      "name": "Linux",
-      "includePath": ["${workspaceFolder}/**", "~/Content/code/lib/include"],
-      "defines": ["AUTHOR=Simon Nganga"],
-      "compilerPath": "/usr/bin/g++",
-      "configurationProvider": "ms-vscode.makefile-tools"
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "~/Content/code/lib/include",
+                "${workspaceFolder}/c_lox/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "cStandard": "c23",
+            "cppStandard": "c++23"
+        }
+    ],
+    "version": 4
 }
