@@ -98,7 +98,9 @@
     "lox.h": "c",
     "time.h": "c",
     "stddef.h": "c",
-    "ctype.h": "c"
+    "ctype.h": "c",
+    "*.inc": "cpp",
+    "version": "cpp"
   },
 
   "emmet.includeLanguages": {
