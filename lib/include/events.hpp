@@ -85,7 +85,7 @@ namespace snn::events {
         std::vector<std::future<void>> futs{targets.size()};
         for (auto &target: targets)
             futs.push_back(std::async(std::launch::async,
-            [&](){ (*target)(event); }));
+            [&]{ (*target)(event); }));
     }
 
     void event_emitter::drop(const event_type& event) {
