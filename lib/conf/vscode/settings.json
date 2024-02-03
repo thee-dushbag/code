@@ -100,7 +100,8 @@
     "stddef.h": "c",
     "ctype.h": "c",
     "*.inc": "cpp",
-    "version": "cpp"
+    "version": "cpp",
+    "internet": "cpp"
   },
 
   "emmet.includeLanguages": {

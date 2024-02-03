@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "~/Content/code/lib/include",
-                "${workspaceFolder}/c_lox/include"
+                "${workspaceFolder}/c_lox/include",
+                "/usr/include/c++/13.2.1"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
