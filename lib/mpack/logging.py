@@ -41,7 +41,7 @@ class Theme:
 
 
 # Default Values
-_DEFAULT_LOG_LEVEL = Level.INFO | Level.CRITICAL | Level.ERROR
+_DEFAULT_LOG_LEVEL = Level.ALL ^ Level.DEBUG
 _DEFAULT_LOG_OUTPUT = lambda msg: print(msg, end="")
 staletheme = Theme(
     info="", debug="", critical="", error="", head="", text="", none="", state=""
@@ -125,11 +125,19 @@ class Logger:
     def state(self, state: str):
         return State(self, state)
 
+    def mute(self) -> int:
+        level = self.level
+        self.level = Level.NONE
+        return level
+
+    def unmute(self, level: int | None = None, /):
+        self.level = Level.ALL if level is None else level
+
     error = _create_loglevel("ERROR")
     info = _create_loglevel("INFO")
     warn = critical = _create_loglevel("CRITICAL")
     debug = _create_loglevel("DEBUG")
-    _loggers = error, info, warn, debug, critical
+    _loggers = {error, info, warn, debug}
 
 
 # Default logger
