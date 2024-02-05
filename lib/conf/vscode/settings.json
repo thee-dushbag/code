@@ -101,7 +101,11 @@
     "ctype.h": "c",
     "*.inc": "cpp",
     "version": "cpp",
-    "internet": "cpp"
+    "internet": "cpp",
+    "forward_list": "cpp",
+    "executor": "cpp",
+    "io_context": "cpp",
+    "netfwd": "cpp"
   },
 
   "emmet.includeLanguages": {
