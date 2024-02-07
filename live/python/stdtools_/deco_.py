@@ -16,21 +16,8 @@ class API_Context:
             return self.data.pop()
         return
 
-    def source(self, func: Callable):
-        self.add(self._source(func)())
-
-    def _source(self, func: Callable):
-        def wrap(*a: Any, **k: Any):
-            return func(*a, **k)
-
-        return wrap
-
     def source_call(self, func: Callable):
-        def wrap(*a: Any, **k: Any):
-            val = self._source(func)(*a, **k)
-            self.add(val)
-
-        return wrap
+        return lambda *a, **k: self.add(func(*a, **k))
 
 
 context = API_Context()
