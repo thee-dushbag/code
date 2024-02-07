@@ -76,7 +76,7 @@ def main():
 
 
 if __name__ == "__main__":
-    logger.level = Level.NONE
     logger.turnon(Level.INFO)
     logger.turnon(Level.WARN)
+    logger.mute()
     main()
