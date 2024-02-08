@@ -88,10 +88,41 @@ class FirstLastName(click.ParamType):
         return Name(first, last)
 
 
-@app.command('names')
+@app.command("names")
 @click.argument("target", type=FirstLastName())
 def your_name(name: Name):
     click.echo(f"Your names are {name.first!r} and {name.last!r}.")
+
+
+Password, User = str, str
+_users: dict[User, Password] = dict(
+    simon="SimonNganga",
+    faith="FaithNjeri",
+    darius="KimaniKim",
+)
+
+
+@app.command
+@click.option("--username", "-U", type=str, prompt=True)
+@click.option("--password", "-P", type=str, prompt=True, hide_input=True)
+def login(username: str, password: str):
+    if passwd := _users.get(username):
+        if passwd == password:
+            return print("Login Successful!")
+        return print("Provided password is incorrect!")
+    print("No such user was found!")
+
+
+@app.command
+@click.option("--name", "-n", type=str, prompt=True)
+# @click.option(
+#     "--password", "-p", type=str, prompt=True, confirmation_prompt=True, hide_input=True
+# )
+@click.password_option("--password", "-p")
+def signup(name: str, password: str):
+    if name in _users:
+        return print("Username already taken!!!")
+    print("Signup was Successful!")
 
 
 if __name__ == "__main__":
