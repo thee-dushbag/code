@@ -1,6 +1,54 @@
+from dataclasses import dataclass
+from mpack.logging import logger, Level as LogLevel
 import click
 
-app = click.Group()
+logger.mute()
+_log_levels = ["error", "warn", "info", "debug", "all"]
+
+
+def _log_level(_levels: list[str], /):
+    log_level = LogLevel.NONE
+    for _level in map(str.upper, _levels):
+        level: int = getattr(LogLevel, _level)
+        log_level |= level
+    return log_level
+
+
+def log_level(ctx: click.Context, param: click.Parameter, levels: list[str]):
+    if ctx.resilient_parsing:
+        return LogLevel.NONE
+    return _log_level(levels)
+
+
+@click.group
+@click.option("+d/-d", "debug", help="Turn debugging on or off")
+@click.option("--shutup", help="Tell Logger to shutup.", is_flag=True)
+@click.option(
+    "level",
+    "--log",
+    "-L",
+    multiple=True,
+    callback=log_level,
+    type=click.Choice(_log_levels),
+)
+@click.pass_context
+def app(ctx: click.Context, debug: bool, level: int, shutup: bool):
+    state: State = ctx.obj
+    state.shutup = shutup
+    logger.unmute(level)
+
+
+@app.command
+@click.pass_context
+def log(ctx: click.Context):
+    state: State = ctx.obj
+    if state.shutup:
+        return
+    logger.debug("Critism is a chance to grow!")
+    logger.info("Infomation is knowledge.")
+    logger.warn("Beware of your enemies!!")
+    logger.error("Some mistakes cannot me undone!!!")
+
 
 @app.command
 @click.option(
@@ -69,5 +117,11 @@ def data(gender: str, name: str):
     click.echo("%s, you are a %r" % (name, gender))
 
 
+@dataclass
+class State:
+    shutup: bool = False
+
+
 if __name__ == "__main__":
-    app()
+    app.invoke_without_command = True
+    app(obj=State())

@@ -1,11 +1,29 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import BinaryIO
 import click
 
 
-@click.group
+def print_version(ctx: click.Context, param: click.Parameter, value: bool):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo("Version 1.23:5f")
+    ctx.exit()
+
+
+@click.group(invoke_without_command=True)
+@click.option(
+    "-V",
+    "--version",
+    is_flag=True,
+    default=False,
+    is_eager=True,
+    expose_value=False,
+    callback=print_version,
+    help="Show application version",
+)
 def app():
-    ...
+    "Learning Click!!!"
 
 
 @app.command("init")
@@ -13,10 +31,74 @@ def init_db():
     click.echo("Initializing the database.")
 
 
+def abort_if_false(ctx: click.Context, param: click.Parameter, value: bool):
+    if not value:
+        ctx.abort()
+
+
 @click.command("del")
-@click.confirmation_option()
+@click.option(
+    "--yes",
+    "-y",
+    is_flag=True,
+    callback=abort_if_false,
+    expose_value=False,
+    prompt="Are you sure?",
+    help="Confirm deletion of database.",
+)
+# @click.confirmation_option("--yes", "-y")
 def delete_db():
-    click.echo("Dropping the database.")
+    from time import sleep
+    from random import random
+
+    with click.progressbar(range(100), color=True, label="Dropping") as bar:
+        for _ in bar:
+            sleep(random() / 4)
+
+
+@app.command
+@click.option(
+    "-w",
+    "--word",
+    envvar="MAGIC_WORD",  # Environment variable to get the value from if not passed on cmd
+    type=str,
+    default="",
+)
+def magic_word(word: str):
+    if word.lower() in ("please", "excuse", "thanks"):
+        return print("Congratulations, you passed!!!")
+    print("Try again, hint: be more polite!")
+
+
+class Names(click.types.StringParamType):
+    envvar_list_splitter: str = ","
+    # def split_envvar_value(self, names: str) -> Sequence[str]:
+    #     return names.split(",")
+
+
+title = lambda _, __, names: map(str.lower, names)
+greet = lambda name: f"Hello {name}, how was your day?"
+
+
+@app.command
+@click.option(
+    "--names", "-n", multiple=True, callback=title, type=Names(), envvar="GREET_NAMES"
+)
+def greet_all(names: list[str]):
+    for name in names:
+        print(greet(name))
+
+
+@app.command
+@click.argument("sources", nargs=-1, type=click.File("rb"))  # Variadic arguments
+@click.argument("destination", type=click.File("wb"))
+@click.option(
+    "--chunk", "-s", "chunk_size", type=click.IntRange(64, 2**31, clamp=True)
+)
+def stream_to(sources: list[BinaryIO], destination: BinaryIO, chunk_size: int):
+    for source in sources:
+        while chunk := source.read(chunk_size):
+            destination.write(chunk)
 
 
 @app.command
@@ -116,8 +198,11 @@ def login(username: str, password: str):
 @app.command
 @click.option("--name", "-n", type=str, prompt=True)
 # @click.option(
-#     "--password", "-p", type=str, prompt=True, confirmation_prompt=True, hide_input=True
-# )
+#    "--password",
+#    "-p", type=str,
+#    prompt=True,
+#    confirmation_prompt=True,
+#    hide_input=True)
 @click.password_option("--password", "-p")
 def signup(name: str, password: str):
     if name in _users:
