@@ -13,6 +13,20 @@ class Color(QWidget):
         self.setPalette(palette)
 
 
+colors = (
+    "red",
+    "orange",
+    "green",
+    "blue",
+    "yellow",
+    "indigo",
+    "purple",
+    "orangered",
+    "salmon",
+    "wheat",
+)
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -20,20 +34,7 @@ class MainWindow(QMainWindow):
         tabs = QTabWidget()
         tabs.setTabPosition(QTabWidget.West)
         tabs.setMovable(True)
-        for n, color in enumerate(
-            (
-                "red",
-                "orange",
-                "green",
-                "blue",
-                "yellow",
-                "indigo",
-                "purple",
-                "orangered",
-                "salmon",
-                "wheat",
-            )
-        ):
+        for _, color in colors:
             tabs.addTab(Color(color), color)
         self.setCentralWidget(tabs)
 

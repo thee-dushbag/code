@@ -13,9 +13,11 @@ auto sleep_time = 2s;
 
 template<typename ...T>
 void print(const T&...ts) {
-  gmut.lock();
+  struct Lock {
+    Lock() { gmut.lock(); }
+    ~Lock() { gmut.unlock(); }
+  } _;
   (std::cout << ... << ts) << '\n';
-  gmut.unlock();
 }
 
 std::vector<std::string> split(std::string str, char sep) {
