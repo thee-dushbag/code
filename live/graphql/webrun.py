@@ -2,7 +2,7 @@ from os import getenv
 from sys import argv
 
 from aiohttp import web
-from main import application
+from .main import application
 from uvloop import install as install_uvloop
 
 PORT = 5052

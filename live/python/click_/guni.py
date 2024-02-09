@@ -1,8 +1,8 @@
-from dataclasses import dataclass
 from mpack.logging import logger, Level as LogLevel
+from dataclasses import dataclass
+from mpack import flags
 import click
 
-logger.mute()
 _log_levels = ["error", "warn", "info", "debug", "all"]
 
 
@@ -20,8 +20,26 @@ def log_level(ctx: click.Context, param: click.Parameter, levels: list[str]):
     return _log_level(levels)
 
 
+def add_level(log_level: str, key: str = "level"):
+    def callback(ctx: click.Context, param: click.Parameter, value: bool):
+        level: int = getattr(LogLevel, log_level.upper())
+        masker = flags.turnon if value else flags.turnoff
+        ctx.params[key] = masker(ctx.params[key], level)
+
+    return callback
+
+
+def log_option(char: str, name: str, key: str = "level"):
+    return click.option(
+        f"+{char}/-{char}",
+        name,
+        help=f"Turn on {name} log level.",
+        callback=add_level(name, key),
+        expose_value=False,
+    )
+
+
 @click.group
-@click.option("+d/-d", "debug", help="Turn debugging on or off")
 @click.option("--shutup", help="Tell Logger to shutup.", is_flag=True)
 @click.option(
     "level",
@@ -30,9 +48,14 @@ def log_level(ctx: click.Context, param: click.Parameter, levels: list[str]):
     multiple=True,
     callback=log_level,
     type=click.Choice(_log_levels),
+    is_eager=True,
 )
+@log_option("d", "debug")
+@log_option("i", "info")
+@log_option("w", "warn")
+@log_option("e", "error")
 @click.pass_context
-def app(ctx: click.Context, debug: bool, level: int, shutup: bool):
+def app(ctx: click.Context, level: int, shutup: bool):
     state: State = ctx.obj
     state.shutup = shutup
     logger.unmute(level)
@@ -43,10 +66,15 @@ def app(ctx: click.Context, debug: bool, level: int, shutup: bool):
 def log(ctx: click.Context):
     state: State = ctx.obj
     if state.shutup:
-        return
-    logger.debug("Critism is a chance to grow!")
+        print("You don't have to be rude!")
+        logger.mute()
+    print("TalkingAlot")
+    logger.debug("Silence ia a virtue!")
+    print("Facts")
     logger.info("Infomation is knowledge.")
+    print("Critic")
     logger.warn("Beware of your enemies!!")
+    print("Fatality")
     logger.error("Some mistakes cannot me undone!!!")
 
 
@@ -123,5 +151,6 @@ class State:
 
 
 if __name__ == "__main__":
+    logger.mute()
     app.invoke_without_command = True
     app(obj=State())
