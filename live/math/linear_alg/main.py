@@ -85,7 +85,7 @@ def main7():
     print(z.evaluate(a.magnitude()) == z.evaluate(z.absolute(a)))
 
 
-def main():
+def main8():
     a = Vector([1, 2, 3])
     b = Vector([4, 5, 6])
     ab = cross_product_algebraic(a, b)
@@ -101,6 +101,50 @@ def main():
     scale = dot_product_algebraic(a, pb)
     print(scale / a.magnitude)
     print(scale / pb.magnitude)
+
+
+import math
+
+
+def matvecmul(mat: list[list[float]] | list[Vector], vec: list[float] | Vector):
+    assert len(mat[0]) == len(vec)
+    result = []
+    for v1 in mat:
+        dot = dot_product_algebraic(Vector(v1), Vector(vec))
+        result.append(dot)
+    return Vector(result)
+
+
+Degrees = float
+
+def matscalarmul(scalar: float, mat: list[list[float]] | list[Vector]):
+    return [Vector(scalar * coord for coord in v) for v in mat]
+
+def rotateby(angle: Degrees):
+    angle = math.radians(angle)
+    cos = math.cos(angle)
+    sin = math.sin(angle)
+    return [Vector([cos, sin]), Vector([-sin, cos])]
+
+
+def main():
+    # mat = [Vector([0, -1]), Vector([1, 0])]
+    # mat = [Vector([0, 0.25]), Vector([-0.25, 0])]
+    # v1 = Vector([1, 0])
+    # v2 = matvecmul(mat, v1)
+    # print(v1, "->", v2)
+    # theta = vector_angle(v1, v2)
+    # print("Angle:", theta)
+    # mat60 = rotateby(-45)
+    # v3 = matvecmul(mat60, v1)
+    # print(mat60)
+    # print(v1, "/ 60 /", v3, ":", vector_angle(v1, v3))
+    v1 = Vector([5, 6])
+    mat = rotateby(-30)
+    v2 = matvecmul(mat, v1)
+    print(v1, v2, v1.magnitude, v2.magnitude)
+    angle = vector_angle(v1, v2)
+    print(angle)
 
 
 if __name__ == "__main__":

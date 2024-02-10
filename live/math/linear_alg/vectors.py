@@ -44,7 +44,7 @@ def _assert_same(a: Vector, b: Vector):
 
 def dot_product_algebraic(v: Vector, u: Vector, /) -> float:
     _assert_same(v, u)
-    return round(sum(a * b for a, b in zip(v, u)), 7) or 0.0
+    return sum(a * b for a, b in zip(v, u))
 
 
 def dot_product_geometric(a: Vector, b: Vector, /) -> float:
@@ -58,7 +58,7 @@ def dot_product_geometric(a: Vector, b: Vector, /) -> float:
 def vector_angle(v: Vector, u: Vector, /) -> float:
     dot = dot_product_algebraic(v, u)
     mag = v.magnitude * u.magnitude
-    return math.acos(dot / mag)
+    return math.degrees(math.acos(dot / mag))
 
 
 def _assert3d(a: Vector, b: Vector):
