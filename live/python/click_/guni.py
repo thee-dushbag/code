@@ -111,14 +111,14 @@ _ = "<NO_NAME>"
 
 
 @app.command
-@click.option("--name", "-n", nargs=2)
+@click.option("--name", "-n", nargs=2, default=(_, _))
 @click.option("--brother", "name", flag_value=("Simon", "Nganga"), type=tuple)
 @click.option("--friend", "name", flag_value=("Darius", "Kimani"), type=tuple)
 @click.option("--sister", "name", flag_value=("Faith", "Njeri"), type=tuple)
 @click.option("--mum", "name", flag_value=("Lydia", "Wanjiru"), type=tuple)
 @click.option("--dad", "name", flag_value=("Charles", "Njoroge"), type=tuple)
 def name(name: tuple[str, str] | None):
-    name = (_, _) if name is None else name
+    # name = (_, _) if name is None else name
     click.echo("Your names are %r and %r." % name)
 
 
