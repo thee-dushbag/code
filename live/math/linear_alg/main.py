@@ -8,6 +8,9 @@ from vectors import (
     cross_product_geometric,
     project,
     is_parallel,
+    rotateby,
+    matscalarmul,
+    matvecmul
 )
 
 
@@ -103,28 +106,7 @@ def main8():
     print(scale / pb.magnitude)
 
 
-import math
 
-
-def matvecmul(mat: list[list[float]] | list[Vector], vec: list[float] | Vector):
-    assert len(mat[0]) == len(vec)
-    result = []
-    for v1 in mat:
-        dot = dot_product_algebraic(Vector(v1), Vector(vec))
-        result.append(dot)
-    return Vector(result)
-
-
-Degrees = float
-
-def matscalarmul(scalar: float, mat: list[list[float]] | list[Vector]):
-    return [Vector(scalar * coord for coord in v) for v in mat]
-
-def rotateby(angle: Degrees):
-    angle = math.radians(angle)
-    cos = math.cos(angle)
-    sin = math.sin(angle)
-    return [Vector([cos, sin]), Vector([-sin, cos])]
 
 
 def main():
