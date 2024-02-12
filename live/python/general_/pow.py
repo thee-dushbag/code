@@ -148,7 +148,7 @@ def average(times: list[TimeitResult]) -> tuple[float, float]:
 
 def pow_benchmarks():
     from sys import set_int_max_str_digits  # type: ignore
-    from pypow import pow as cpow
+    # from pypow import pow as cpow
 
     set_int_max_str_digits(10000)
     from tqdm import tqdm
@@ -159,13 +159,13 @@ def pow_benchmarks():
         )
 
     # basic_pow = timer(_basic_pow)
-    cpow_exp = timer(cpow)
+    # cpow_exp = timer(cpow)
     int_exp_pow = timer(int_exp)
     int_exp_gpow = timer(int_exp_growing)
     # power_pow = timer(power)
     builtin_pow = timer(pow)
     bpow_avg, bpow_total = run_test(builtin_pow)
-    cpow_avg, cpow_total = run_test(cpow_exp)
+    # cpow_avg, cpow_total = run_test(cpow_exp)
     iexp_gavg, iexp_gtotal = run_test(int_exp_gpow)
     iexp_avg, iexp_total = run_test(int_exp_pow)
     # power_pow_total, power_pow_avg = run_test(power_pow)
@@ -173,7 +173,7 @@ def pow_benchmarks():
     print(
         f"BuiltinPow took a total of {bpow_total} total and {bpow_avg} average seconds."
     )
-    print(f"C++Pow took a total of {cpow_total} total and {cpow_avg} average seconds.")
+    # print(f"C++Pow took a total of {cpow_total} total and {cpow_avg} average seconds.")
     # print(f"PowerFloat took a total of {power_pow_total} total and {power_pow_avg} average seconds.")
     print(
         f"IntExpPowGrowing took a total of {iexp_gtotal} total and {iexp_gavg} average seconds."
