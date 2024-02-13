@@ -1,4 +1,4 @@
-import json
+import json, uvloop
 from os import getenv
 from pathlib import Path
 from typing import Any
@@ -6,9 +6,7 @@ from typing import Any
 from aiohttp import hdrs, web
 from faker import Faker
 from mpack.aiohttp_helpers import cors_setup, dev_setup
-from uvloop import install as install_uvloop
 
-install_uvloop()
 CUR_DIR = Path(__file__).parent
 STATIC_PATH = CUR_DIR / "static"
 FONTS_DIR = Path.home() / ".local" / "share" / "fonts"
@@ -90,4 +88,5 @@ async def app_factory():
 if __name__ == "__main__":
     HOST = getenv("STATICS_HOST")
     PORT = int(getenv("STATICS_PORT") or 9944)
-    web.run_app(app_factory(), host=HOST, port=PORT)
+    loop = uvloop.new_event_loop()
+    web.run_app(app_factory(), host=HOST, port=PORT, loop=loop)
