@@ -7,7 +7,7 @@ TARGET=main:app_factory
 all: serve
 
 run_app:
-	py main
+	python3 main
 
 serve:
 	gunicorn ${BIND} ${OPTIONS} ${WCLASS} ${TARGET}
