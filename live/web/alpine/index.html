@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      defer
+      src="http://0.0.0.0:9944/static/alpine/alpine.min.js"
+    ></script>
+    <script defer src="./script.js"></script>
+    <title>Testing Alpine</title>
+  </head>
+  <body>
+    <div x-data="appdata">
+      <h1 x-text="heading"></h1>
+      <input
+        x-data="_"
+        type="text"
+        x-model="_heading_buffer"
+        :placeholder="_placeholder"
+        x-on:keydown.enter="setHeading"
+      />
+      <button x-show="_._show_update" @click="setHeading">Update</button>
+      <!-- <button x-on:click="setHeading">Update</button> -->
+    </div>
+  </body>
+</html>
