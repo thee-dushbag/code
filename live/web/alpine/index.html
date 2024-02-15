@@ -3,16 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="./script.js"></script>
     <script
       defer
       src="http://0.0.0.0:9944/static/alpine/alpine.min.js"
     ></script>
-    <script defer src="./script.js"></script>
     <title>Testing Alpine</title>
   </head>
   <body>
-    <div x-data="appdata">
+    <div x-data="appdata" x-print.eval.noshow="4 + 5">
       <h1 x-text="heading"></h1>
+      <div x-show="!_._updatable">Enter something to make it a heading.</div>
       <input
         x-data="_"
         type="text"
@@ -20,7 +21,9 @@
         :placeholder="_placeholder"
         x-on:keydown.enter="setHeading"
       />
-      <button x-show="_._show_update" @click="setHeading">Update</button>
+      <button x-show="_._updatable" @click="setHeading">
+        Update
+      </button>
       <!-- <button x-on:click="setHeading">Update</button> -->
     </div>
   </body>
