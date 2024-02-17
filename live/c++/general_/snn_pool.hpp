@@ -11,50 +11,42 @@
 namespace snn {
   using task_t = std::function<void()>;
 
-  template<typename return_t, typename ...args_t>
-  struct Task {
-    using function_t = std::function<return_t(args_t...)>;
-    Task() = delete;
-    Task(function_t const &function, args_t const &...args)
-      : function{ function }, arguments{ std::forward<args_t>(args)... } { }
-    void operator()() {
-      if constexpr (not std::is_same_v<return_t, void>)
-        promise.set_value(std::apply(function, arguments));
-      else {
-        std::apply(function, arguments);
-        promise.set_value();
-      }
-    }
-    decltype(auto) get() {
-      if constexpr (not std::is_same_v<return_t, void>)
-        return result.get();
-      result.get();
-    }
-  private:
-    function_t function;
-    std::tuple<args_t...> arguments;
-    std::future<return_t> result;
-    std::promise<return_t> promise;
-  };
-
   template<typename callable_t, typename ...args_t>
-    requires std::is_invocable_v<callable_t, args_t...>
-  Task<std::invoke_result_t<callable_t, args_t...>, args_t...>
-    make_task(callable_t &&callable, args_t &&...args) {
-    return { callable, args... };
-  }
+  class Task {
+    callable_t function;
+    std::tuple<args_t...> arguments;
+    using return_t = std::invoke_result_t<callable_t, args_t...>;
+    std::conditional_t<std::is_void_v<return_t>, bool, return_t> result;
+    bool event;
+  public:
+    Task() = delete;
+    Task(callable_t const &function, args_t const &...args)
+      : function{ function }, arguments{ args... }, event{ false } { }
+    return_t get() {
+      while (not event)
+        std::this_thread::yield();
+      if constexpr (not std::is_void_v<return_t>)
+        return result;
+    }
+    void operator()() {
+      if (event) return;
+      if constexpr (std::is_void_v<return_t>)
+        std::apply(function, arguments);
+      else result = std::apply(function, arguments);
+      event = true;
+    }
+  };
 
   struct Worker {
     using task_factory_t = std::function<task_t()>;
     Worker() = delete;
     Worker(task_factory_t const &factory)
       : task_factory{ factory },
-      executor{ std::bind(std::mem_fn(&Worker::_worker), *this) },
+      executor{ std::bind(std::mem_fn(&Worker::_worker), std::ref(*this)) },
       working{ true } { }
     void close() {
       if (not working) return;
       working = false;
-      executor.request_stop();
     }
   private:
     void _worker() {
@@ -68,8 +60,8 @@ namespace snn {
 
   struct Pool {
     Pool() = delete;
-    Pool(std::size_t size) : size{ size }, tasks{ }, waiters{ }, workers{ } {
-      decltype(auto) factory = std::bind(std::mem_fn(&Pool::get_task), *this);
+    explicit Pool(std::size_t size) : size{ size }, tasks{ }, waiters{ }, workers{ } {
+      decltype(auto) factory = std::bind(std::mem_fn(&Pool::get_task), std::ref(*this));
       for (std::size_t s = 0; s < size; ++s)
         workers.emplace_front(factory);
     }
@@ -81,16 +73,29 @@ namespace snn {
       else
         tasks.push_back(task);
     }
-    void close() {
-      for (auto &worker : workers)
-        worker.close();
+    void clear() {
       while (tasks.size())
         tasks.pop_back();
+    }
+    void close() {
+      wait();
+      for (auto &worker : workers)
+        worker.close();
       auto noop = [] { };
       while (waiters.size()) {
         waiters.front().set_value(noop);
         waiters.pop_front();
       }
+    }
+    void wait() {
+      while (tasks.size())
+        std::this_thread::yield();
+    }
+    void breakpoint() {
+      std::promise<void> waiter;
+      auto future = waiter.get_future();
+      put_task([&waiter] { waiter.set_value(); });
+      future.get();
     }
     ~Pool() { close(); }
   private:
