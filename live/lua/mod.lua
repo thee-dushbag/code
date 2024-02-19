@@ -90,7 +90,7 @@ end
 M.structures = function()
   local a, b = 1, 10
   if a < b then
-    print("[if] a is less than or equal to b")
+    print("[if] a is less than to b")
   elseif a == b then
     print("[elseif] a is equal to b")
   else

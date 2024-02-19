@@ -317,9 +317,7 @@ class Event:
     def set(self):
         self._waiter.set_result(None)
 
-    def reset(self):
-        self._waiter = Future()
-
+    reset = __init__
 
 from random import random
 
