@@ -3,6 +3,7 @@ struct Database
     const char *name;
 };
 
+
 void db_connect(struct Database *db, const char *username, const char *passwd)
 {
     size_t len = strlen(passwd);
@@ -19,7 +20,7 @@ void env(void)
     mydb.name = "sqlite:///home/simon/Desktop/students.db";
     const char *username = getenv("USERNAME");
     const char *passwd = getenv("PASSWORD");
-    if (username and passwd)
+    if (username && passwd)
         db_connect(&mydb, username, passwd);
     else
     {

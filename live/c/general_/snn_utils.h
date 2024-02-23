@@ -44,8 +44,7 @@
 
 void snn_reduce(void *__arr, size_t s, size_t __len, void *__res, void (*__func)(void *, void *))
 {
-    if (__len == 1)
-        return;
+    if (__len == 1) return;
     __func(__res, __arr);
     for (size_t i = 1; i < __len; i++)
         __func(__res, __arr + (s * i));

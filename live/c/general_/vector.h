@@ -7,9 +7,7 @@ typedef struct {
 } vector;
 
 void vector_init(vector *vec, int x, int y, int z) {
-    vec->x = x;
-    vec->y = y;
-    vec->z = z;
+    *vec = (vector){ .x = x, .y = y, .z = z };
 }
 
 void vector_view(vector const *const vec) {
@@ -17,51 +15,27 @@ void vector_view(vector const *const vec) {
 }
 
 vector vector_addv(vector const *const a, vector const *const b) {
-    vector res;
-    res.x = a->x + b->x;
-    res.y = a->y + b->y;
-    res.z = a->z + b->z;
-    return res;
+    return { .x = a->x + b->x, .y = a->y + b->y, .z = a->z + b->z };
 }
 
 vector vector_adds(vector const *const a, int b) {
-    vector res;
-    res.x = a->x + b;
-    res.y = a->y + b;
-    res.z = a->z + b;
-    return res;
+    return { .x = a->x + b, .y = a->y + b, .z = a->z + b };
 }
 
 vector vector_subv(vector const *const a, vector const *const b) {
-    vector res;
-    res.x = a->x - b->x;
-    res.y = a->y - b->y;
-    res.z = a->z - b->z;
-    return res;
+    return { .x = a->x - b->x, .y = a->y - b->y, .z = a->z - b->z };
 }
 
 vector vector_subs(vector const *const a, int b) {
-    vector res;
-    res.x = a->x - b;
-    res.y = a->y - b;
-    res.z = a->z - b;
-    return res;
+    return { .x = a->x - b, .y = a->y - b, .z = a->z - b };
 }
 
 vector vector_mulv(vector const *const a, vector const *const b) {
-    vector res;
-    res.x = a->x * b->x;
-    res.y = a->y * b->y;
-    res.z = a->z * b->z;
-    return res;
+    return { .x = a->x * b->x, .y = a->y * b->y, .z = a->z * b->z };
 }
 
 vector vector_muls(vector const *const a, int b) {
-    vector res;
-    res.x = a->x * b;
-    res.y = a->y * b;
-    res.z = a->z * b;
-    return res;
+    return { .x = a->x * b, .y = a->y * b, .z = a->z * b };
 }
 
 #endif //__VECTOR_H_
