@@ -39,5 +39,5 @@ struct nth_type<N, T0, T1, T2, Types...>
 : nth_type<N - 3, Types...> {};
 
 auto main(int argc, char **argv) -> int {
-    nth_type<4, int, double, std::string, char, long>::type;
+    using type = nth_type<3, int, double, std::string, char, long>::type;
 }
