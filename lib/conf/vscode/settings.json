@@ -117,7 +117,8 @@
     "fcntl.h": "c",
     "ioctl.h": "c",
     "ioctls.h": "c",
-    "all.h": "c"
+    "all.h": "c",
+    "/usr/include/c++/*": "cpp"
   },
 
   "emmet.includeLanguages": {
