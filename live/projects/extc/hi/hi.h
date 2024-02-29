@@ -7,18 +7,8 @@
 
 #include <stdio.h>
 
-void hello(const char *name) {
-  printf("Hello %s, how was your day?\n", name);
-}
-
-int square(int this) {
-  return this * this;
-}
-
-const char *status(int class) {
-  if (class >= 100) return "RICH";
-  else if (class >= 0) return "MIDDLE";
-  else return "POOR";
-}
+#define _HI_CORE_H
+#include "core.h"
+#undef _HI_CORE_H
 
 #endif //_HI_H

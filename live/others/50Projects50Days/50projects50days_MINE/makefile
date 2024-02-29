@@ -5,5 +5,13 @@ WCLASS_FLAG=--worker-class ${WCLS}
 OPTIONS=--reload ${BIND} ${WCLASS_FLAG}
 TARGET=main:application
 
-serve:
+all: w
+
+g: gunicorn_serve
+w: webrun_serve
+
+gunicorn_serve:
 	gunicorn ${OPTIONS} ${TARGET}
+
+webrun_serve:
+	webrun ${BIND} ${TARGET}
