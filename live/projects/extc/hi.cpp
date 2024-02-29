@@ -15,6 +15,6 @@ auto main(int argc, char **argv) -> int {
     std::cerr << "Expected integer between -200 and 500 inclusive, but got " << cls << '\n';
     return 1;
   }
-  std::cout << "You are in " << hi::status(cls) << "CLASS\n";
+  std::cout << "You are in " << hi::status(cls) << " CLASS\n";
   std::cout << cls << " * " << cls << " = " << hi::square(cls) << '\n';
 }

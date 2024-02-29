@@ -103,7 +103,7 @@
     "time.h": "c",
     "stddef.h": "c",
     "ctype.h": "c",
-    "*.inc": "cpp",
+    "*.inc": "makefile",
     "version": "cpp",
     "internet": "cpp",
     "forward_list": "cpp",
