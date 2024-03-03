@@ -113,6 +113,6 @@ function greeter_coproc() {
     read result <&${GREETER[0]} # read the result from the coprocess
     echo Output: $result # show the output coming out.
   done
-  # Stop the coprocess using our 
+  # Stop the coprocess using our STOP token
   echo --stop-- >&${GREETER[1]} # Send our custom stop signal to the coprocess
 }

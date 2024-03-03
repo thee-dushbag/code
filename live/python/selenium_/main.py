@@ -65,3 +65,6 @@ async def app_factory() -> web.Application:
     messages_setup(app)
     app.add_routes(routes)
     return app
+
+def application(_):
+    return app_factory()
