@@ -60,7 +60,7 @@ function duplicating_fds() {
   read new_name <&60
   echo "New Name: $new_name"
   # Close the test fd
-  exec 60<&- 50<&- # Note, 50 is still open
+  exec 60<&- 50<&- # Note: 50 is still open
 }
 
 function appending_to_output_fds() {
