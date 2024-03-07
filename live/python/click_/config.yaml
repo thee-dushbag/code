@@ -1,0 +1,17 @@
+debug: true
+
+add:
+  a: 34
+  b: 89
+
+sayhi:
+  name: Simon Nganga
+
+# people: [{ "name": "Simon", "age": 21 }]
+people:
+  - name: Simon
+    age: 21
+  - name: Faith
+    age: 11
+  - name: Lydia
+    age: 39

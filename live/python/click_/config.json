@@ -1,0 +1,10 @@
+{
+  "debug": false,
+  "sayhi": { "name": "King David" },
+  "add": { "a": 23, "b": 34 },
+  "people": [
+    { "name": "Simon", "age": 21 },
+    { "name": "Faith", "age": 11 },
+    { "name": "Lydia", "age": 37 }
+  ]
+}
