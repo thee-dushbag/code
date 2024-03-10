@@ -9,7 +9,8 @@
     "synchronized_value": "cpp",
     "execution": "cpp",
     "*.h": "c",
-    "limits": "cpp"
+    "limits": "cpp",
+    "stdexcept": "c"
   },
 
   "emmet.includeLanguages": {
@@ -139,5 +140,8 @@
   },
   "[dockercompose]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
   }
 }
