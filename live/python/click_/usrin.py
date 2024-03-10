@@ -22,10 +22,12 @@ def sync(ctx: click.Context):
         click.echo("Debug in sync.")
 
 
-@cli.command()
-@click.option('--name', type=str, default="stranger")
+@cli.command(short_help="Greet a person given their name")
+@click.option("--name", type=str, default="stranger")
 def sayhi(name: str):
+    "This command does the unthinkable, greet a person given their name. Huh? Genius."
     click.echo("Hello %s, how was your day?" % name.title())
+
 
 @cli.command()
 @click.option("-a", default=0, type=int)
@@ -38,35 +40,65 @@ def add(ctx: click.Context, a: int, b: int):
 
 
 @cli.command()
-@click.option('--name', prompt=True, confirmation_prompt=True)
-@click.option('--age', type=int, prompt=True)
+@click.option("--name", prompt=True, confirmation_prompt=True)
+@click.option("--age", type=int, prompt=True)
 def greet(name: str, age: int):
-    click.echo("Hello %s, you are %r years old." %(name, age))
+    """Greet a person with the name and provided age."""
+    click.echo("Hello %s, you are %r years old." % (name, age))
+
+
+@cli.command()
+@click.pass_context
+def hello(ctx: click.Context):
+    """Collect name and age for person to be
+    greeted and confirm before greeting the person"""
+    name = click.prompt(
+        "Name to greet", type=str, show_default=True, default="stranger"
+    ).title()
+    age = click.prompt(
+        "Age of target", type=click.IntRange(min=18, max=100, clamp=False)
+    )
+    if click.confirm("Greet person with name %r and age %r." % (name, age)):
+        ctx.invoke(greet, name=name, age=age)
+
+
+@cli.command(short_help="Example code in doc help message")
+def helpdoc():
+    """
+    This help message contains some code in it.
+\b\n
+    def hello(name: str) -> None:\n
+        print("Hello %s, how was your day?" % name.title())\n
+\b
+    The above function takes in a name and greets the person
+    identified with it.
+    """
 
 def load_config(file: Path, loader) -> dict:
     config = {}
     try:
-        click.echo("Loading config from %s" % file.relative_to(Path.cwd()))
+        # click.echo("Loading config from %s" % file.relative_to(Path.cwd()))
         config_text = file.read_text()
-        click.echo("Parsing configuration. %r" % config_text)
+        # click.echo("Parsing configuration. %r" % config_text)
         config = loader(config_text)
     except FileNotFoundError:
-        click.echo("Config file not found.", err=True)
+        pass # click.echo("Config file not found.", err=True)
     except json.JSONDecodeError:
-        click.echo("Malformed config text, JSONDecodeError.")
+        pass # click.echo("Malformed config text, JSONDecodeError.")
     except yaml.YAMLError:
-        click.echo("Malformed config text, YAMLError.")
+        pass # click.echo("Malformed config text, YAMLError.")
     except toml.TOMLDecodeError:
-        click.echo("Malformed config text, TOMLDecodeError.")
-    
-    for person in config.get('people', []):
+        pass # click.echo("Malformed config text, TOMLDecodeError.")
+
+    for person in []: # config.get("people", []):
         print(person)
-    
+
     return config
 
-CONFIG_PATH = Path.cwd() / 'config.toml'
-CONFIG_PATH = Path.cwd() / 'config.json'
-CONFIG_PATH = Path.cwd() / 'config.yaml'
+
+CONFIG_PATH = Path.cwd() / "config.toml"
+CONFIG_PATH = Path.cwd() / "config.json"
+CONFIG_PATH = Path.cwd() / "config.yaml"
 
 if __name__ == "__main__":
     cli.invoke_without_command = True
