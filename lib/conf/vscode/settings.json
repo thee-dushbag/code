@@ -8,9 +8,24 @@
     "queue": "cpp",
     "synchronized_value": "cpp",
     "execution": "cpp",
-    "*.h": "c",
+    "*.hpp": "cpp",
     "limits": "cpp",
-    "stdexcept": "c"
+    "stdexcept": "cpp",
+    "stdbool.h": "c",
+    "any": "c",
+    "array": "c",
+    "charconv": "c",
+    "compare": "c",
+    "complex": "c",
+    "functional": "c",
+    "ratio": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c",
+    "variant": "c",
+    "stdint.h": "c",
+    "stdint-gcc.h": "c",
+    "version": "cpp"
   },
 
   "emmet.includeLanguages": {

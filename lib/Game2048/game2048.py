@@ -1,6 +1,6 @@
 import copy
 import random
-from typing import Any, Callable, Literal
+from typing import Any, Literal
 
 from .util import AdjacentOperate
 
