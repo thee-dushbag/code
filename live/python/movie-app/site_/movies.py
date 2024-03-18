@@ -21,8 +21,8 @@ class Movie:
     def __hash__(self) -> int:
         return int(self._float * 1000000)
 
-    def __eq__(self, mov: "Movie") -> bool:
-        return float(self) == float(mov)
+    def __eq__(self, mov: object) -> bool:
+        return isinstance(mov, Movie) and float(self) == float(mov) or NotImplemented
 
     def __le__(self, mov: "Movie") -> bool:
         return float(self) <= float(mov)
@@ -35,9 +35,6 @@ class Movie:
 
     def __gt__(self, mov: "Movie") -> bool:
         return float(self) > float(mov)
-
-    def __ne__(self, mov: "Movie") -> bool:
-        return float(self) != float(mov)
 
     def json(self):
         return dict(

@@ -58,13 +58,12 @@ async def static_not_found(req: web.Request, handler):
             return await handler(req)
         except web.HTTPNotFound as e:
             source_type = source.group("src")
-            file, src = source.group("file"), None
+            match source_type:
+                case "thumbnail": file = cfg.NO_THUMBNAIL.name
+                case "preview": file = cfg.NO_PREVIEW.name
+                case _: file, source_type = source.group("file"), None
             reason = f"The requested file {file!r} was not found."
-            if source_type == "thumbnail":
-                src, file = source_type, cfg.NO_THUMBNAIL.name
-            elif source_type == "preview":
-                src, file = source_type, cfg.NO_PREVIEW.name
-            raise web.HTTPFound(f"/source/{src}/{file}", reason=reason) if src else e
+            raise web.HTTPFound(f"/source/{source_type}/{file}", reason=reason) if source_type else e
     return await handler(req)
 
 

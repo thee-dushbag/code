@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, no_type_check
 
 from descriptors import Property
 from rich.console import Console
@@ -12,18 +12,22 @@ class Operate:
         self.value = value
 
     @Property
+    @no_type_check
     def cube(self):
         return self.value**3
 
     @Property
+    @no_type_check
     def square(self):
         return self.value**2
 
     @square.setter
+    @no_type_check
     def square(self, sqr_root):
         self.value = pow(sqr_root, 1 / 2)
 
     @cube.setter
+    @no_type_check
     def cube(self, cube_root):
         self.value = pow(cube_root, 1 / 3)
 
