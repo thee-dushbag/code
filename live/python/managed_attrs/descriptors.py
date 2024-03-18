@@ -42,7 +42,7 @@ class Descriptor(Generic[T, V]):
 
 class RestrictTypes(Generic[V, T]):
     def __init__(self, *types: Type[T]) -> None:
-        self.types: tuple[Type[T]] = types or (object,)
+        self.types = types or (type(None),)
         self.value = self.types[0]()
 
     def __set_name__(self, owner: Type[T], name: str):
@@ -51,13 +51,13 @@ class RestrictTypes(Generic[V, T]):
     def __get__(self, instance: T, owner: Type[V]):
         return self.value
 
-    def __set__(self, instance: T, value: K):
+    def __set__(self, instance: T, value: object):
         assert self._validate_types(
             value
         ), f"Cannot assign {self.name} value {value!r} of type {type(value)}"
         self.value = value
 
-    def _validate_types(self, value: K):
+    def _validate_types(self, value: object) -> bool:
         return issubclass(type(value), self.types)
 
     def __delete__(self, instance: T):
@@ -84,8 +84,10 @@ class OneOf:
 
 
 class istr(str):
-    def __eq__(self, other: str):
-        return self.lower() == other.lower()
+    def __eq__(self, other: object):
+        return (
+            isinstance(other, str) and (self.lower() == other.lower()) or NotImplemented
+        )
 
 
 class TypeAttrs:
@@ -127,9 +129,9 @@ class PersonName:
 
 class Property:
     def __init__(self, fget=None, fset=None, fdel=None, doc=None) -> None:
-        self.fset = fset
-        self.fget = fget
-        self.fdel = fdel
+        self.fset = fset or FunctionSentinel
+        self.fget = fget or FunctionSentinel
+        self.fdel = fdel or FunctionSentinel
         self.__doc__ = doc or "Property Descriptor"
 
     def __set_name__(self, cls, name):
@@ -152,9 +154,7 @@ class Property:
         raise AttributeError("Cannot delete as no deleter was provided")
 
     def _delete(self):
-        self.fset = FunctionSentinel
-        self.fget = FunctionSentinel
-        self.fdel = FunctionSentinel
+        self.__init__()
 
     @staticmethod
     def _valid(func):
