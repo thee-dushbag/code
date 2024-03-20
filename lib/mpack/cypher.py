@@ -4,9 +4,6 @@ import click, typing as ty
 ShifterType: ty.TypeAlias = ty.Callable[[str, int], str]
 
 
-def shiftchar(char: str, length: int) -> str:
-    return chr(ord(char) + length)
-
 def shift_range(start_char: str, size: int) -> ShifterType:
     S = ord(start_char)
     _t = lambda c: S <= c < (S + size)

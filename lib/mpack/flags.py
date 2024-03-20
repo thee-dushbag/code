@@ -25,5 +25,5 @@ def ison(mask: int, flag: int, /) -> bool:
 
 
 def isoff(mask: int, flag: int, /) -> bool:
-    'checks is all bits(flag) are off in bits(mask)'
+    'checks if all bits(flag) are off in bits(mask)'
     return mask & flag == 0
