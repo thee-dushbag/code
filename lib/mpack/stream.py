@@ -43,10 +43,10 @@ class StreamFiles:
             )
         )
 
-    def __eq__(self, __value: "StreamFiles") -> bool:
-        if not isinstance(__value, self.__class__):
-            raise TypeError(f"Expected a StreamFiles object, found: {type(__value)}")
-        return self._same_stream(self, __value)
+    def __eq__(self, __value: object) -> bool:
+        return isinstance(__value, self.__class__) and (
+            self._same_stream(self, __value)
+        ) or NotImplemented
 
     def __init_subclass__(cls) -> None:
         raise Exception("Do not subclass this class.")
