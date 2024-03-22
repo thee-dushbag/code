@@ -1,6 +1,7 @@
 {
   "python.analysis.extraPaths": ["~/Content/code/lib"],
   "files.associations": {
+    "*.py": "python",
     "*.lox": "plaintext",
     "*.mako": "mako",
     "*.df": "dockerfile",
@@ -27,7 +28,9 @@
     "stdint.h": "c",
     "stdint-gcc.h": "c",
     "version": "cpp",
-    "/usr/include/c++/*": "cpp"
+    "/usr/include/c++/*": "cpp",
+    "memory.h": "c",
+    "table.h": "c"
   },
 
   "emmet.includeLanguages": {
@@ -61,6 +64,10 @@
   // "editor.tabSize": 2,
   "prettier.useTabs": false,
   "editor.indentSize": "tabSize",
+  "[plaintext]": {
+    "editor.tabSize": 2,
+    "editor.indentSize": "tabSize"
+  },
   "[mako]": {
     "editor.defaultFormatter": "vscode.html-language-features",
     "editor.tabSize": 2,

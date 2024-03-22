@@ -5,11 +5,12 @@ from aiohttp_security import (
     AbstractIdentityPolicy,
     AbstractAuthorizationPolicy,
     setup as _security_setup,
-    remember
+    remember,
 )
 from .dataplugin import getappdata
 
 _APP: web.Application
+
 
 async def _basicauth_decode(token: str):
     _, etoken = token.split(" ")
@@ -22,8 +23,9 @@ async def _basicauth_decode(token: str):
 async def _entrypoint(req: web.Request, handler):
     if (auth := req.headers.get("Authorization")) and auth.startswith("Basic "):
         username, password = await _basicauth_decode(auth)
-        await remember(req, None, f'{username}:#:{password}')
+        await remember(req, None, f"{username}:#:{password}")
     return await handler(req)
+
 
 async def logreq(req: web.Request, resp: web.StreamResponse):
     def gettime():
@@ -34,21 +36,24 @@ async def logreq(req: web.Request, resp: web.StreamResponse):
         f"[{gettime()}] - {req.method} HTTP/{req.version.major}.{req.version.minor} - {req.path_qs} - {resp.status} {resp.reason!r}"
     )
 
-class UserDataAuthPolicy(AbstractAuthorizationPolicy):        
+
+class UserDataAuthPolicy(AbstractAuthorizationPolicy):
     async def permits(self, identity: str, permission: int, context=None):
         manager = getappdata(_APP)
-        username, _, _ = identity.partition(':#:')
+        username, _, _ = identity.partition(":#:")
         user = manager.users.get(username)
-        if not user: return False
+        if not user:
+            return False
         perm = user.permission
         return flags.ison(perm, permission)
 
-    async def authorized_userid(self, identity: str):
+    async def authorized_userid(self, identity):
         manager = getappdata(_APP)
-        username, _, password = identity.partition(':#:')
+        username, _, password = identity.partition(":#:")
         if user := manager.users.get(username):
             if password == user.password:
                 return user
+
 
 class UserDataIdentityPolicy(AbstractIdentityPolicy):
     identity_key = "USER.IDENTITY"
