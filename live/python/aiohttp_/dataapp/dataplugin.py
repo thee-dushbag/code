@@ -42,21 +42,14 @@ class User:
 
 
 class Persister(ty.Protocol):
-    def load(self) -> "Manager":
-        ...
+    def load(self) -> "Manager": ...
 
-    def save(self, manager: "Manager") -> None:
-        ...
+    def save(self, manager: "Manager") -> None: ...
 
 
 class AbstractFilePersisterMixin:
     def __init__(self, path: Path) -> None:
         self.path: Path = path
-
-    def _prepare(self):
-        if not self.path.exists():
-            self.path.touch()
-            self.path.write_text("{}")
 
     def _load(self, loader) -> "Manager":
         with self.path.open() as f:
@@ -64,7 +57,7 @@ class AbstractFilePersisterMixin:
         userslist = [User(**user) for user in dictdata.get(USERS_KEY, [])]
         users = {user.name: user for user in userslist}
         data = dictdata.get(DATA_KEY, None)
-        return Manager(users=users, data=data)
+        return Manager(users=UserCollection(users), data=data)
 
     def _save(self, dumper, manager: "Manager"):
         with self.path.open("w") as f:

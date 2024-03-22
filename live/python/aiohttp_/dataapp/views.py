@@ -16,7 +16,7 @@ class UsersView(web.View):
             raise web.HTTPBadRequest(
                 reason=f"Password not provided for account {username!r}"
             )
-        self.manager.adduser(User(name=username, password=password, permission=Perm.READ_DATA))
+        self.manager.adduser(User(name=str(username), password=str(password), permission=Perm.READ_DATA))
         raise web.HTTPCreated(reason=f"Account created for user {username!r}")
 
     async def put(self):
