@@ -85,11 +85,11 @@ auto main(int argc, char **argv) -> int {
     C = (offset >> 40) & 0xff,
     B = (offset >> 48) & 0xff,
     A = (offset >> 56) & 0xff;
-  // The most significant byte is the last in the array
+  // The least significant byte is the first in the array
   uint8_t space[8]{ H, G, F, E, D, C, B, A };
 #else
 # error Cannot Detect the endianness of your machine.
-# error Consider adding other Endians to this macro if-else
+# error Consider adding other Endians to this macro's if-else
 /** TODO: Add PDP endian for fun. */
 #endif
 

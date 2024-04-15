@@ -22,7 +22,7 @@
           % for order in orders:
             <a href="/api/refresh?sortby=${str(order)}"
               class="btn btn-${'warning' if order == movies.order else 'primary'}">
-              ${str(order)}
+              ${str(order).title()}
             </a>
           % endfor
         </div>

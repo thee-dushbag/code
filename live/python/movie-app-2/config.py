@@ -27,7 +27,7 @@ DEFAULT_THUMBNAIL = RESOURCE_DIR / "no-thumbnail.png"
 DEFAULT_PREVIEW = RESOURCE_DIR / "no-preview.mp4"
 
 # Typs for config.
-SORT_ORDERING: ty.TypeAlias = ty.Literal["new", "old", "random", "name"]
+SORT_ORDERING: ty.TypeAlias = ty.Literal["new", "old", "random", "name", "none"]
 
 
 @dt.dataclass(kw_only=True)
@@ -36,7 +36,7 @@ class Config:
     nth_frame: ty.Optional[int] = None
     generate_thumbnails: bool = dt.field(default=False)
     generate_previews: bool = dt.field(default=False)
-    sort_ordering: SORT_ORDERING = dt.field(default="name")
+    sort_ordering: SORT_ORDERING = dt.field(default="none")
     retry_nonexisting: bool = False
     confirm_delete_thumbnail: bool = True
     confirm_delete_preview: bool = True
@@ -44,6 +44,7 @@ class Config:
     confirm_junk_cleanup: bool = True
     defaults_size: tuple[int, int] = 512, 256
     process_statics: bool = True
+    link_missing: bool = False
 
     def __post_init__(self):
         if self.executor is None:
@@ -78,7 +79,8 @@ def generate_previews(config: Config):
     _previews = lambda: (path for path in VIDEO_DIR.iterdir() if not (PREVIEW_DIR / path.name).exists())
     _previews_paths = lambda: ((PREVIEW_DIR / path.name) for path in _previews())
 
-    PreviewsSeq(video_seq=_previews(), previews_dir=PREVIEW_DIR).create()
+    if not config.link_missing:
+        PreviewsSeq(video_seq=_previews(), previews_dir=PREVIEW_DIR).create()
 
     for preview in _previews_paths():
         preview.symlink_to(DEFAULT_PREVIEW)

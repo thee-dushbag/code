@@ -54,9 +54,7 @@
     "prefix": "rprt",
     "scope": "python",
     "description": "Switch builtin print for rich.console.Console().print which is prettier",
-    "body": [
-      "from rich import print"
-    ]
+    "body": ["from rich import print"]
   },
   "init_c": {
     "prefix": "init",
@@ -81,16 +79,17 @@
     "prefix": "init",
     "scope": "cpp",
     "description": "Initialize c++ file",
-    "body": ["#include <iostream>", "", "auto main(int argc, char **argv) -> int {$0}"]
+    "body": [
+      "#include <iostream>",
+      "",
+      "auto main(int argc, char **argv) -> int {$0}"
+    ]
   },
   "make_handler": {
     "prefix": "ahandler",
     "scope": "python",
     "description": "Aiohttp Handler Boiler plate",
-    "body": [
-      "async def $0(req: web.Request):",
-      "    ..."
-    ]
+    "body": ["async def $0(req: web.Request):", "    ..."]
   },
   "aiohttp_init": {
     "prefix": "ainit",
@@ -124,5 +123,31 @@
     "scope": "python",
     "description": "Ignore Type Check",
     "body": "# type: ignore"
+  },
+  "PyQt5": {
+    "prefix": "pyqt5",
+    "scope": "python",
+    "description": "PyQt5 Application boilerplate.",
+    "body": [
+      "from PyQt5.QtWidgets import QApplication, QMainWindow",
+      "",
+      "",
+      "class MainWindow(QMainWindow):",
+      "    def __init__(self):",
+      "        super().__init__()",
+      "        $0",
+      "",
+      "",
+      "def main(argv: list[str] | None = None):",
+      "    app = QApplication(argv or [])",
+      "    window = MainWindow()",
+      "    window.show()",
+      "    return app.exec()",
+      "",
+      "",
+      "if __name__ == \"__main__\":",
+      "    exit(main())",
+      ""
+    ]
   }
 }
