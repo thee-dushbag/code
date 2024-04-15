@@ -3,6 +3,7 @@
   "files.associations": {
     "*.py": "python",
     "*.lox": "plaintext",
+    "*.rat": "plaintext",
     "*.mako": "mako",
     "*.df": "dockerfile",
     "LICENSE": "plaintext",
@@ -28,9 +29,23 @@
     "stdint.h": "c",
     "stdint-gcc.h": "c",
     "version": "cpp",
-    "/usr/include/c++/*": "cpp",
+    "/usr/include/c++": "cpp",
     "memory.h": "c",
-    "table.h": "c"
+    "table.h": "c",
+    "chunk.h": "c",
+    "value.h": "c",
+    "common.h": "c",
+    "pegen.h": "c",
+    "memory_resource": "cpp",
+    "coroutine": "cpp",
+    "*.tcc": "cpp",
+    "cstdio": "cpp",
+    "unistd.h": "c",
+    "endianness.h": "c",
+    "chrono": "c",
+    "optional": "c",
+    "format": "c",
+    "system_error": "c"
   },
 
   "emmet.includeLanguages": {
@@ -171,5 +186,8 @@
   },
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[snippets]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

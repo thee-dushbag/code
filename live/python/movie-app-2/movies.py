@@ -49,6 +49,7 @@ class Order:
         value._sorter = strategy
         return value
 
+    NONE = "none", MovieSorter.identity
     NEW = "new", MovieSorter.sort_by_time_newest
     OLD = "old", MovieSorter.sort_by_time_oldest
     NAME = "name", MovieSorter.sort_by_name

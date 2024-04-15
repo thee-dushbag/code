@@ -23,6 +23,7 @@ app = ty.cast(web.Application, {})
 @click.option("--process-statics", flag_value=True)
 @click.option("--default-height", type=int, default=256)
 @click.option("--default-width", type=int, default=512)
+@click.option('--link-missing', is_flag=True, flag_value=True)
 @click.option("--dry-run", flag_value=True)
 def main(
     default_width: int,
@@ -39,6 +40,7 @@ def main(
     reload_default_thumbnail: bool,
     reload_default_preview: bool,
     dry_run: bool,
+    link_missing: bool
 ):
     "Use <command> [--dry-run] to run [test] the app."
     if data_directory:
@@ -76,6 +78,7 @@ def main(
                 reload_default_preview=reload_default_preview,
                 default_height=sizes[1],
                 default_width=sizes[0],
+                link_missing=link_missing
             )
         )
     else:
@@ -103,6 +106,7 @@ def main(
             process_statics=process_statics,
             retry_nonexisting=retry_nonexisting,
             defaults_size=sizes,
+            link_missing=link_missing
         )
         cfg.setup(app, config)
 
