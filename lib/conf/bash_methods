@@ -60,6 +60,16 @@ function _set_origins_router_host() {
   _set_origins_host "192.168.0.100"
 }
 
+function _detect_wlan0_ip() {
+  local myip="$(ip addr | sed -n 11p | tr / \  | awk '{ print $2 }')"
+  [ -z "$myip" ] && myip="127.0.0.1"
+  echo "$myip"
+}
+
+function _set_current_ip() {
+  _set_origins_host "$(_detect_wlan0_ip)"
+}
+
 function _set_origins_local_host() {
   _set_origins_host "localhost"
 }
@@ -430,6 +440,42 @@ function _expand_alias() {
   else
     return $?
   fi
+}
+
+function _share_server_url() {
+  local URL="$1"
+  # Refresh KDE-connect available devices
+  # in the current network.
+  kdeconnect-cli --refresh
+  # Wait for clients to connect
+  sleep 1
+  # Get all available devices names
+  local devices=(`kdeconnect-cli --list-available --name-only`)
+  echo "SERVER URL: $URL"
+  for device in "${devices[@]}"; do
+    # Send server url to each one
+    echo "  sending to: $device"
+    kdeconnect-cli --share-text "$URL" --name "$device" &>/dev/null
+  done
+}
+
+function _mwifi_setup() {
+  _set_current_ip
+  echo "Activating VENV: movie-app"
+  _activate_venv movie-app
+  echo "SERVING AT:"
+  echo "  MOVIE:"
+  echo "    HOST=$MOVIE_HOST"
+  echo "    PORT=$MOVIE_PORT"
+  echo "  STATICS:"
+  echo "    HOST=$STATICS_HOST"
+  echo "    PORT=$STATICS_PORT"
+  echo "Setting up KDE-CONNECT"
+  _share_server_url "http://$MOVIE_HOST:$MOVIE_PORT"
+  echo "Starting SERVER"
+  movie-app
+  echo Shutting DOWN: movie-app
+  deactivate
 }
 
 function _explain_exit_status() {
