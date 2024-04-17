@@ -62,7 +62,7 @@
   ],
   "C_Cpp.errorSquiggles": "enabled",
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": false,
+  "python.testing.pytestEnabled": true,
   "python.defaultInterpreterPath": "~/Content/bin/venvs/defenv/bin/python3",
   "editor.fontFamily": "'Hurmit Nerd Font-', 'CaskaydiaCove Nerd Font', 'ComicShannsMono Nerd Font','.', serif",
   "editor.fontLigatures": true,
@@ -79,6 +79,7 @@
   // "editor.tabSize": 2,
   "prettier.useTabs": false,
   "editor.indentSize": "tabSize",
+  "isort.args": ["--profile", "black"],
   "[plaintext]": {
     "editor.tabSize": 2,
     "editor.indentSize": "tabSize"
