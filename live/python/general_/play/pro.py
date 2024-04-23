@@ -5,26 +5,18 @@ from aiohttp import web
 from aiohttp_mako import setup, template
 
 HOST, PORT = getenv("STATICS_HOST", "localhost"), 5052
-
+path = Path(__file__).parent
 
 @template("page.mako")
 async def page(req: web.Request):
     pgcount = req.query.get("pages", "5")
-    try:
-        pgcount = abs(int(pgcount))
-        if pgcount > 50:
-            pgcount = 50
-        if pgcount < 1:
-            raise Exception
-    except Exception:
-        raise web.HTTPBadRequest(
-            reason=f"Pages must be a positive integer >=1: {pgcount!r}"
-        )
+    pgcount = abs(int(pgcount))
+    pgcount = max(1, min(50, pgcount))
     return {"pages": pgcount, "STATICS_HOST": HOST}
 
 
 app = web.Application()
 app.router.add_get("/", page)  # type:ignore
-setup(app, "/home/simon/Content/code/live/python/general_/play")
+setup(app, str(path))
 
 web.run_app(app, host=HOST, port=PORT)

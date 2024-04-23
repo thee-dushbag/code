@@ -117,7 +117,7 @@ class Time:
     def time(self) -> float:
         _t: float = self._get_time()
         if self.state == Time.TimeState.PAST:
-            _t = 0 - _t
+            _t = -_t
         return _t
 
 

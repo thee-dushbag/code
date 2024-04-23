@@ -13,8 +13,7 @@ CommandLike = Callable[["Term", str, tuple[str, ...], dict[str, str]], None]
 class Command(Protocol):
     def __call__(
         self, term: "Term", command: str, args: tuple[str, ...], kwargs: dict[str, str]
-    ):
-        ...
+    ): ...
 
 
 class CommadNotFound:
@@ -53,8 +52,8 @@ class TermSuccess(TermError):
     message = "Command Run Successfully"
 
     def to_term(self):
-        output = self.kwargs.get("message")
-        return output
+        output: str | None = self.kwargs.get("message")
+        return output or ""
 
 
 class TermCommandNotFound(TermError):
@@ -62,8 +61,8 @@ class TermCommandNotFound(TermError):
     message = "Command Was Not Found"
 
     def to_term(self):
-        output = self.kwargs.get("message")
-        return output
+        output: str | None = self.kwargs.get("message")
+        return output or ""
 
 
 class TermTemplateError(TermError):

@@ -18,3 +18,4 @@ Ignore*
 .pytest_cache
 .mypy_cache
 .env
+.ipynb_checkpoints/
