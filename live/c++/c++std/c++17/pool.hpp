@@ -19,12 +19,12 @@ namespace snn {
       thread{ std::mem_fn(&Worker::work), std::ref(*this) } {
       std::cout << "Worker Up\n";
     }
-    Worker(const Worker &) = delete;
+    Worker(const Worker&) = delete;
     ~Worker() {
       std::cout << "Worker Down\n";
     }
     void work() {
-      while (working)
+      while ( working )
         get_task()();
     }
     void shutdown() {
@@ -37,13 +37,13 @@ namespace snn {
 
   struct Pool {
     Pool() = delete;
-    Pool(size_t size) : tasks{ }, workers{ }, waiters{ } {
+    Pool(size_t size): tasks{ }, workers{ }, waiters{ } {
       auto get_task = std::bind(std::mem_fn(&Pool::get_task), std::ref(*this));
-      for (; size; --size) workers.emplace_front(get_task);
+      for ( ; size; --size ) workers.emplace_front(get_task);
     }
     task_type get_task() {
-      if (tasks.size()) {
-        auto &&task = std::move(tasks.front());
+      if ( tasks.size() ) {
+        auto&& task = std::move(tasks.front());
         tasks.pop();
         return task;
       }
@@ -53,28 +53,31 @@ namespace snn {
       return future.get();
     }
     void put_task(task_type task) {
-      if (waiters.size()) {
-        auto &&waiter = std::move(waiters.front());
+      if ( waiters.size() ) {
+        auto&& waiter = std::move(waiters.front());
         waiters.pop();
         waiter.set_value(task);
-      }
-      else tasks.push(task);
+      } else tasks.push(task);
     }
     void shutdown() {
-      for (auto &worker : workers)
+      for ( auto& worker : workers )
         worker.shutdown();
       auto noop = [] { };
-      while (tasks.size())
+      while ( tasks.size() )
         tasks.pop();
-      while (waiters.size()) {
+      while ( waiters.size() ) {
         waiters.front().set_value(noop);
         waiters.pop();
       }
     }
 
     void wait() {
-      while (tasks.size())
-        std::this_thread::yield();
+      std::mutex lock;
+      lock.lock();
+      put_task([&lock] { lock.unlock(); });
+      std::lock_guard _{ lock };
+      // while (tasks.size())
+        // std::this_thread::yield();
     }
     std::queue<task_type> tasks;
     std::forward_list<Worker> workers;
