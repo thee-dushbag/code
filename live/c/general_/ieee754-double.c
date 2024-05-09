@@ -9,21 +9,38 @@
 # define PB_POLICY PB_LOOP_POLICY
 #endif // PB_POLICY
 
+#define _puintN_dec(N) \
+  void puint ## N(uint ## N ## _t); \
+  void puint ## N ## l(uint ## N ## _t)
+
+_puintN_dec(64);
+_puintN_dec(32);
+_puintN_dec(16);
+_puintN_dec(8);
+
+#undef _puintN_dec
+
 uint64_t to_int(double);
+void inspect(double);
 double to_double(uint64_t);
 void print(const char*, uint64_t);
-void puint64(uint64_t);
-void puint64l(uint64_t);
 void pbyte(uint8_t);
-
+void inspector();
+void inspect_seq(int, int);
 uint64_t zero = 0b0000000000000000000000000000000000000000000000000000000000000000;
 uint64_t posinf = 0b0111111111110000000000000000000000000000000000000000000000000000;
 uint64_t neginf = 0b1111111111110000000000000000000000000000000000000000000000000000;
 uint64_t notanum = 0b0111111111111000000000000000000000000000000000000000000000000000;
 uint64_t nnotnum = 0b1111111111111000000000000000000000000000000000000000000000000000;
 uint64_t mfloat = 16473UL << 48; // 4636737291354636288 -> 100.0
+const uint64_t
+  sign_mask = 0x80'00'00'00'00'00'00'00,
+  exp_mask = 0x7f'f0'00'00'00'00'00'00,
+  val_mask = 0x00'0f'ff'ff'ff'ff'ff'ff;
 
 int main(int argc, char** argv) {
+  // inspect_seq(1, 513); return 0;
+  inspector();
   int value = 5052;
   uint64_t addr = (uint64_t)&value;
   printf("Value: %d\n", *((int*)addr));
@@ -48,6 +65,65 @@ int main(int argc, char** argv) {
   printf("(nan == nan) = %s\n",
     (nand == nand) ? "true" : "false");
   print("Pi", to_int(3.14));
+}
+
+void inspector() {
+  double number;
+  for ( ;;) {
+    printf("Enter a double: ");
+    scanf("%lf", &number);
+    inspect(number);
+  }
+}
+
+void inspect(double val) {
+  uint64_t num = *(uint64_t*)&val;
+  uint16_t exp = (num & exp_mask) >> 52;
+  uint64_t value = (num & val_mask);
+  bool sign = num & sign_mask;
+  printf("double: %lf\n", val);
+  printf("  layout: ");
+  puint64l(num);
+  printf("  sign  : %s\n", sign ? "true" : "false");
+  printf("  exp   : %u\n", exp);
+  printf("    layout: ");
+  puint16l(exp);
+  printf("  value : %lu\n", value);
+  printf("    layout: ");
+  puint64l(value);
+}
+
+void _print_bits(uint8_t byte, uint8_t mask) {
+  for (uint8_t b = 128; b; b >>= 1)
+    if (b & mask) putchar((byte & b)? '1' : '0');
+}
+
+void _print_bytes(uint64_t bytes, uint64_t masks) {
+  uint8_t
+    *bits = (uint8_t *)&bytes,
+    *msks = (uint8_t *)&masks;
+  for (int b = 0; b < 8; b++)
+    _print_bits(bits[b], msks[b]);
+}
+
+void _print_double(double number) {
+  uint64_t value = *(uint64_t*)&number;
+  _print_bytes(value, sign_mask);
+  putchar('\'');
+  _print_bytes(value, exp_mask);
+  putchar('\'');
+  _print_bytes(value, val_mask);
+}
+
+void inspect_seq(int start, int stop) {
+  double num;
+  for (; start < stop; start++) {
+    num = start;
+    printf("%lf\t", num);
+    // _print_double(num);
+    puint64(to_int(num));
+    putchar('\n');
+  }
 }
 
 void _print_byte(uint8_t number) {
@@ -93,40 +169,60 @@ void pbyte(uint8_t byte) {
   putchar(10);
 }
 
-void _print_little_order(uint8_t* bytes, char sep) {
-  _print_byte(bytes[7]);
-  for ( int b = 6; b >= 0; b-- ) {
-    putchar(sep); _print_byte(bytes[b]);
+void _print_little_order(uint8_t* bytes, size_t size, char sep) {
+  _print_byte(bytes[--size]);
+  for ( int idx = --size; idx >= 0; --idx ) {
+    putchar(sep); _print_byte(bytes[idx]);
   }
 }
 
-void _print_big_order(uint8_t* bytes, char sep) {
+void _print_big_order(uint8_t* bytes, size_t size, char sep) {
   _print_byte(bytes[0]);
-  for ( int b = 1; b <= 7; b++ ) {
+  for ( size_t b = 1; b < size; ++b ) {
     putchar(sep); _print_byte(bytes[b]);
   }
 }
 
-void _print_int_layout(uint64_t number) {
-  uint8_t* bytes = (uint8_t*)&number;
-  char separator = 39;
+void _print_layout(void* bytes, size_t size, char sep) {
+  sep = sep == 0 ? '\'' : sep;
 #if BYTE_ORDER == LITTLE_ENDIAN
-  _print_little_order(bytes, separator);
+  _print_little_order(bytes, size, sep);
 #elif BYTE_ORDER == BIG_ENDIAN
-  _print_big_order(bytes, separator);
+  _print_big_order(bytes, size, sep);
 #else
 # error "Could not resolve byte order"
 #endif
 }
 
-void puint64(uint64_t number) {
-  _print_int_layout(number);
-}
+#define _intN_t(N) uint ## N ## _t
+#define _pl_name(N) _print_int ## N ## _layout
+#define _puintN_raw(N, S, L) \
+  void puint ## S(_intN_t(N) number) \
+  { _pl_name(N)(number, 0)L }
 
-void puint64l(uint64_t number) {
-  _print_int_layout(number);
-  putchar(10);
-}
+#define _print_intN_layout(N) \
+  void _pl_name(N)(_intN_t(N) number, char sep) \
+  { _print_layout(&number, (size_t)(N / 8), sep); }
+#define _puintN(N) _puintN_raw(N, N, ;)
+#define _puintNl(N) _puintN_raw(N, N ## l, ; putchar(10); )
+
+#define _intN_lv(N) \
+  _print_intN_layout(N) \
+  _puintN(N) \
+  _puintNl(N)
+
+_intN_lv(64);
+_intN_lv(32);
+_intN_lv(16);
+_intN_lv(8);
+
+#undef _print_intN_layout
+#undef _puintN_raw
+#undef _intN_lv
+#undef _pl_name
+#undef _puintNl
+#undef _puintN
+#undef _intN_t
 
 void print(const char* name, uint64_t number) {
   printf("%-16s[%19ld]: %.6lf\n", name, number, to_double(number));
