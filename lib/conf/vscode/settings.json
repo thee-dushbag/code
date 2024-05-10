@@ -16,6 +16,13 @@
     "*.tcc": "cpp",
     "unistd.h": "c",
     "endianness.h": "c",
+    "pycore_freelist.h": "c",
+    "opcode_ids.h": "c",
+    "python.h": "c",
+    "pyconfig.h": "c",
+    "opcode_targets.h": "c",
+    "generated_cases.c.h": "c",
+    "_asynciomodule.c.h": "c"
   },
 
   "emmet.includeLanguages": {

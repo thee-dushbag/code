@@ -8,7 +8,9 @@
                 "${workspaceFolder}/c_lox/include",
                 "/usr/include/c++/13.2.1",
                 "/usr/",
-                "/usr/include/python3.11"
+                "${workspaceFolder}/Include",
+                "${workspaceFolder}"
+                // "/usr/include/python3.11"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

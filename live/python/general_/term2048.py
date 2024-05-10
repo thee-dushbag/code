@@ -89,6 +89,8 @@ def main() -> None:
         elif option == "q":
             print("\x1b[91;1mQuitting the game.\x1b[0m")
             break
+        else:
+            one = True
 
 
 if __name__ == "__main__":
