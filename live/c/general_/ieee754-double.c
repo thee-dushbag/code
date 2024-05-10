@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <endian.h>
+#include <math.h>
 
 #define PB_STEP_POLICY 1
 #define PB_LOOP_POLICY 2
@@ -91,6 +92,10 @@ void inspect(double val) {
   printf("  value : %lu\n", value);
   printf("    layout: ");
   puint64l(value);
+  double new = (sign ? -1 : 1)* pow(2, exp - 1023) * (1 + pow(2, -10) * value);
+  printf("  computed: %lf\n", new);
+  printf("    layout: ");
+  puint64l(to_int(new));
 }
 
 void _print_bits(uint8_t byte, uint8_t mask) {
