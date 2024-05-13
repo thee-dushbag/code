@@ -22,7 +22,9 @@
     "pyconfig.h": "c",
     "opcode_targets.h": "c",
     "generated_cases.c.h": "c",
-    "_asynciomodule.c.h": "c"
+    "_asynciomodule.c.h": "c",
+    "wren_opcodes.h": "c",
+    "executor_cases.c.h": "c"
   },
 
   "emmet.includeLanguages": {
