@@ -6,10 +6,10 @@
                 "${workspaceFolder}/**",
                 "~/Content/code/lib/include",
                 "${workspaceFolder}/c_lox/include",
-                "/usr/include/c++/13.2.1",
-                "/usr/",
                 "${workspaceFolder}/Include",
-                "${workspaceFolder}"
+                "${workspaceFolder}",
+                "/usr/include/c++/13.2.1/"
+                // "/usr/include/c++/v1"
                 // "/usr/include/python3.11"
             ],
             "defines": [],
