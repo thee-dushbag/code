@@ -104,7 +104,23 @@
     "locale": "cpp",
     "*.def": "cpp",
     "filesystem": "cpp",
-    "*.inc": "cpp"
+    "*.inc": "cpp",
+    "__tree": "cpp",
+    "execution": "cpp",
+    "queue": "cpp",
+    "stack": "cpp",
+    "stdbool.h": "c",
+    "types.h": "c",
+    "atomic_wide_counter.h": "c",
+    "pthreadtypes-arch.h": "c",
+    "wordsize.h": "c",
+    "struct_mutex.h": "c",
+    "struct_rwlock.h": "c",
+    "pycore_freelist.h": "c",
+    "generator": "cpp",
+    "ctgmath": "cpp",
+    "wren_opcodes.h": "c",
+    "text_encoding": "cpp"
   },
 
   "emmet.includeLanguages": {
@@ -129,8 +145,6 @@
   "editor.fontSize":14,
   "editor.folding": true,
   "editor.fontVariations": true,
-  "C_Cpp.default.cStandard": "c23",
-  "C_Cpp.default.cppStandard": "c++23",
   "python.languageServer": "Pylance",
   "python.formatting.provider": "none",
   "editor.defaultFormatter": "vscode.html-language-features",
