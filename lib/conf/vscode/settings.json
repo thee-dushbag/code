@@ -120,7 +120,9 @@
     "generator": "cpp",
     "ctgmath": "cpp",
     "wren_opcodes.h": "c",
-    "text_encoding": "cpp"
+    "text_encoding": "cpp",
+    "*.ipp": "cpp",
+    ".svg": "html5"
   },
 
   "emmet.includeLanguages": {
@@ -132,9 +134,7 @@
     "javascript": "javascript",
     "python": "python"
   },
-  "emmet.excludeLanguages": [
-    "plaintext"
-  ],
+  "emmet.excludeLanguages": ["plaintext"],
   "C_Cpp.errorSquiggles": "enabled",
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": false,
@@ -142,7 +142,7 @@
   "editor.fontFamily": "'Hurmit Nerd Font-', 'CaskaydiaCove Nerd Font', 'ComicShannsMono Nerd Font', serif",
   "editor.fontLigatures": true,
   "editor.fontWeight": "400",
-  "editor.fontSize":14,
+  "editor.fontSize": 14,
   "editor.folding": true,
   "editor.fontVariations": true,
   "python.languageServer": "Pylance",
@@ -208,7 +208,7 @@
     "editor.indentSize": "tabSize"
   },
   "[xml]": {
-    "editor.defaultFormatter": "DotJoshJohnson.xml",
+    "editor.defaultFormatter": "ecmel.vscode-html-css",
     "editor.tabSize": 2,
     "editor.indentSize": "tabSize"
   },
