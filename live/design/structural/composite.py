@@ -14,17 +14,17 @@ hierarchical structure, allowing uniform
 treatment of individual and composed objects."""
 
 
-class Component:
-    def operation(self):
-        pass
+class Component[T]:
+    def operation(self) -> T:
+        raise NotImplementedError
 
 
-class Leaf(Component):
+class Leaf(Component[str]):
     def operation(self):
         return "Leaf operation"
 
 
-class Composite(Component):
+class Composite(Component[str]):
     def __init__(self):
         self.children = []
 

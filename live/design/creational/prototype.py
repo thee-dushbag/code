@@ -12,7 +12,6 @@ and adds a value attribute. The client code
 demonstrates how prototypes can be cloned
 to create independent instances."""
 
-
 import copy
 from typing import Any, Callable, Generic, Protocol, Self, TypeGuard, TypeVar
 
@@ -20,8 +19,7 @@ T = TypeVar("T")
 
 
 class SupportsClonable(Protocol):
-    def __clone__(self):
-        ...
+    def __clone__(self): ...
 
 
 def _clonable_typecheck(obj: Any) -> TypeGuard[SupportsClonable]:
@@ -56,8 +54,12 @@ class Position:
     def __str__(self) -> str:
         return f"({self.column}, {self.row})"
 
-    def __eq__(self, position: "Position") -> bool:
-        return self.column == position.column and self.row == position.row
+    def __eq__(self, position: object) -> bool:
+        return (
+            (self.column == position.column and self.row == position.row)
+            if isinstance(position, Position)
+            else NotImplemented
+        )
 
     def __hash__(self) -> int:
         col = -1 if self.column < 0 else self.column

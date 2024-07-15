@@ -12,21 +12,21 @@ how flyweights are retrieved from the factory
 and used with extrinsic state."""
 
 
-class Flyweight:
-    def operation(self, extrinsic_state):
-        pass
+class Flyweight[T]:
+    def operation(self, extrinsic_state: str) -> T:
+        raise NotImplementedError
 
 
-class ConcreteFlyweight(Flyweight):
-    def operation(self, extrinsic_state):
+class ConcreteFlyweight(Flyweight[str]):
+    def operation(self, extrinsic_state: str):
         return f"ConcreteFlyweight operation with {extrinsic_state}"
 
 
 class FlyweightFactory:
     def __init__(self):
-        self.flyweights = {}
+        self.flyweights: dict[str, Flyweight[str]] = {}
 
-    def get_flyweight(self, key):
+    def get_flyweight(self, key: str):
         if key not in self.flyweights:
             self.flyweights[key] = ConcreteFlyweight()
         return self.flyweights[key]

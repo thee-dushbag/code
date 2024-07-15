@@ -5,7 +5,7 @@ ARGUMENTS=("$@")
 
 if [ -n "${ARGUMENTS[0]}" ] && [ ! -e "${ARGUMENTS[0]}" ]; then
   for extension in "${EXTENSIONS[@]}"; do
-    if [ -f "${ARGUMENTS[0]}$extension" ]; then
+    if [ -e "${ARGUMENTS[0]}$extension" ]; then
       ARGUMENTS[0]="${ARGUMENTS[0]}$extension"
       break
     fi

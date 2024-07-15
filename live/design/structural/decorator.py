@@ -14,9 +14,9 @@ how decorators can be stacked to add
 multiple layers of functionality to objects."""
 
 
-class Component:
-    def operation(self):
-        pass
+class Component[T]:
+    def operation(self) -> T:
+        raise NotImplementedError
 
 
 class ConcreteComponent(Component):
