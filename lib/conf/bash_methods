@@ -352,7 +352,7 @@ function _retry_command() {
       echo '--retry   -r      -R    How many times to retry the command. Default 3'
       echo '--timeout -t      -T    How long to wait till the next retry. Default 1'
       echo '--until   -u      -U    The exit status to ignore on. Default <array:int> (0)'
-      echo '--repspect-until --ru --RU  Respect until values, disable retry count. Values: T/F. Default F'
+      echo '--respect-until --ru --RU  Respect until values, disable retry count. Values: T/F. Default F'
       [[ "$argcount" -eq 1 ]] && return 0 || return 1
       ;;
 
@@ -394,7 +394,7 @@ function _retry_command() {
       shift 2
       ;;
 
-    --repspect-until | --ru | --RU)
+    --respect-until | --ru | --RU)
       if [[ ! "$2" =~ T|F ]]; then
         echo >&2 "Expected respect-until to be T/F, got $2"
         return 1
@@ -450,13 +450,24 @@ function _share_server_url() {
   # Wait for clients to connect
   sleep 1
   # Get all available devices names
-  local devices=(`kdeconnect-cli --list-available --name-only`)
+  local devices=($(kdeconnect-cli --list-available --name-only))
   echo "SERVER URL: $URL"
   for device in "${devices[@]}"; do
     # Send server url to each one
     echo "  sending to: $device"
     kdeconnect-cli --share-text "$URL" --name "$device" &>/dev/null
   done
+}
+
+function _total_commits() {
+  local projects=("$CONTENT_CODE" $CONTENT_WORK/*)
+  for project in "${projects[@]}"; do
+    git -C "$project" log \
+      --author="Simon Nganga" \
+      --author="simon nganga njoroge" \
+      --pretty="format:%h"
+    echo
+  done | wc -l
 }
 
 function _mwifi_setup() {

@@ -13,18 +13,18 @@ proxy can intercept and control requests
 to the real subject."""
 
 
-class Subject:
-    def request(self):
-        pass
+class Subject[T]:
+    def request(self) -> T:
+        raise NotImplementedError
 
 
-class RealSubject(Subject):
+class RealSubject(Subject[str]):
     def request(self):
         return "RealSubject request"
 
 
-class Proxy(Subject):
-    def __init__(self, real_subject):
+class Proxy(Subject[str]):
+    def __init__(self, real_subject: RealSubject):
         self.real_subject = real_subject
 
     def request(self):

@@ -4,6 +4,7 @@ export BIN=$CONTENT_DIR/.bin
 export EXE_BIN=$BIN/exe
 export CORE_BIN=$BIN/core
 export CONTENT_BIN=$CONTENT_DIR/bin
+export CONTENT_WORK=$CONTENT_DIR/work
 export CONTENT_MEDIA=$CONTENT_DIR/media
 export CONTENT_CODE=$CONTENT_DIR/code
 export MAIN_VSCODE_SETTINGS_SYMLINK=$CONTENT_CODE/.vscode
@@ -19,15 +20,3 @@ export EDITOR=nvim
 export CONTENT_CONF=$CONTENT_LIB/conf
 export VAULT_MOUNT_POINT=$CONTENT_DIR/vault
 export ENCRYPTED_VAULT_DIR=$CONTENT_BIN/evault
-
-# Save working dir.
-_cur_dir=$(pwd)
-# Navigate to conf location.
-cd "$CONTENT_CONF"
-
-# Include My helper functions...
-source ./bash_methods
-# Include My Aliases...
-source ./bash_aliases
-# Go back to start path.
-cd "$_cur_dir"

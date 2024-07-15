@@ -34,11 +34,11 @@ class Facade:
         self.subsystem_c = SubsystemC()
 
     def operation(self):
-        results = [
+        results = (
             self.subsystem_a.operation_a(),
             self.subsystem_b.operation_b(),
             self.subsystem_c.operation_c(),
-        ]
+        )
         return f'Facade operation: {", ".join(results)}'
 
 
