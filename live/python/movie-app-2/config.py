@@ -1,7 +1,7 @@
-import contextlib
 from css_html_js_minify.minify import process_multiple_files
 import typing as ty, dataclasses as dt, tempfile as tmp
 from concurrent.futures import ThreadPoolExecutor, wait
+import contextlib
 
 from mpack.previews import Preview, _DEFAULT
 from pathlib import Path
@@ -27,7 +27,9 @@ DEFAULT_THUMBNAIL = RESOURCE_DIR / "no-thumbnail.png"
 DEFAULT_PREVIEW = RESOURCE_DIR / "no-preview.mp4"
 
 # Typs for config.
-SORT_ORDERING: ty.TypeAlias = ty.Literal["new", "old", "random", "name", "none"]
+SORT_ORDERING: ty.TypeAlias = ty.Literal[
+    "new", "old", "random", "name", "big", "small", "eman"
+]
 
 
 @dt.dataclass(kw_only=True)
@@ -36,7 +38,7 @@ class Config:
     nth_frame: ty.Optional[int] = None
     generate_thumbnails: bool = dt.field(default=False)
     generate_previews: bool = dt.field(default=False)
-    sort_ordering: SORT_ORDERING = dt.field(default="none")
+    sort_ordering: SORT_ORDERING = dt.field(default="name")
     retry_nonexisting: bool = False
     confirm_delete_thumbnail: bool = True
     confirm_delete_preview: bool = True
@@ -64,8 +66,14 @@ def generate_thumbnails(config: Config):
             )
             clip.save_frame(str(image_file), frame_t)
 
-    _thumbnails = lambda: (path for path in VIDEO_DIR.iterdir() if not (THUMBNAIL_DIR / f'{path.stem}.png').exists())
-    _thumbnails_paths = lambda: ((THUMBNAIL_DIR / f'{path.stem}.png') for path in _thumbnails())
+    _thumbnails = lambda: (
+        path
+        for path in VIDEO_DIR.iterdir()
+        if not (THUMBNAIL_DIR / f"{path.stem}.png").exists()
+    )
+    _thumbnails_paths = lambda: (
+        (THUMBNAIL_DIR / f"{path.stem}.png") for path in _thumbnails()
+    )
 
     wait(config.executor.submit(save_frame, video) for video in _thumbnails())
 
@@ -76,7 +84,9 @@ def generate_thumbnails(config: Config):
 def generate_previews(config: Config):
     from mpack.previews import PreviewsSeq
 
-    _previews = lambda: (path for path in VIDEO_DIR.iterdir() if not (PREVIEW_DIR / path.name).exists())
+    _previews = lambda: (
+        path for path in VIDEO_DIR.iterdir() if not (PREVIEW_DIR / path.name).exists()
+    )
     _previews_paths = lambda: ((PREVIEW_DIR / path.name) for path in _previews())
 
     if not config.link_missing:
@@ -95,7 +105,8 @@ def delete_symlinks(config: Config):
         ]
         if confirm:
             print(f"To be deleted(symlinks):")
-            for cnt, path in enumerate(paths): print(f'\t{cnt}: {str(path)}')
+            for cnt, path in enumerate(paths):
+                print(f"\t{cnt}: {str(path)}")
             value = input("Are you sure you want to continue?[y/n] ")
             if value.lower() != "y":
                 return
@@ -111,7 +122,8 @@ def cleanup_junk(config: Config):
         paths = [path for path in directory.iterdir() if todelete(path)]
         if config.confirm_junk_cleanup:
             print(f"To be deleted(Junk Files):")
-            for cnt, path in enumerate(paths): print(f'\t{cnt}: {str(path)}')
+            for cnt, path in enumerate(paths):
+                print(f"\t{cnt}: {str(path)}")
             value = input("Are you sure you want to continue?[y/n] ")
             if value.lower() != "y":
                 return
@@ -120,6 +132,7 @@ def cleanup_junk(config: Config):
 
     _cleanup(THUMBNAIL_DIR, lambda p: not (VIDEO_DIR / f"{p.stem}.mp4").exists())
     _cleanup(PREVIEW_DIR, lambda p: not (VIDEO_DIR / p.name).exists())
+
 
 @contextlib.contextmanager
 def assert_correctness(config: Config):
@@ -131,10 +144,16 @@ def assert_correctness(config: Config):
         assert THUMBNAIL_DIR.exists(), f"Thumbnail directory missing: {THUMBNAIL_DIR!r}"
         assert PREVIEW_DIR.exists(), f"Preview directory missing: {PREVIEW_DIR!r}"
         yield
-        assert DEFAULT_THUMBNAIL.exists(), f'Default thumbnail missing: {DEFAULT_THUMBNAIL!r}'
-        assert DEFAULT_PREVIEW.exists(), f'Default preview missing: {DEFAULT_PREVIEW!r}'
-        assert DEFAULT_THUMBNAIL.is_file(), f'Default thumbnail is not a file: {DEFAULT_THUMBNAIL!r}'
-        assert DEFAULT_PREVIEW.is_file(), f'Default preview is not a file: {DEFAULT_PREVIEW!r}'
+        assert (
+            DEFAULT_THUMBNAIL.exists()
+        ), f"Default thumbnail missing: {DEFAULT_THUMBNAIL!r}"
+        assert DEFAULT_PREVIEW.exists(), f"Default preview missing: {DEFAULT_PREVIEW!r}"
+        assert (
+            DEFAULT_THUMBNAIL.is_file()
+        ), f"Default thumbnail is not a file: {DEFAULT_THUMBNAIL!r}"
+        assert (
+            DEFAULT_PREVIEW.is_file()
+        ), f"Default preview is not a file: {DEFAULT_PREVIEW!r}"
     except AssertionError as e:
         print(f"Error: {str(e)}")
         exit(1)
@@ -163,10 +182,12 @@ def process_statics(config: Config):
             path.unlink()
         for file in directory.iterdir():
             process_multiple_files(str(file))
+
     from mpack.stream import Stream
+
     with Stream():
-        _minify_dir(STATIC_DIR / 'js')
-        _minify_dir(STATIC_DIR / 'css')
+        _minify_dir(STATIC_DIR / "js")
+        _minify_dir(STATIC_DIR / "css")
 
 
 def prepare(config: Config):
@@ -184,7 +205,8 @@ def prepare(config: Config):
 
 
 def get_config(app: web.Application) -> Config:
-    if config := app.get(APP_KEY, None): return config
+    if config := app.get(APP_KEY, None):
+        return config
     raise Exception("Call setup on application to use config.")
 
 

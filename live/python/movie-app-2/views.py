@@ -37,9 +37,9 @@ async def refresh(req: web.Request):
     movies = mov.movies(req)
     try:
         sortorder = req.query["sortby"]
-        order = mov.Order(sortorder)  # type: ignore
-        movies.sort_movies(order)  # type: ignore
-        movies.order = order  # type: ignore
+        order = mov.Order(sortorder)
+        movies.sort_movies(order)
+        movies.order = order
     except KeyError:
         pass
     try:
@@ -68,7 +68,7 @@ async def media_not_found_fallback(req: web.Request, handler):
 # Templates
 movies_page = template_handler("movies.mako")
 home_page = template_handler(
-    "home.mako", lambda r: dict(movies=mov.movies(r), orders=mov.Order)
+    "home.mako", lambda r: dict(movies=mov.movies(r), orders=mov.Order.orders())
 )
 
 routes: list[web.AbstractRouteDef] = [
