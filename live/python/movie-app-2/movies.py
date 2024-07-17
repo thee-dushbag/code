@@ -1,59 +1,49 @@
-import dataclasses as dt, typing as ty, config as cfg, random, enum
+import enum
+from functools import cached_property
+import dataclasses as dt, typing as ty, config as cfg
 from aiohttp import web
 from pathlib import Path
+import sorters as sort
 
 APP_KEY = "movies.app.key.moviesite"
 
 T = ty.TypeVar("T")
-Sorter = ty.Callable[[ty.Sequence[T]], ty.Iterable[T]]
-PathSortT = Sorter['Movie']
 
 
-class MovieSorter:
-    @staticmethod
-    def sort_by_name(items: ty.Sequence["Movie"]):
-        return sorted(items, key=lambda movie: str(movie.path))
+@dt.dataclass(slots=True)
+class _Order:
+    value: str
+    sorter: sort.Sorter
 
-    @staticmethod
-    def _time_sorter(movie: "Movie"):
-        return movie.path.stat().st_mtime
+    def __str__(self):
+        return self.value
 
-    @staticmethod
-    def sort_by_time_newest(items: ty.Sequence["Movie"]):
-        return sorted(items, key=MovieSorter._time_sorter, reverse=True)
+    __repr__ = __str__
 
-    @staticmethod
-    def sort_by_time_oldest(items: ty.Sequence["Movie"]):
-        return sorted(items, key=MovieSorter._time_sorter)
 
-    @staticmethod
-    def sort_randomly(items: ty.Sequence["Movie"]):
-        tmp = list(items)
-        random.shuffle(tmp)
-        return tmp
-
-    @staticmethod
-    def identity(items: ty.Sequence["Movie"]):
-        return items
-
-@dt.dataclass
-class _Order(str):
-    _value: str
-    _sorter: PathSortT = MovieSorter.identity
-
-@enum._simple_enum(enum.StrEnum)  # type: ignore
 class Order:
-    def __new__(cls, order: str, strategy: PathSortT = MovieSorter.identity) -> _Order:
-        value = _Order.__new__(cls, order)
-        value._value = order
-        value._sorter = strategy
-        return value
+    def __new__(cls, order: str) -> _Order:
+        return getattr(cls, order.upper())
 
-    NONE = "none", MovieSorter.identity
-    NEW = "new", MovieSorter.sort_by_time_newest
-    OLD = "old", MovieSorter.sort_by_time_oldest
-    NAME = "name", MovieSorter.sort_by_name
-    RANDOM = "random", MovieSorter.sort_randomly
+    @classmethod
+    def orders(cls):
+        if cls._cached is None:
+            cls._cached = {
+                name: value
+                for name, value in cls.__dict__.items()
+                if isinstance(value, _Order)
+            }
+        return cls._cached.values()
+
+    _cached: dict[str, _Order] | None = None
+
+    NAME = _Order("name", sort.name)
+    NEW = _Order("new", sort.time_newest)
+    OLD = _Order("old", sort.time_oldest)
+    BIG = _Order("big", sort.size_biggest)
+    RANDOM = _Order("random", sort.randomly)
+    SMALL = _Order("small", sort.size_smallest)
+    EMAN = _Order("eman", sort.eman)
 
 
 @dt.dataclass
@@ -121,23 +111,23 @@ class MovieList(list[Movie]):
 @dt.dataclass
 class Movies:
     path: Path
-    order: Order
+    order: _Order
     movies: MovieList = dt.field(init=False)
     total: int = dt.field(init=False)
 
     def __post_init__(self):
         self.set_movies()
 
-    def sort_movies(self, order: ty.Optional[Order] = None):
+    def sort_movies(self, order: ty.Optional[_Order] = None):
         order = self.order if order is None else order
-        self.movies = MovieList(order._sorter(self.movies)) # type: ignore
+        order.sorter(self.movies)  # type: ignore
         self.set_movie_ids()
 
     def set_movie_ids(self):
         for mid, movie in enumerate(self.movies):
             movie.movie_id = mid
 
-    def set_movies(self, order: Order | None = None):
+    def set_movies(self, order: _Order | None = None):
         self.movies = MovieList(Movie(path) for path in self.path.iterdir())
         self.sort_movies(order)
         self.total = len(self.movies)
