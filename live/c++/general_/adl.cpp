@@ -15,46 +15,46 @@ C++ Feature
 namespace hey {
   struct email {
     std::string val;
-    email(std::string const& v)
+    email(std::string const &v)
       : val{ v } { }
-    email(std::string&& v)
+    email(std::string &&v)
       : val{ std::move(v) } { }
-    email(email&& n)
+    email(email &&n)
       : val{ std::move(n.val) } { }
-    email(email const& n)
+    email(email const &n)
       : val{ n.val } { }
     operator std::string()
       const noexcept {
       return val;
     }
-    void operator=(email&& n) noexcept {
+    void operator=(email &&n) noexcept {
       val = std::move(n.val);
     }
-    void operator=(email const& n)
+    void operator=(email const &n)
       noexcept {
       val = n.val;
     }
-    void operator=(std::string&& n) noexcept {
+    void operator=(std::string &&n) noexcept {
       val = std::move(n);
     }
-    void operator=(std::string const& n)
+    void operator=(std::string const &n)
       noexcept {
       val = n;
     }
   };
 
-  std::ostream&
-    operator<<(std::ostream& out, email const& n) {
+  std::ostream &
+    operator<<(std::ostream &out, email const &n) {
     return out << "email(" << std::quoted(n.val) << ')';
   }
 
-  void swap(email& n1, email& n2) {
+  void swap(email &n1, email &n2) {
     email tmp{ std::move(n1) };
     n1 = std::move(n2);
     n2 = std::move(tmp);
   }
 
-  void hello(email const& n) {
+  void hello(email const &n) {
     std::cout << "To " << n.val << ": How are you?\n";
   }
 }
@@ -62,58 +62,58 @@ namespace hey {
 namespace snn {
   struct name {
     std::string val;
-    name(std::string const& v)
+    name(std::string const &v)
       : val{ v } { }
-    name(std::string&& v)
+    name(std::string &&v)
       : val{ std::move(v) } { }
-    name(name&& n)
+    name(name &&n)
       : val{ std::move(n.val) } { }
-    name(name const& n)
+    name(name const &n)
       : val{ n.val } { }
     operator std::string()
       const noexcept {
       return val;
     }
-    void operator=(name&& n) noexcept {
+    void operator=(name &&n) noexcept {
       val = std::move(n.val);
     }
-    void operator=(name const& n)
+    void operator=(name const &n)
       noexcept {
       val = n.val;
     }
-    void operator=(std::string&& n) noexcept {
+    void operator=(std::string &&n) noexcept {
       val = std::move(n);
     }
-    void operator=(std::string const& n)
+    void operator=(std::string const &n)
       noexcept {
       val = n;
     }
   };
 
-  std::ostream&
-    operator<<(std::ostream& out, name const& n) {
+  std::ostream &
+    operator<<(std::ostream &out, name const &n) {
     return out << "name(" << std::quoted(n.val) << ')';
   }
 
-  void swap(name& n1, name& n2) {
+  void swap(name &n1, name &n2) {
     name tmp{ std::move(n1) };
     n1 = std::move(n2);
     n2 = std::move(tmp);
   }
 
-  void hello(name const& n) {
+  void hello(name const &n) {
     std::cout << "Hello " << n.val << "?\n";
   }
 }
 
-auto main(int argc, char** argv) -> int {
+auto main(int argc, char **argv) -> int {
   snn::name sis{ "Simon Nganga" }, me{ "Faith Njeri" };
-  std::cout << "Me: " << me << " | Addr: " << (void*)std::addressof(me.val.front()) << '\n';
-  std::cout << "Sis: " << sis << " | Addr: " << (void*)std::addressof(sis.val.front()) << '\n';
+  std::cout << "Me: " << me << " | Addr: " << (void *)std::addressof(me.val.front()) << '\n';
+  std::cout << "Sis: " << sis << " | Addr: " << (void *)std::addressof(sis.val.front()) << '\n';
   hello(me); // Found using ADL since the argument comes from snn namespace hence hello found in snn
   swap(me, sis); // Similar to that of hello
-  std::cout << "Me: " << me << " | Addr: " << (void*)std::addressof(me.val.front()) << '\n';
-  std::cout << "Sis: " << sis << " | Addr: " << (void*)std::addressof(sis.val.front()) << '\n';
+  std::cout << "Me: " << me << " | Addr: " << (void *)std::addressof(me.val.front()) << '\n';
+  std::cout << "Sis: " << sis << " | Addr: " << (void *)std::addressof(sis.val.front()) << '\n';
 
   hey::email mine{ "simongash@gmail.com" }, mum{ "lydiawanjiru@yahoo.com" };
   std::vector<std::variant<snn::name, hey::email>> values{ sis, mine, mum, me };
@@ -127,12 +127,12 @@ auto main(int argc, char** argv) -> int {
     depending on the value of val on the current passed variant value,
     the correct hello is dispatched.
     */
-    [](auto& value) {
-      std::visit([](auto& val) {
-        std::cout << "Value: " << val.val << " | ";
-        hello(val);
-        },
-        value);
-    }
+    [](auto &value) {
+    std::visit([] (auto &val) -> void {
+      std::cout << "Value: " << val.val << " | ";
+      hello(val);
+    },
+      value);
+  }
   );
 }

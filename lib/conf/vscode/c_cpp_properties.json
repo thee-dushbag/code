@@ -5,15 +5,12 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "~/Content/code/lib/include",
-                // "${workspaceFolder}/c_lox/include",
-                // "${workspaceFolder}/Include",
                 "${workspaceFolder}",
-                "/usr/include/c++/14.1.1"
-                // "/usr/include/c++/v1"
-                // "/usr/include/python3.11"
+                "/usr/include/c++/14.1.1",
+                "/usr/include/c++/14.1.1/x86_64-pc-linux-gnu"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/g++",
+            "compilerPath": "/usr/bin/clang++",
             "configurationProvider": "ms-vscode.makefile-tools",
             "cStandard": "c23",
             "cppStandard": "c++23"
