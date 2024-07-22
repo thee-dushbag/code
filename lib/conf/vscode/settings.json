@@ -2,6 +2,10 @@
   "python.analysis.extraPaths": ["~/Content/code/lib"],
   "files.associations": {
     "*.py": "python",
+    "*.svg": "html",
+    "*.txt": "plaintext",
+    "latch": "cpp",
+    "spanstream": "cpp",
     "*.pyi": "python",
     "*.lox": "plaintext",
     "*.rat": "plaintext",
@@ -122,7 +126,8 @@
     "wren_opcodes.h": "c",
     "text_encoding": "cpp",
     "*.ipp": "cpp",
-    ".svg": "html5"
+    ".svg": "html5",
+    "c++config.h": "cpp"
   },
 
   "emmet.includeLanguages": {
@@ -139,8 +144,8 @@
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": false,
   "python.defaultInterpreterPath": "~/Content/bin/venvs/defenv/bin/python3",
-  "editor.fontFamily":  "CodeNewRoman Nerd Font Mono, Hurmit Nerd Font-, CaskaydiaCove Nerd Font, ComicShannsMono Nerd Font, serif",
-  "editor.fontLigatures": true,
+  "editor.fontFamily":  "CodeNewRoman Nerd Font Mono, Hurmit Nerd Font-, CaskaydiaCove Nerd Font, ComicShannsMono Nerd Font-, serif",
+  "editor.fontLigatures": false,
   "editor.fontWeight": "400",
   "editor.fontSize": 15,
   "editor.folding": true,
@@ -228,9 +233,10 @@
     "editor.indentSize": "tabSize"
   },
   "[lua]": {
-    "editor.defaultFormatter": "sumneko.lua",
+    // "editor.defaultFormatter": "sumneko.lua",
     "editor.tabSize": 2,
-    "editor.indentSize": "tabSize"
+    "editor.indentSize": "tabSize",
+    "editor.defaultFormatter": "sumneko.lua"
   },
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -263,5 +269,5 @@
   },
   "[snippets]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
 }

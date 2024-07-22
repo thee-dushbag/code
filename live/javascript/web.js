@@ -1,9 +1,7 @@
-let w = new Worker('./worker.js')
+let worker = new Worker("./worker.js");
 
-w.addEventListener('sqr', event => {
-  console.log(`Worker responded with: ${event} ${event.data}`)
-})
+worker.onmessage = (event) => {
+  console.log(`Received ${event.data} from worker.js`);
+};
 
-let e = new Event('sqr')
-e.data = 90
-w.dispatchEvent(e)
+worker.postMessage(90);
