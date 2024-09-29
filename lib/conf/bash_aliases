@@ -1,34 +1,26 @@
 # My aliases: Must find behaviors before setting aliases
-alias ijspack=_install_jspack
-alias pages="py ~/Content/code/live/python/general_/play/pro"
+# alias ijspack=_install_jspack
+# alias pages='python "$CONTENT_CODE/live/python/general_/play/pro"'
 alias origins_router="_set_origins_router_host"
 alias origins_local="_set_origins_local_host"
 alias origins="_get_origins"
 alias wlan0_origins="_set_current_ip"
 alias movie_origin="_set_movie"
 alias statics_origin="_set_statics"
-alias no_watch="watch_movie no-watch"
-alias nv=nvim
-alias pls=sudo
 alias py3=python3
+alias python=python3
 alias ipy=ipython3
 alias ipython=ipython3
-alias ali="nv $CONTENT_CONF/bash_aliases"
-alias alim="nv $CONTENT_CONF/bash_methods"
-alias alil="nv $CONTENT_CONF/bash_login"
-alias mwifi-load="py /home/simon/Content/code/live/python/movie-app-2/preload.py"
+alias mwifi-load='python "$CONTENT_CODE/live/python/movie-app-2/preload.py"'
 
 alias agcorn="gunicorn --worker-class aiohttp.worker.GunicornWebWorker --reload"
 alias clr=clear
-alias python=python3
-alias opip=$(which pip)
+# alias opip=$(which pip)
 # alias pip="opip --require-virtualenv"
 alias make_q="make --quiet"
 alias rune="make_q exe"
 alias run="make_q -B"
-alias statics="run -C ~/Content/code/live/python/statics"
-alias fhttpx="httpx --follow-redirects"
-alias phttpx="fhttpx -m post"
+alias statics="run -C $CONTENT_CODE/live/python/statics"
 alias shut="shutdown --poweroff now"
 alias boot="shutdown --reboot now"
 alias sql="sqlite3 --box"
@@ -36,12 +28,12 @@ alias sql="sqlite3 --box"
 # alias wifi_load_movie="origins_router && watch_movie load"
 alias mwifi=_mwifi_setup
 
-alias nameep="py -m mpack.nameep"
-alias webrun="py -m mpack.webrun"
-# alias psize="py -m mpack.dstat" # Just us du -sh <path>
-alias toxspf="py -m mpack.toxspf"
+alias nameep="python3 -m mpack.nameep"
+alias webrun="python3 -m mpack.webrun"
+# alias psize="python3 -m mpack.dstat" # Just use 'du -sh <path>'
+alias toxspf="python3 -m mpack.toxspf"
 alias inpm="npm --no-fund --no-audit --no-install-links"
-alias mtools="py -m mpack.cmd_tools"
+alias mtools="python3 -m mpack.cmd_tools"
 
 alias ..="cd .."
 alias '_'="cd -"
@@ -65,13 +57,14 @@ alias vmntd=_encfs_vault_mounted
 # alias pbpaste='xclip -selection clipboard -o'
 
 # xsel copy paste aliases
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
+alias xci='xsel --clipboard --input'
+alias xco='xsel --clipboard --output'
+alias tree="tree --filesfirst --sort=name -C"
 
 alias lssh-add=_ssh_add_key
 alias lssh-agent=_start_ssh_agent_daemon
-alias mupt="yay --noconfirm --sudoloop=true"
-alias retrythis=_retry_command
+# alias mupt="yay --noconfirm --sudoloop=true"
+# alias retrythis=_retry_command
 alias ex_alias=_expand_alias
-alias wtf=_explain_exit_status
+# alias wtf=_explain_exit_status
 alias tcommits=_total_commits

@@ -14,7 +14,7 @@
       </div>
       <div class="d-flex gap-2">
         <p>Reload Content:</p>
-        <a href="/api/refresh?load=y" class="btn btn-danger">Reload</a>
+        <a href="/api/refresh?load=n" class="btn btn-danger">Reload</a>
       </div>
       <div class="d-flex gap-2">
         <p>Sort By:</p>

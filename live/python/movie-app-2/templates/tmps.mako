@@ -3,7 +3,7 @@
     <div class="col-xl-4 col-lg-4 g-1 col-md-6 col-sm-10 col-xs-12">
       <div class="movie-box" index="$index">
         ## autoplay
-        <video src="#" muted autoplay disablepictureinpicture
+        <video src="#!" muted autoplay disablepictureinpicture
             data-movie="/source/movies/$movie"
             data-preview="/source/previews/$preview"
             data-thumbnail="/source/thumbnails/$thumbnail"

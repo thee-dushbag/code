@@ -43,8 +43,8 @@ async def refresh(req: web.Request):
     except KeyError:
         pass
     try:
+        movies.set_movies()
         if req.query["load"].lower() in ("y", "yes"):
-            movies.set_movies()
             cfg.generate_previews(cfg.config(req))
             cfg.generate_thumbnails(cfg.config(req))
     except KeyError:

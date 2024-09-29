@@ -9,7 +9,7 @@ $(async function () {
 
   const CONTENT_SIZE = 15,
     PAGE_NUMBER_SIZE = 5,
-    NOSRC = "#",
+    NOSRC = "#!",
     RL_CNT = Math.floor((PAGE_NUMBER_SIZE - 1) / 2),
     MID = RL_CNT + 1,
     PREV_KEYS = ["p"],
