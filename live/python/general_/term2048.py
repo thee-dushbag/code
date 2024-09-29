@@ -30,21 +30,36 @@ def print_matrix(matrix, length, special, __fillch=" ") -> None:
 
 
 help_txt = """2048 Help Text.
+Actions:
     w -> up
     a -> left
     s -> down
     d -> right
     q -> quit
     h -> help
+
+Format: (<digit>*<action>)+
+Example: 20w5sd
+         Means make 20 up, 5 down and 1 left.
 """
 
+def expand_input(input_str: str) -> list[str]:
+    chars, action = [], []
+    for char in input_str:
+        if char.isdigit():
+            chars.append(char)
+        else:
+            count = int("".join(chars)) if chars else 1
+            action.extend(char * count)
+            chars.clear()
+    return action
 
 def main() -> None:
     game = Game2048.Game2048()
-    dim = 4
+    dim = 8
     game.new_game(dim=dim, hscore=2048)
     one = True
-    cell = 6
+    cell = 4
     game_title = (
         "\x1b[4;94;1m" + "2048 Game.".center(cell * dim + 4 * dim, " ") + "\x1b[0m"
     )
@@ -74,23 +89,24 @@ def main() -> None:
         if one:
             print(help_txt)
             one = False
-        print("Enter option: w, s, a, d, q, h")
-        option = input("option:> ")
-        if option == "w":
-            game.slide_up()
-        elif option == "s":
-            game.slide_down()
-        elif option == "a":
-            game.slide_left()
-        elif option == "h":
-            one = True
-        elif option == "d":
-            game.slide_right()
-        elif option == "q":
-            print("\x1b[91;1mQuitting the game.\x1b[0m")
-            break
-        else:
-            one = True
+        print("Enter action: w, s, a, d, q, h")
+        actions = input("action:> ")
+        for action in expand_input(actions):
+            if action == "w":
+                game.slide_up()
+            elif action == "s":
+                game.slide_down()
+            elif action == "a":
+                game.slide_left()
+            elif action == "h":
+                one = True
+            elif action == "d":
+                game.slide_right()
+            elif action == "q":
+                print("\x1b[91;1mQuitting the game.\x1b[0m")
+                exit(0)
+            else:
+                one = True
 
 
 if __name__ == "__main__":

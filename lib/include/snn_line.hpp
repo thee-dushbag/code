@@ -9,6 +9,12 @@
 #include <snn_bqueue.hpp>
 #include <variant>
 
+#ifdef __cplusplus
+# define Hey 4
+#else
+# define Hey 5
+#endif
+
 namespace snn {
     template<typename K, typename V>
     using _map_type = std::unordered_map<K, V>;

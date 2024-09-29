@@ -1,7 +1,7 @@
 # Command behaviors set here...
 
 function _install_jspack() {
-  npm i $CONTENT_LIB/jspack
+  npm i "$CONTENT_LIB/jspack"
 }
 
 function vscode_settings() {
@@ -61,17 +61,16 @@ function _set_origins_router_host() {
 }
 
 function _detect_wlan0_ip() {
-  local myip="$(ip addr | sed -n 11p | tr / \  | awk '{ print $2 }')"
-  [ -z "$myip" ] && myip="127.0.0.1"
-  echo "$myip"
+  local myip=$(ip -4 -o addr show wlan0 | tr / \ | awk '{ print $4 }')
+  [ -z $myip ] && echo 127.0.0.1 || echo $myip
 }
 
 function _set_current_ip() {
-  _set_origins_host "$(_detect_wlan0_ip)"
+  _set_origins_host $(_detect_wlan0_ip)
 }
 
 function _set_origins_local_host() {
-  _set_origins_host "localhost"
+  _set_origins_host localhost
 }
 
 function shlvl_() {
@@ -79,31 +78,19 @@ function shlvl_() {
 }
 
 function _get_virtual_env() {
-  if [[ -d "$VIRTUAL_ENV" ]]; then
-    echo -n "$(basename "$VIRTUAL_ENV") "
-  else
-    echo -n ""
-  fi
+  [[ -d "$VIRTUAL_ENV" ]] && echo -n "$(basename "$VIRTUAL_ENV") "
 }
 
 function _get_state_char() {
   # symbols="✓×"
-  if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
-    echo -n '✓'
-  else
-    echo -n '×'
-  fi
+  [[ $_LAST_COMMAND_STATE -eq 0 ]] && echo -n '✓' || echo -n '×'
 }
 
 function _get_state_color() {
   local OK_COLOR='\e[92;3m'
   local ERR_COLOR='\e[91;3m'
   # symbols="✓×"
-  if [[ $_LAST_COMMAND_STATE -eq 0 ]]; then
-    echo -en "$OK_COLOR"
-  else
-    echo -en "$ERR_COLOR"
-  fi
+  [[ $_LAST_COMMAND_STATE -eq 0 ]] && echo -en "$OK_COLOR" || echo -en "$ERR_COLOR"
 }
 
 function _set_last_command_state() {
@@ -113,14 +100,7 @@ function _set_last_command_state() {
 
 _LAST_COMMAND_STATE=0
 PROMPT_COMMAND=_set_last_command_state
-PS1=$'\[\e[0m\]\[$(_get_state_color)\]$(_get_state_char) \[\e[0m\]\[\e[97;1m\]$(_get_virtual_env)\[\e[96;1m\]\W\[\e[97;1m\] • \[\e[0m\]'
-
-# import my functions if they exist
-if [[ -f ~/.bash_utils ]]; then
-  . ~/.bash_utils
-  #else
-  #	echo "Bash Utils Not Found."
-fi
+readonly PS1=$'\[\e[0m\]\[$(_get_state_color)\]$(_get_state_char) \[\e[0m\]\[\e[97;1m\]$(_get_virtual_env)\[\e[96;1m\]\W\[\e[97;1m\] • \[\e[0m\]'
 
 # other conditionals
 # add my path to PATH
@@ -130,7 +110,7 @@ function _add_dir_to_path() {
     if [[ -d "$dir" ]]; then
       export PATH="$dir":$PATH
     else
-      echo "Your BIN: '$BIN' was not found or is not a directory." >&2
+      echo "$FUNCNAME: '$dir' was not found or is not a directory." >&2
     fi
   done
 }
@@ -138,10 +118,8 @@ function _add_dir_to_path() {
 # Jobs Operation
 # Get the Process IDs (PIDs) of runnig jobs
 function pjobs() {
-  value=$(jobs -l | awk '{print \$2}')
-  if [[ -z "$value" ]]; then
-    return 2
-  fi
+  value="$(jobs -l | awk '{print $2}')"
+  [[ -z "$value" ]] && return 2
   echo "$value"
 }
 
@@ -270,10 +248,7 @@ function _drop_venv() {
 }
 
 function _encfs_vault_mounted() {
-  local vfs=$(df "$VAULT_MOUNT_POINT" | sed 1d | awk '{ print $1 }')
-  if [ "$vfs" != 'encfs' ]; then
-    return 1
-  fi
+  [ "$(df --output=source "$VAULT_MOUNT_POINT" | sed 1d)" == encfs ]
 }
 
 function _setup_encfs_vault() {
@@ -432,18 +407,19 @@ function _retry_command() {
 }
 
 function _expand_alias() {
-  local aliasname="$1"
-  shift 1
-  if alias "$aliasname" >/dev/null; then
-    # echo "$(alias "$aliasname" | cut -d= -f2- | tr -d \') $aliasargs"
-    echo "${BASH_ALIASES["$aliasname"]} $@"
-  else
-    return $?
+  if [ $# -ne 1 ]; then
+    echo "Usage: expand_alias <alias_name>" >&2
+    return 2
   fi
+  { echo "${BASH_ALIASES["$1"]?}" || return $?; } 2>/dev/null
 }
 
 function _share_server_url() {
   local URL="$1"
+  which kde-connect &>/dev/null || {
+    echo "Server running at: $URL"
+    return 1
+  }
   # Refresh KDE-connect available devices
   # in the current network.
   kdeconnect-cli --refresh
@@ -471,6 +447,10 @@ function _total_commits() {
 }
 
 function _mwifi_setup() {
+  if ! _encfs_vault_mounted; then
+    echo Please mount Vault >&2
+    return 1;
+  fi
   _set_current_ip
   echo "Activating VENV: movie-app"
   _activate_venv movie-app
@@ -494,4 +474,5 @@ function _explain_exit_status() {
 }
 
 # _activate_virtual_env
-_add_dir_to_path "$CORE_BIN" "$EXE_BIN"
+_add_dir_to_path "$CONTENT_BIN"
+

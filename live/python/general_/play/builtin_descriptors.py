@@ -9,20 +9,17 @@ class StaticMethod:
 class ClassMethod:
     def __init__(self, function) -> None:
         self.function = function
-        self.class_ = None
+        self.klass = None
 
     def __set_name__(self, cls, name):
         self.name = name
-        self.class_ = cls
+        self.klass = cls
 
     def __get__(self, inst, cls):
-        if self.class_ is None:
+        if self.klass is None:
             raise TypeError(f"{self.function!r} is not a method.")
-
-        def dispatch(*args, **kwargs):
-            return self.function(cls, *args, **kwargs)
-
-        return dispatch
+        from types import MethodType
+        return MethodType(self.function, self.klass)
 
 
 class Property:
