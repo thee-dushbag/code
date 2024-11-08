@@ -11,19 +11,23 @@
 # define LOOPS 200
 #endif
 
+std::atomic_uint aint{0};
+unsigned nint{0};
+
 void update(std::atomic_uint &aint, unsigned &nint, unsigned loops) {
   while (loops)
     (aint++, nint++, loops--);
 }
 
-int main() {
-  std::atomic_uint aint{0};
-  unsigned nint{0};
-
-  std::vector<std::jthread> threads(THREADS);
-
-  for (int i = 0; i < THREADS; i++)
-    threads.emplace_back(update, std::ref(aint), std::ref(nint), LOOPS);
+int main(int, char**) {
+  {
+    std::vector<std::thread> threads(THREADS);
+    for (int i = 0; i < THREADS; i++)
+      threads.emplace_back(update, std::ref(aint), std::ref(nint), LOOPS);
+    /*for (auto &thread: threads)*/
+    /*  if (thread.joinable())*/
+    /*    thread.join();*/
+  }
 
   std::cout << "Expect Int: " << (LOOPS * THREADS) << '\n'
             << "Atomic Int: " << aint << '\n'

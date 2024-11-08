@@ -1,6 +1,6 @@
-CC_c=gcc-12 -std=c2x -o3
-CC_cpp=g++-12 -std=c++23 -o3
-CC_rs=rustc -O
+CC_c=gcc -std=c2x -o3
+CC_cpp=g++ -std=c++23 -o3
+CC_rs=rustc -C opt-level=3
 CC_py=pyinstaller
 PY_BUILD_FILES=build dist main.spec
 

@@ -5,7 +5,7 @@ typedef unsigned long ulong;
 
 #define _ViewAS(var, type) (*(type *)&var)
 
-#define _Caster(From, To) \
+#define _Caster(From, To)                                                      \
   To From##2##To(From var) { return _ViewAS(var, To); }
 
 #define _Caster2(T1, T2) _Caster(T1, T2) _Caster(T2, T1)
@@ -13,13 +13,14 @@ typedef unsigned long ulong;
 _Caster2(uint, float);
 _Caster2(ulong, double);
 
-#define _PrintRange(T1, T2, S, F)                                          \
-  void range_##T1##_##T2(T1 start, T1 end, T1 step) {                      \
-    while (start < end) {                                                  \
-      printf("0x%0." #S F "X = %.150" F "f\n", start, _ViewAS(start, T2)); \
-      start += step;                                                       \
-      if (start < step) break;                                             \
-    }                                                                      \
+#define _PrintRange(T1, T2, S, F)                                              \
+  void range_##T1##_##T2(T1 start, T1 end, T1 step) {                          \
+    while (start < end) {                                                      \
+      printf("0x%0." #S F "X = %.150" F "f\n", start, _ViewAS(start, T2));     \
+      start += step;                                                           \
+      if (start < step)                                                        \
+        break;                                                                 \
+    }                                                                          \
   }
 
 _PrintRange(uint, float, 8, "");
@@ -58,29 +59,35 @@ _PrintRange(ulong, double, 16, "l");
 
 #define EXSTR(expr) #expr, expr
 
-#define P754Details \
-  PMIN_FLOAT;       \
-  PMAX_FLOAT;       \
-  PMIN_DOUBLE;      \
-  PMAX_DOUBLE;      \
-  PINF_FLOAT;       \
-  PINF_FLOAT_;      \
-  PINF_DOUBLE;      \
-  PINF_DOUBLE_;     \
-  PNAN_FLOAT;       \
-  PNAN_FLOAT_;      \
-  PNAN_DOUBLE;      \
+#define P754Details                                                            \
+  PMIN_FLOAT;                                                                  \
+  PMAX_FLOAT;                                                                  \
+  PMIN_DOUBLE;                                                                 \
+  PMAX_DOUBLE;                                                                 \
+  PINF_FLOAT;                                                                  \
+  PINF_FLOAT_;                                                                 \
+  PINF_DOUBLE;                                                                 \
+  PINF_DOUBLE_;                                                                \
+  PNAN_FLOAT;                                                                  \
+  PNAN_FLOAT_;                                                                 \
+  PNAN_DOUBLE;                                                                 \
   PNAN_DOUBLE_
 
 void prange();
 void others();
 
 int main() {
+  printf("sizeof(long double) = %lu\n", sizeof(long double));
+  printf("%s = 0x%0.8X\n", EXSTR(float2uint(1e10)));
+  printf("%s = %.7ff\n", EXSTR(uint2float(0x501502F9)));
+  printf("%s = 0x%0.8X\n", EXSTR(float2uint(-1e10)));
+  printf("%s = %.7ff\n", EXSTR(uint2float(0xD01502F9)));
+  printf("%s = %.7ff\n", EXSTR(uint2float(0x40400000)));
+
   printf("%s = %.7ff\n", EXSTR(uint2float(0x43960000)));
   printf("%s = 0x%0.8X\n", EXSTR(float2uint(0.32)));
   printf("%s = %.7ff\n", EXSTR(uint2float(0x3EA3D70B)));
   printf("%s = %.7ff\n", EXSTR(uint2float(0x3EA3D70A)));
-  printf("%s = 0x%0.16lX\n", EXSTR(double2ulong(8.369)));
   printf("%s = %.8lf\n", EXSTR(ulong2double(0x4020BCED916872B0)));
   printf("%s = 0x%0.16lX\n", EXSTR(double2ulong(100.0)));
   printf("%s = %.8lf\n", EXSTR(ulong2double(0x4059000000000000)));
@@ -105,4 +112,3 @@ void others() {
   PRINTV(MAX_DOUBLE + ulong2double(0x7FE0000000000001));
   PRINTV(MIN_DOUBLE + ulong2double(0xFFE0000000000001));
 }
-

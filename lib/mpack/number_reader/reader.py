@@ -8,7 +8,7 @@ class NumberReader:
         self.ns = NumberSpliter()
 
     def read(self, number: float, ignore_pz: bool = True) -> str:
-        snum = f'{number:f}'.split(".")
+        snum = f'{number}'.split(".")
         assert float(number), f"Expected a number, got {number}"
         if len(snum) == 1:
             snum.append("0")

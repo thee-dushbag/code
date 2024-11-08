@@ -137,21 +137,21 @@ face = Rect(
     10,
     80,
     80,
-    Color.LIGHT_YELLOW,
+    Color.DARK_YELLOW,
     [
         Rect(
             11,
             11,
             78,
             78,
-            Color.LIGHT_YELLOW,
+            Color.DARK_YELLOW,
             [
                 Rect(
                     0,
                     0,
                     100,
                     45,
-                    Color.LIGHT_YELLOW,
+                    Color.DARK_YELLOW,
                     [
                         Rect(
                             3,
@@ -209,24 +209,24 @@ flag = Rect(
     100,
     Color.DARK_WHITE,
     [
-        Rect(0, 0, 100, 10, Color.LIGHT_RED),
-        Rect(0, 20, 100, 10, Color.LIGHT_RED),
-        Rect(0, 40, 100, 10, Color.LIGHT_RED),
-        Rect(0, 60, 100, 10, Color.LIGHT_RED),
-        Rect(0, 80, 100, 10, Color.LIGHT_RED),
+        Rect(0, 0, 100, 10, Color.DARK_RED),
+        Rect(0, 20, 100, 10, Color.DARK_RED),
+        Rect(0, 40, 100, 10, Color.DARK_RED),
+        Rect(0, 60, 100, 10, Color.DARK_RED),
+        Rect(0, 80, 100, 10, Color.DARK_RED),
         Rect(
             0,
             0,
             50,
             50,
-            Color.LIGHT_BLUE,
+            Color.DARK_BLUE,
             [
                 Rect(
                     0,
                     0,
                     100,
                     10,
-                    Color.LIGHT_BLUE,
+                    Color.DARK_BLUE,
                     [
                         Rect(0, 0, 10, 100, Color.DARK_WHITE),
                         Rect(20, 0, 10, 100, Color.DARK_WHITE),
@@ -242,11 +242,11 @@ flag = Rect(
                     10,
                     Color.DARK_WHITE,
                     [
-                        Rect(0, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(20, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(40, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(60, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(80, 0, 10, 100, Color.LIGHT_BLUE),
+                        Rect(0, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(20, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(40, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(60, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(80, 0, 10, 100, Color.DARK_BLUE),
                     ],
                 ),
                 Rect(
@@ -254,7 +254,7 @@ flag = Rect(
                     20,
                     100,
                     10,
-                    Color.LIGHT_BLUE,
+                    Color.DARK_BLUE,
                     [
                         Rect(0, 0, 10, 100, Color.DARK_WHITE),
                         Rect(20, 0, 10, 100, Color.DARK_WHITE),
@@ -270,11 +270,11 @@ flag = Rect(
                     10,
                     Color.DARK_WHITE,
                     [
-                        Rect(0, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(20, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(40, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(60, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(80, 0, 10, 100, Color.LIGHT_BLUE),
+                        Rect(0, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(20, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(40, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(60, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(80, 0, 10, 100, Color.DARK_BLUE),
                     ],
                 ),
                 Rect(
@@ -282,7 +282,7 @@ flag = Rect(
                     40,
                     100,
                     10,
-                    Color.LIGHT_BLUE,
+                    Color.DARK_BLUE,
                     [
                         Rect(0, 0, 10, 100, Color.DARK_WHITE),
                         Rect(20, 0, 10, 100, Color.DARK_WHITE),
@@ -298,11 +298,11 @@ flag = Rect(
                     10,
                     Color.DARK_WHITE,
                     [
-                        Rect(0, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(20, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(40, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(60, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(80, 0, 10, 100, Color.LIGHT_BLUE),
+                        Rect(0, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(20, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(40, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(60, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(80, 0, 10, 100, Color.DARK_BLUE),
                     ],
                 ),
                 Rect(
@@ -310,7 +310,7 @@ flag = Rect(
                     60,
                     100,
                     10,
-                    Color.LIGHT_BLUE,
+                    Color.DARK_BLUE,
                     [
                         Rect(0, 0, 10, 100, Color.DARK_WHITE),
                         Rect(20, 0, 10, 100, Color.DARK_WHITE),
@@ -326,11 +326,11 @@ flag = Rect(
                     10,
                     Color.DARK_WHITE,
                     [
-                        Rect(0, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(20, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(40, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(60, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(80, 0, 10, 100, Color.LIGHT_BLUE),
+                        Rect(0, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(20, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(40, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(60, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(80, 0, 10, 100, Color.DARK_BLUE),
                     ],
                 ),
                 Rect(
@@ -338,7 +338,7 @@ flag = Rect(
                     80,
                     100,
                     10,
-                    Color.LIGHT_BLUE,
+                    Color.DARK_BLUE,
                     [
                         Rect(0, 0, 10, 100, Color.DARK_WHITE),
                         Rect(20, 0, 10, 100, Color.DARK_WHITE),
@@ -354,11 +354,11 @@ flag = Rect(
                     10,
                     Color.DARK_WHITE,
                     [
-                        Rect(0, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(20, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(40, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(60, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(80, 0, 10, 100, Color.LIGHT_BLUE),
+                        Rect(0, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(20, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(40, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(60, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(80, 0, 10, 100, Color.DARK_BLUE),
                     ],
                 ),
                 Rect(
@@ -366,7 +366,7 @@ flag = Rect(
                     100,
                     100,
                     10,
-                    Color.LIGHT_BLUE,
+                    Color.DARK_BLUE,
                     [
                         Rect(0, 0, 10, 100, Color.DARK_WHITE),
                         Rect(20, 0, 10, 100, Color.DARK_WHITE),
@@ -382,11 +382,11 @@ flag = Rect(
                     10,
                     Color.DARK_WHITE,
                     [
-                        Rect(0, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(20, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(40, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(60, 0, 10, 100, Color.LIGHT_BLUE),
-                        Rect(80, 0, 10, 100, Color.LIGHT_BLUE),
+                        Rect(0, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(20, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(40, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(60, 0, 10, 100, Color.DARK_BLUE),
+                        Rect(80, 0, 10, 100, Color.DARK_BLUE),
                     ],
                 ),
             ],
@@ -395,7 +395,7 @@ flag = Rect(
 )
 
 image = Image(148, 60, Color.LIGHT_TEAL)
-image = Image(80, 20, Color.LIGHT_TEAL)
+image = Image(80, 20, Color.LIGHT_PURPLE)
 
 print(image.draw())
 print()
