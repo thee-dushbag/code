@@ -1,9 +1,5 @@
-CC=g++ -std=c++23
-
-all: run
-
-run: main
-	./main
+CXX=g++ -std=c++23 -g
 
 main: main.cpp
-	${CC} -o $@ $^
+mem: mem.cpp
+
