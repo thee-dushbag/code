@@ -1,5 +1,5 @@
 import concurrent.futures as cfut
-from moviepy import editor as edit
+from moviepy import VideoFileClip, ImageSequenceClip
 from pathlib import Path
 import dataclasses as dt
 import tempfile as tmp
@@ -41,7 +41,7 @@ class Preview:
             yield abs(start - current)
 
     def _create_preview_frames(self, directory: Path):
-        with edit.VideoFileClip(str(self.video_file)) as vclip:
+        with VideoFileClip(str(self.video_file)) as vclip:
             period = round(vclip.duration / self.frames, 2)
 
             def _save_frame(frame_index: int):
@@ -58,8 +58,8 @@ class Preview:
     def _image_seq_preview(
         images_dir: PathLike, preview_file: PathLike, fps: int = _DEFAULT.FPS
     ):
-        with edit.ImageSequenceClip(str(images_dir), fps) as iclip:
-            iclip.write_videofile(str(preview_file), verbose=False)
+        with ImageSequenceClip(str(images_dir), fps) as iclip:
+            iclip.write_videofile(str(preview_file))
 
     def _create_preview(self, images_dir: Path):
         self._image_seq_preview(images_dir, self.preview_file, self.fps)

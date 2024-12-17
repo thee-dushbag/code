@@ -134,9 +134,7 @@ def _reset_streams():
 
 def redirect(stream: ty.Optional[StreamFiles] = None):
     "Set the current stream to :stream: or :null_stream: if stream is None."
-    if stream is None:
-        stream = get_null_stream()
-    _redirect_to(stream)
+    _redirect_to(get_null_stream() if stream is None else stream)
 
 
 def reset():

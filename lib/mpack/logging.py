@@ -39,10 +39,12 @@ class Theme:
         self.debug = "\x1b[101;37;1m" if debug is None else debug
         self.critical = "\x1b[40;33;1m" if critical is None else critical
 
+from sys import stdout as _stdout
 
 # Default Values
 _DEFAULT_LOG_LEVEL = Level.ALL ^ Level.DEBUG
-_DEFAULT_LOG_OUTPUT = lambda msg: print(msg, end="")
+_DEFAULT_LOG_OUTPUT = lambda msg: _stdout.write(msg)
+
 staletheme = Theme(
     info="", debug="", critical="", error="", head="", text="", none="", state=""
 )
@@ -126,8 +128,7 @@ class Logger:
         return State(self, state)
 
     def mute(self) -> int:
-        level = self.level
-        self.level = Level.NONE
+        self.level, level = Level.NONE, self.level
         return level
 
     def unmute(self, level: int | None = None, /):
