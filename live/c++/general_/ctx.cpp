@@ -16,16 +16,12 @@ struct Hello {
 struct Context {
   Context() = delete;
   Context(Callback enter, Callback exit)
-    : enter{ enter }, exit{ exit } {
-    enter();
-  }
+  :exit{ exit } { enter(); }
   Context(Callback exit)
-    : enter{ noop }, exit{ exit } {
-    enter();
-  }
+  :exit{ exit } { }
   ~Context() { exit(); }
 private:
-  Callback enter, exit;
+  Callback exit;
 };
 
 auto main(int argc, char **argv) -> int {

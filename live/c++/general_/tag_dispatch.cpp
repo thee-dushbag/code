@@ -67,7 +67,7 @@ struct Resource {
   Resource(std::string const &name, category const &tag)
     : name{ name }, tag{ tag } { }
   std::string name;
-  category const &tag;
+  category tag;
 };
 
 namespace _impl {

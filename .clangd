@@ -1,0 +1,2 @@
+CompileFlags:
+  Add: [ -I/home/simon/Content/code/lib/include, -std=c++20 ]

@@ -3,11 +3,12 @@
 
 #ifdef LOG_SNN_DATA
 # define __DATA_LOG(val) std::cout << "[Calling]: " << #val << '\n';
+#include <iostream>
 #else
 # define __DATA_LOG(val)
+#include <ostream>
 #endif
 
-#include <ostream>
 
 namespace snn::utils {
     template<typename Type>
