@@ -2,7 +2,6 @@
 #define LOG_SNN_DATA
 #include <snn_data.hpp>
 #include <iostream>
-#include <vector>
 
 using data_t = snn::utils::data<int>;
 

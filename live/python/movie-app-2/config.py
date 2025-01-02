@@ -54,7 +54,7 @@ class Config:
 
 
 def generate_thumbnails(config: Config):
-    from moviepy.editor import VideoFileClip
+    from moviepy import VideoFileClip
 
     def save_frame(path: Path):
         image_file = THUMBNAIL_DIR / f"{path.stem}.png"
