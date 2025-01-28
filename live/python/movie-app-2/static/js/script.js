@@ -22,8 +22,8 @@ $(async function () {
 
   let currentPreview = null,
     CURRENT_PAGE_NUMBER = 0,
-    currentPlaying = null,
-    TOTAL_SIZE = await _loadMovies(0);
+    currentPlaying = null;
+   const TOTAL_SIZE = await _loadMovies(0);
 
   adjustPageNumbers(CURRENT_PAGE_NUMBER);
 
@@ -36,7 +36,7 @@ $(async function () {
   }
 
   function adjustPageNumbers(pageNumber) {
-    let lastPage = Math.floor(TOTAL_SIZE / CONTENT_SIZE);
+    const lastPage = Math.floor(TOTAL_SIZE / CONTENT_SIZE);
     let start = pageNumber - RL_CNT,
       end = pageNumber + RL_CNT;
     if (pageNumber < MID) {
@@ -77,7 +77,7 @@ $(async function () {
   }
 
   function createPageNumber(pageNumber) {
-    let elem = document.createElement("div");
+    const elem = document.createElement("div");
     elem.innerHTML = page_number_template
       .html()
       .replaceAll("$number", pageNumber);
@@ -107,7 +107,7 @@ $(async function () {
     return mobj;
   }
 
-  async function setPlayer({ movie, preview, movie_id, thumbnail }) {
+  function setPlayer({ movie, preview, movie_id, thumbnail }) {
     player.attr("src", movie);
     player.attr("data-movie-id", movie_id);
     player.attr("data-thumbnail", thumbnail);
@@ -115,8 +115,8 @@ $(async function () {
     player.focus();
   }
 
-  async function setNewCurrentPlaying(video) {
-    await setPlayer({
+  function setNewCurrentPlaying(video) {
+    setPlayer({
       movie: video.attr("data-movie"),
       thumbnail: video.attr("data-thumbnail"),
       preview: video.attr("data-preview"),
@@ -126,22 +126,22 @@ $(async function () {
     currentPlaying = video;
   }
   async function setNextMovie() {
-    let nextToPlay = Number.parseInt(player.attr("data-movie-id")) + 1;
+    const nextToPlay = Number.parseInt(player.attr("data-movie-id")) + 1;
     if (nextToPlay >= TOTAL_SIZE) nextToPlay = 0;
-    let movie = await getMovie(nextToPlay);
-    await setPlayer(subNameURL(movie));
+    const movie = await getMovie(nextToPlay);
+    setPlayer(subNameURL(movie));
   }
   async function setPrevMovie() {
-    let nextToPlay = Number.parseInt(player.attr("data-movie-id")) - 1;
+    const nextToPlay = Number.parseInt(player.attr("data-movie-id")) - 1;
     if (nextToPlay < 0) nextToPlay = TOTAL_SIZE - 1;
-    let movie = await getMovie(nextToPlay);
-    await setPlayer(subNameURL(movie));
+    const movie = await getMovie(nextToPlay);
+    setPlayer(subNameURL(movie));
   }
 
   const clicked = (keys, key) => keys.includes(key.toLowerCase());
 
   $(document.body).on("keyup", (event) => {
-    let boxes = $(".movie-box");
+    const boxes = $(".movie-box");
     if (clicked(["m"], event.key)) player[0].muted = !player[0].muted;
     else if (boxes.length > 0 && !currentPlaying) setNewCurrentPlaying($(boxes[0]).children());
     else if (clicked(PREV_KEYS, event.key)) setPrevMovie();
@@ -163,18 +163,18 @@ $(async function () {
       else player[0].currentTime -= VIDEO_PLAYBACK_STEP;
     }
   });
-  movie_row.delegate(".movie-box", "mouseenter", function (event) {
-    let video = $(this).children();
+  movie_row.delegate(".movie-box", "mouseenter", function () {
+    const video = $(this).children();
     video.attr("src", video.attr("data-preview"));
   });
-  movie_row.delegate(".movie-box", "mouseleave", function (event) {
+  movie_row.delegate(".movie-box", "mouseleave", function () {
     $(this).children().attr("src", NOSRC);
   });
-  movie_row.delegate(".movie-box", "click", function (event) {
+  movie_row.delegate(".movie-box", "click", function () {
     setNewCurrentPlaying($(this).children());
   });
-  movie_row.delegate(".movie-box", "touchmove", function (event) {
-    let video = $(this).children();
+  movie_row.delegate(".movie-box", "touchmove", function () {
+    const video = $(this).children();
     if (currentPreview) {
       if (currentPreview.attr("src") === video.attr("src")) return;
       else currentPreview.attr("src", NOSRC);
@@ -182,20 +182,19 @@ $(async function () {
     currentPreview = video;
     video.attr("src", video.attr("data-preview"));
   });
-  paginate.delegate(".page-number", "click", async function (event) {
-    let page_number = Number.parseInt($(this).text()) - 1;
-    await loadMovies(page_number);
+  paginate.delegate(".page-number", "click", async function () {
+    await loadMovies(Number.parseInt($(this).text()) - 1);
   });
-  $("#page-next").on("click", async function (event) {
+  $("#page-next").on("click", async function () {
     await loadMovies(CURRENT_PAGE_NUMBER + PAGE_NUMBER_SIZE);
   });
-  $("#page-prev").on("click", async function (event) {
+  $("#page-prev").on("click", async function () {
     await loadMovies(CURRENT_PAGE_NUMBER - PAGE_NUMBER_SIZE);
   });
-  $("#page-next").on("dblclick", async function (event) {
+  $("#page-next").on("dblclick", async function () {
     await loadMovies(CURRENT_PAGE_NUMBER + PAGE_NUMBER_SIZE * 2);
   });
-  $("#page-prev").on("dblclick", async function (event) {
+  $("#page-prev").on("dblclick", async function () {
     await loadMovies(CURRENT_PAGE_NUMBER - PAGE_NUMBER_SIZE * 2);
   });
 });

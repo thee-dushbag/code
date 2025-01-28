@@ -1,7 +1,9 @@
-from mpack.aiohttp_helpers.mako_ import template_handler
-import config as cfg, movies as mov
-from aiohttp import web
 import typing as ty
+
+import config as cfg
+import movies as mov
+from aiohttp import typedefs, web
+from mako_helpers import template_handler
 
 
 def _raise(attr: str, valtype: type, value: ty.Any = None):
@@ -44,25 +46,12 @@ async def refresh(req: web.Request):
         pass
     try:
         movies.set_movies()
-        if req.query["load"].lower() in ("y", "yes"):
+        if req.query["load"].lower() in ("y", "t", "yes", "true"):
             cfg.generate_previews(cfg.config(req))
             cfg.generate_thumbnails(cfg.config(req))
     except KeyError:
         pass
     return web.HTTPTemporaryRedirect("/")
-
-
-@web.middleware
-async def media_not_found_fallback(req: web.Request, handler):
-    try:
-        return await handler(req)
-    except web.HTTPNotFound:
-        if req.url.path.startswith("/source/"):
-            if req.url.path.startswith("/source/thumbnails"):
-                raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_THUMBNAIL.name}")
-            if req.url.path.startswith("/source/previews"):
-                raise web.HTTPTemporaryRedirect(f"/source/{cfg.DEFAULT_PREVIEW.name}")
-        raise
 
 
 # Templates
@@ -85,4 +74,3 @@ routes: list[web.AbstractRouteDef] = [
 
 def setup(app: web.Application):
     app.add_routes(routes)
-    app.middlewares.append(media_not_found_fallback)

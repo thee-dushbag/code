@@ -1,5 +1,4 @@
-from mpack.aiohttp_helpers.mako_ import setup as mako_setup
-from mpack.aiohttp_helpers import cors_setup, dev_setup
+from mako_helpers import setup as mako_setup, cors_setup, dev_setup
 from config import setup as config_setup
 from movies import setup as movies_setup
 from views import setup as views_setup

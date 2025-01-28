@@ -1,11 +1,9 @@
-import enum
-from functools import cached_property
 import dataclasses as dt, typing as ty, config as cfg
 from aiohttp import web
 from pathlib import Path
 import sorters as sort
 
-APP_KEY = "movies.app.key.moviesite"
+APP_KEY = web.AppKey("movie-core")
 
 T = ty.TypeVar("T")
 

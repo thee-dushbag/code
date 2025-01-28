@@ -1,14 +1,16 @@
-from css_html_js_minify.minify import process_multiple_files
-import typing as ty, dataclasses as dt, tempfile as tmp
-from concurrent.futures import ThreadPoolExecutor, wait
 import contextlib
-
-from mpack.previews import Preview, _DEFAULT
+import dataclasses as dt
+import tempfile as tmp
+import typing as ty
+from concurrent.futures import ThreadPoolExecutor, wait
 from pathlib import Path
+
 from aiohttp import web
+from css_html_js_minify.minify import process_multiple_files
+from mpack.previews import _DEFAULT, Preview
 
 # Main contants
-APP_KEY: ty.Final = "movie.site.configurations"
+APP_KEY: ty.Final = web.AppKey("movie-app-2")
 WORKING_DIR: ty.Final = Path(__file__).parent
 
 # Statics directories
@@ -65,20 +67,15 @@ def generate_thumbnails(config: Config):
                 (clip.duration / 2) if config.nth_frame is None else config.nth_frame
             )
             clip.save_frame(str(image_file), frame_t)
+            print(f"THUMBNAIL: {path!r}")
 
     _thumbnails = lambda: (
         path
         for path in VIDEO_DIR.iterdir()
         if not (THUMBNAIL_DIR / f"{path.stem}.png").exists()
     )
-    _thumbnails_paths = lambda: (
-        (THUMBNAIL_DIR / f"{path.stem}.png") for path in _thumbnails()
-    )
 
     wait(config.executor.submit(save_frame, video) for video in _thumbnails())
-
-    for thumbnail in _thumbnails_paths():
-        thumbnail.symlink_to(DEFAULT_THUMBNAIL)
 
 
 def generate_previews(config: Config):
@@ -87,13 +84,7 @@ def generate_previews(config: Config):
     _previews = lambda: (
         path for path in VIDEO_DIR.iterdir() if not (PREVIEW_DIR / path.name).exists()
     )
-    _previews_paths = lambda: ((PREVIEW_DIR / path.name) for path in _previews())
-
-    if not config.link_missing:
-        PreviewsSeq(video_seq=_previews(), previews_dir=PREVIEW_DIR).create()
-
-    for preview in _previews_paths():
-        preview.symlink_to(DEFAULT_PREVIEW)
+    PreviewsSeq(video_seq=_previews(), previews_dir=PREVIEW_DIR).create()
 
 
 def delete_symlinks(config: Config):
@@ -190,8 +181,18 @@ def process_statics(config: Config):
         _minify_dir(STATIC_DIR / "css")
 
 
+def link_missing(config: Config):
+    for file in VIDEO_DIR.iterdir():
+        if not (path := PREVIEW_DIR / file.name).exists():
+            path.symlink_to(DEFAULT_PREVIEW)
+        if not (path := THUMBNAIL_DIR / f'{file.stem}.png').exists():
+            path.symlink_to(DEFAULT_THUMBNAIL)
+
+
 def prepare(config: Config):
     generate_defaults(config)
+    if config.link_missing:
+        link_missing(config)
     if config.retry_nonexisting:
         delete_symlinks(config)
     if config.generate_thumbnails:
